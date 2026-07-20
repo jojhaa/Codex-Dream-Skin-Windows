@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "preset-kanna-hashimoto",
+  "name": "桥本环奈 · 蓝色瞬间",
+  "image": "dream-reference.png",
+  "appearance": "auto",
+  "art": {
+    "focusX": 0.64,
+    "focusY": 0.44,
+    "safeArea": "left",
+    "taskMode": "ambient"
+  },
+  "palette": {
+    "accent": "#1557b0"
+  }
+}

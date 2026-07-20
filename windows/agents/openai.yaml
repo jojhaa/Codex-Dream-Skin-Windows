@@ -1,0 +1,4 @@
+interface:
+  display_name: "Codex Dream Skin"
+  short_description: "Apply and safely restore the Kanna blue-white Codex skin"
+  default_prompt: "Use $codex-dream-skin to install, launch, verify, update, or restore the Kanna blue-white Codex desktop skin."

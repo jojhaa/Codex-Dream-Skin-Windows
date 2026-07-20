@@ -1,0 +1,6 @@
+* text=auto
+
+# Keep executable macOS/Unix entry points runnable when the repository is
+# checked out by Git for Windows with core.autocrlf enabled.
+*.sh text eol=lf
+*.command text eol=lf
