@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="CodexDreamSkin.Pages.DiagnosticsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Loaded="DiagnosticsPage_Loaded">
+
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Style="{StaticResource PageRootStyle}">
+            <StackPanel Spacing="6">
+                <TextBlock x:Uid="DiagnosticsTitle" Style="{StaticResource TitleTextBlockStyle}" />
+                <TextBlock x:Uid="DiagnosticsSubtitle" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
+            </StackPanel>
+
+            <InfoBar
+                x:Uid="DiagnosticsInfo"
+                IsOpen="True"
+                IsClosable="False"
+                Severity="Success" />
+
+            <Border Style="{StaticResource StatusCardStyle}">
+                <StackPanel Spacing="18">
+                    <Grid ColumnSpacing="12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <SymbolIcon x:Name="PackageIcon" Symbol="Accept" Foreground="{ThemeResource KannaSuccessBrush}" />
+                        <StackPanel Grid.Column="1" Spacing="3">
+                            <TextBlock x:Uid="DiagnosticsPackageTitle" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                            <TextBlock x:Name="PackageBodyText" x:Uid="DiagnosticsPackageBody" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
+                        </StackPanel>
+                        <TextBlock Grid.Column="2" x:Uid="ReadyStatus" Foreground="{ThemeResource KannaSuccessBrush}" FontWeight="SemiBold" />
+                    </Grid>
+                    <Rectangle Height="1" Fill="{ThemeResource DividerStrokeColorDefaultBrush}" />
+                    <Grid ColumnSpacing="12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <SymbolIcon Symbol="Accept" Foreground="{ThemeResource KannaSuccessBrush}" />
+                        <StackPanel Grid.Column="1" Spacing="3">
+                            <TextBlock x:Uid="DiagnosticsAssetsTitle" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                            <TextBlock x:Uid="DiagnosticsAssetsBody" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
+                        </StackPanel>
+                        <TextBlock Grid.Column="2" x:Uid="ReadyStatus" Foreground="{ThemeResource KannaSuccessBrush}" FontWeight="SemiBold" />
+                    </Grid>
+                    <Rectangle Height="1" Fill="{ThemeResource DividerStrokeColorDefaultBrush}" />
+                    <Grid ColumnSpacing="12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <SymbolIcon x:Name="RuntimeIcon" Symbol="Clock" Foreground="{ThemeResource KannaPendingBrush}" />
+                        <StackPanel Grid.Column="1" Spacing="3">
+                            <TextBlock x:Uid="DiagnosticsEngineTitle" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                            <TextBlock x:Name="RuntimeBodyText" x:Uid="DiagnosticsEngineBody" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
+                        </StackPanel>
+                        <TextBlock Grid.Column="2" x:Uid="PendingStatus" Foreground="{ThemeResource KannaPendingBrush}" FontWeight="SemiBold" />
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <Button x:Uid="RefreshDiagnostics" Click="RefreshButton_Click" HorizontalAlignment="Left" />
+        </StackPanel>
+    </ScrollViewer>
+</Page>

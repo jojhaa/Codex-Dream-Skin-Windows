@@ -40,6 +40,14 @@
   --dream-composer-glass-mid: .32;
   --dream-composer-glass-bridge: .18;
   --dream-composer-glass-right: .06;
+  --dream-composer-attachment-ink: #173b5a;
+  --dream-composer-attachment-muted: #315d7a;
+  --dream-composer-attachment-row-top: .28;
+  --dream-composer-attachment-row-bottom: .10;
+  --dream-queued-message-ink: #0b3159;
+  --dream-queued-message-muted: #204f73;
+  --dream-queued-message-surface-top: .36;
+  --dream-queued-message-surface-bottom: .16;
   --dream-suggestion-glass: .36;
   --dream-settings-glass-top: .20;
   --dream-settings-glass-bottom: .08;
@@ -51,6 +59,8 @@
   --dream-utility-band-bottom: .12;
   --dream-utility-control-top: .24;
   --dream-utility-control-bottom: .10;
+  --dream-menu-glass-top: .26;
+  --dream-menu-glass-bottom: .10;
   --dream-chat-glass-top: .42;
   --dream-chat-glass-bottom: .18;
   --dream-thread-card-glass-top: .18;
@@ -113,7 +123,7 @@ html.codex-dream-skin aside.app-shell-left-panel {
     var(--dream-art) !important;
   background-repeat: no-repeat !important;
   background-size: 100% 100%, 100% 100%, auto 100% !important;
-  background-position: center, center, 18% center !important;
+  background-position: center, center, var(--dream-focus-x, 64%) var(--dream-focus-y, 44%) !important;
   border: 0 !important;
   border-radius: 0 !important;
   box-shadow: none !important;
@@ -199,7 +209,7 @@ html.codex-dream-skin main.main-surface {
     var(--dream-art) !important;
   background-repeat: no-repeat !important;
   background-size: 100% 100%, 100% 100%, cover !important;
-  background-position: center, center, left 28% !important;
+  background-position: center, center, var(--dream-focus-x, 64%) var(--dream-focus-y, 44%) !important;
   border: 0 !important;
   border-top: 0 !important;
   border-right: 0 !important;
@@ -227,7 +237,7 @@ html.codex-dream-skin main.main-surface.dream-home-shell {
     linear-gradient(180deg, rgba(255, 255, 255, .02), rgba(239, 247, 246, .06)),
     var(--dream-art) !important;
   background-size: 100% 100%, 100% 100%, 100% 100%, cover !important;
-  background-position: center, center, center, left 28% !important;
+  background-position: center, center, center, var(--dream-focus-x, 64%) var(--dream-focus-y, 44%) !important;
 }
 
 html.codex-dream-skin main.main-surface.dream-settings-shell {
@@ -237,7 +247,7 @@ html.codex-dream-skin main.main-surface.dream-settings-shell {
     var(--dream-art) !important;
   background-repeat: no-repeat !important;
   background-size: 100% 100%, 100% 100%, cover !important;
-  background-position: center, center, left 56% !important;
+  background-position: center, center, var(--dream-focus-x, 64%) var(--dream-focus-y, 44%) !important;
 }
 
 html.codex-dream-skin main.main-surface.dream-settings-shell .app-shell-main-content-top-fade {
@@ -562,7 +572,7 @@ html.codex-dream-skin main.main-surface.dream-home-shell > header.app-header-tin
   background-image: var(--dream-art);
   background-repeat: no-repeat;
   background-size: auto 142%;
-  background-position: 82% 24%;
+  background-position: var(--dream-focus-x, 64%) var(--dream-focus-y, 44%);
   border: 8px solid rgba(255, 255, 255, .98);
   border-bottom-width: 25px;
   box-shadow: var(--dream-shadow-lg), 0 0 0 1px rgba(21, 87, 176, .20);
@@ -672,7 +682,7 @@ html.codex-dream-skin .dream-home {
     var(--dream-art) !important;
   background-repeat: no-repeat !important;
   background-size: 100% 100%, auto 300% !important;
-  background-position: center, left 31% !important;
+  background-position: center, var(--dream-focus-x, 64%) var(--dream-focus-y, 44%) !important;
   box-shadow: var(--dream-shadow-lg), inset 0 0 0 4px rgba(255, 255, 255, .20) !important;
 }
 
@@ -1337,7 +1347,7 @@ html.codex-dream-skin main.main-surface.dream-task-shell {
     var(--dream-art) !important;
   background-repeat: no-repeat !important;
   background-size: 100% 100%, 100% 100%, cover !important;
-  background-position: center, center, left 27% !important;
+  background-position: center, center, var(--dream-focus-x, 64%) var(--dream-focus-y, 44%) !important;
 }
 
 html.codex-dream-skin main.main-surface.dream-task-shell::after {
@@ -1862,6 +1872,96 @@ html.codex-dream-skin main.dream-task-shell .composer-surface-chrome::after {
   mask-image: linear-gradient(90deg, transparent 0%, transparent 36%, rgba(0, 0, 0, .18) 52%, #000 76%, #000 100%);
 }
 
+/* Composer file/change queues sit directly over portrait detail. Preserve the
+   low-fog material, but protect every native filename, action, and glyph with
+   an opaque editorial-ink foreground rather than restoring a white panel. */
+html.codex-dream-skin main.dream-task-shell .composer-surface-chrome
+  [class*="_attachmentsDefault_"]:not(:empty) {
+  border-bottom: 1px solid rgba(21, 87, 176, .10) !important;
+  border-radius: 20px 20px 10px 10px;
+  background: linear-gradient(90deg,
+    rgba(237, 248, 250, var(--dream-composer-attachment-row-top)),
+    rgba(216, 239, 245, var(--dream-composer-attachment-row-bottom))) !important;
+  color: var(--dream-composer-attachment-ink) !important;
+}
+
+html.codex-dream-skin main.dream-task-shell .composer-surface-chrome
+  [class*="_attachmentsDefault_"] :where(div, span, p, button, [role="button"], svg) {
+  color: var(--dream-composer-attachment-ink) !important;
+  opacity: 1 !important;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, .82), 0 0 4px rgba(249, 253, 253, .52) !important;
+}
+
+html.codex-dream-skin main.dream-task-shell .composer-surface-chrome
+  [class*="_attachmentsDefault_"]
+  :where([class*="text-token-description"], [class*="text-token-muted"], [class*="text-token-text-tertiary"]) {
+  color: var(--dream-composer-attachment-muted) !important;
+}
+
+/* Native queued follow-ups render above, not inside, the composer attachment
+   tray. The renderer marks that structural list so its text remains readable
+   without turning the entire pending-message area into an opaque card. */
+html.codex-dream-skin main.dream-task-shell .dream-queued-message-panel {
+  border-color: rgba(21, 87, 176, .10) !important;
+  background-color: rgba(239, 249, 251, .06) !important;
+  background-image: linear-gradient(90deg,
+    rgba(235, 247, 250, var(--dream-queued-message-surface-top)),
+    rgba(207, 234, 243, var(--dream-queued-message-surface-bottom))) !important;
+  color: var(--dream-queued-message-ink) !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: blur(3px) saturate(1.01) !important;
+  backdrop-filter: blur(3px) saturate(1.01) !important;
+}
+
+html.codex-dream-skin main.dream-task-shell .dream-queued-message-list {
+  color: var(--dream-queued-message-ink) !important;
+}
+
+html.codex-dream-skin main.dream-task-shell .dream-queued-message-list
+  :where(p, span, button, [role="button"], svg, [class*="text-token-"]) {
+  color: var(--dream-queued-message-ink) !important;
+  -webkit-text-fill-color: currentColor !important;
+  opacity: 1 !important;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, .88), 0 0 4px rgba(248, 253, 254, .62) !important;
+}
+
+html.codex-dream-skin main.dream-task-shell .dream-queued-message-list
+  :where([class*="text-token-description"], [class*="text-token-input-placeholder"], [class*="text-token-text-tertiary"]) {
+  color: var(--dream-queued-message-muted) !important;
+}
+
+html.codex-dream-skin main.dream-task-shell .dream-queued-message-list
+  [class*="_markdownContent_"]:not(:is([class*="items-end"] [class*="_markdownContent_"])) {
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  line-height: 1rem !important;
+  transform: none !important;
+}
+
+html.codex-dream-skin main.dream-task-shell .dream-queued-message-list
+  [class*="_markdownContent_"] :where(p, div, span) {
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding-block: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  line-height: 1rem !important;
+  vertical-align: baseline !important;
+}
+
+html.codex-dream-skin main.dream-task-shell .dream-queued-message-list [class*="text-token-editor-warning"] {
+  color: #8a4700 !important;
+}
+
 html.codex-dream-skin main.dream-task-shell
   .sticky.bottom-0:has(.composer-surface-chrome)
   [class*="bg-gradient-to-t"][class*="from-token-main-surface-primary"] {
@@ -1968,17 +2068,28 @@ html.codex-dream-skin section[role="dialog"][class*="_floatingSurface_"] .compos
 }
 
 html.codex-dream-skin :where([role="menu"], [role="listbox"]) {
-  border: 1px solid rgba(21, 87, 176, .24) !important;
+  border: 1px solid rgba(21, 87, 176, .18) !important;
   border-radius: 13px !important;
-  background: rgba(250, 253, 252, .98) !important;
+  background-color: rgba(245, 251, 251, .06) !important;
+  background-image:
+    radial-gradient(circle at 10% 0%, rgba(49, 185, 230, .10), transparent 34%),
+    linear-gradient(145deg,
+      rgba(249, 253, 253, var(--dream-menu-glass-top)),
+      rgba(199, 229, 240, var(--dream-menu-glass-bottom))) !important;
   color: var(--dream-ink) !important;
-  box-shadow: 0 16px 40px rgba(8, 37, 70, .18) !important;
-  backdrop-filter: blur(16px) !important;
+  box-shadow: inset 2px 0 rgba(21, 87, 176, .52), 0 12px 32px rgba(8, 37, 70, .14) !important;
+  -webkit-backdrop-filter: blur(4px) saturate(1.02) !important;
+  backdrop-filter: blur(4px) saturate(1.02) !important;
+}
+
+html.codex-dream-skin :where([role="menu"], [role="listbox"]) > :where(div, section) {
+  background-color: transparent !important;
+  background-image: none !important;
 }
 
 html.codex-dream-skin :where([role="menuitem"], [role="option"]):hover,
 html.codex-dream-skin :where([role="menuitem"], [role="option"])[data-highlighted] {
-  background: linear-gradient(90deg, rgba(205, 233, 242, .72), rgba(247, 252, 251, .88)) !important;
+  background: linear-gradient(90deg, rgba(172, 219, 237, .30), rgba(238, 248, 249, .14)) !important;
   color: var(--dream-blue-deep) !important;
 }
 
@@ -2240,6 +2351,14 @@ html.codex-dream-skin progress {
   --dream-composer-glass-mid: .44;
   --dream-composer-glass-bridge: .28;
   --dream-composer-glass-right: .14;
+  --dream-composer-attachment-ink: #e7f4ff;
+  --dream-composer-attachment-muted: #b9d5e9;
+  --dream-composer-attachment-row-top: .36;
+  --dream-composer-attachment-row-bottom: .16;
+  --dream-queued-message-ink: #f3f9ff;
+  --dream-queued-message-muted: #c9e4f5;
+  --dream-queued-message-surface-top: .40;
+  --dream-queued-message-surface-bottom: .20;
   --dream-suggestion-glass: .46;
   --dream-settings-glass-top: .46;
   --dream-settings-glass-bottom: .22;
@@ -2251,6 +2370,8 @@ html.codex-dream-skin progress {
   --dream-utility-band-bottom: .18;
   --dream-utility-control-top: .48;
   --dream-utility-control-bottom: .22;
+  --dream-menu-glass-top: .42;
+  --dream-menu-glass-bottom: .20;
   --dream-chat-glass-top: .42;
   --dream-chat-glass-bottom: .18;
   --dream-thread-card-glass-top: .42;
@@ -2522,6 +2643,47 @@ html.codex-dream-skin.electron-dark main.dream-home-shell .composer-surface-chro
   backdrop-filter: blur(4px) saturate(.92) !important;
 }
 
+html.codex-dream-skin.electron-dark main.dream-task-shell .composer-surface-chrome
+  [class*="_attachmentsDefault_"]:not(:empty) {
+  border-bottom-color: rgba(103, 185, 255, .14) !important;
+  background: linear-gradient(90deg,
+    rgba(6, 26, 44, var(--dream-composer-attachment-row-top)),
+    rgba(12, 51, 80, var(--dream-composer-attachment-row-bottom))) !important;
+}
+
+html.codex-dream-skin.electron-dark main.dream-task-shell .composer-surface-chrome
+  [class*="_attachmentsDefault_"] :where(div, span, p, button, [role="button"], svg) {
+  text-shadow: 0 1px 2px rgba(0, 7, 16, .88), 0 0 5px rgba(1, 13, 25, .52) !important;
+}
+
+html.codex-dream-skin.electron-dark main.dream-task-shell .dream-queued-message-panel {
+  border-color: rgba(103, 185, 255, .14) !important;
+  background-color: rgba(5, 20, 35, .08) !important;
+  background-image: linear-gradient(90deg,
+    rgba(6, 26, 44, var(--dream-queued-message-surface-top)),
+    rgba(12, 51, 80, var(--dream-queued-message-surface-bottom))) !important;
+  -webkit-backdrop-filter: blur(4px) saturate(.94) !important;
+  backdrop-filter: blur(4px) saturate(.94) !important;
+}
+
+html.codex-dream-skin.electron-dark main.dream-task-shell .dream-queued-message-list
+  :where(p, span, button, [role="button"], svg, [class*="text-token-"]) {
+  -webkit-text-fill-color: currentColor !important;
+  text-shadow: 0 1px 2px rgba(0, 7, 16, .92), 0 0 5px rgba(1, 13, 25, .58) !important;
+}
+
+html.codex-dream-skin.electron-dark main.dream-task-shell .dream-queued-message-list
+  [class*="_markdownContent_"]:not(:is([class*="items-end"] [class*="_markdownContent_"])) {
+  background: transparent !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+html.codex-dream-skin.electron-dark main.dream-task-shell .dream-queued-message-list [class*="text-token-editor-warning"] {
+  color: #ffd28a !important;
+}
+
 html.codex-dream-skin.electron-dark main.dream-task-shell [class*="_markdownContent_"] {
   color: var(--dream-ink) !important;
   text-shadow: 0 1px 2px rgba(0, 7, 16, .86), 0 0 7px rgba(2, 12, 23, .30);
@@ -2719,15 +2881,22 @@ html.codex-dream-skin.electron-dark section[role="dialog"][class*="_floatingSurf
 }
 
 html.codex-dream-skin.electron-dark :where([role="menu"], [role="listbox"]) {
-  border-color: rgba(103, 185, 255, .24) !important;
-  background: rgba(6, 23, 40, .94) !important;
+  border-color: rgba(103, 185, 255, .20) !important;
+  background-color: rgba(5, 20, 35, .08) !important;
+  background-image:
+    radial-gradient(circle at 10% 0%, rgba(98, 221, 255, .12), transparent 34%),
+    linear-gradient(145deg,
+      rgba(5, 20, 35, var(--dream-menu-glass-top)),
+      rgba(11, 45, 72, var(--dream-menu-glass-bottom))) !important;
   color: var(--dream-ink) !important;
-  box-shadow: 0 18px 46px rgba(0, 5, 12, .42) !important;
+  box-shadow: inset 2px 0 rgba(98, 221, 255, .45), 0 16px 42px rgba(0, 5, 12, .28) !important;
+  -webkit-backdrop-filter: blur(5px) saturate(.92) !important;
+  backdrop-filter: blur(5px) saturate(.92) !important;
 }
 
 html.codex-dream-skin.electron-dark :where([role="menuitem"], [role="option"]):hover,
 html.codex-dream-skin.electron-dark :where([role="menuitem"], [role="option"])[data-highlighted] {
-  background: linear-gradient(90deg, rgba(24, 77, 119, .68), rgba(13, 40, 65, .72)) !important;
+  background: linear-gradient(90deg, rgba(24, 77, 119, .34), rgba(13, 40, 65, .18)) !important;
   color: #f4fbff !important;
 }
 

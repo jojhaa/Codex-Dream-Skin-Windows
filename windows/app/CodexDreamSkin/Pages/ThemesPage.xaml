@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="CodexDreamSkin.Pages.ThemesPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Loaded="ThemesPage_Loaded"
+    SizeChanged="ThemesPage_SizeChanged">
+
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Style="{StaticResource PageRootStyle}">
+            <Grid ColumnSpacing="16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Spacing="6">
+                    <TextBlock x:Uid="ThemesTitle" Style="{StaticResource TitleTextBlockStyle}" />
+                    <TextBlock x:Uid="ThemesSubtitle" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
+                </StackPanel>
+                <CommandBar Grid.Column="1" Background="Transparent" DefaultLabelPosition="Right">
+                    <AppBarButton x:Name="ImportButton" x:Uid="ImportThemeButton" Icon="Add" Click="ImportButton_Click" />
+                    <AppBarButton x:Name="SaveButton" x:Uid="SaveThemeButton" Icon="Save" Click="SaveButton_Click" />
+                    <AppBarButton x:Name="ActivateButton" x:Uid="ActivateThemeButton" Icon="Play" Click="ActivateButton_Click" />
+                    <AppBarButton x:Name="DeleteButton" x:Uid="DeleteThemeButton" Icon="Delete" Click="DeleteButton_Click" />
+                </CommandBar>
+            </Grid>
+
+            <InfoBar x:Name="ThemeInfoBar" IsOpen="False" IsClosable="True" />
+
+            <Grid x:Name="ThemesWorkspace" ColumnSpacing="20" RowSpacing="20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition x:Name="LibraryColumn" Width="280" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <StackPanel x:Name="LibraryPanel" Spacing="10">
+                    <TextBlock x:Uid="ThemeLibraryTitle" Style="{StaticResource SubtitleTextBlockStyle}" />
+                    <ListView
+                        x:Name="ThemesList"
+                        Height="430"
+                        SelectionMode="Single"
+                        SelectionChanged="ThemesList_SelectionChanged"
+                        x:Uid="ThemeLibraryList">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Padding="6" ColumnSpacing="12">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="40" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Border Width="40" Height="40" CornerRadius="8" Background="{ThemeResource SubtleFillColorSecondaryBrush}">
+                                        <SymbolIcon Symbol="Pictures" />
+                                    </Border>
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="2">
+                                        <TextBlock Text="{Binding Name}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+                                        <TextBlock Text="{Binding Id}" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextTrimming="CharacterEllipsis" />
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackPanel>
+
+                <Border x:Name="EditorPanel" Grid.Column="1" Style="{StaticResource StatusCardStyle}">
+                    <StackPanel Spacing="18">
+                        <Grid Height="250">
+                            <Image x:Name="PreviewImage" Stretch="UniformToFill" />
+                            <Border Background="{ThemeResource KannaHeroOverlayBrush}" Opacity="0.42" />
+                            <StackPanel Margin="24" VerticalAlignment="Bottom" Spacing="4">
+                                <TextBlock x:Name="PreviewName" Foreground="White" FontSize="24" FontWeight="SemiBold" TextWrapping="Wrap" />
+                                <TextBlock x:Name="PreviewStatus" Foreground="#FFF2F8FF" />
+                            </StackPanel>
+                        </Grid>
+
+                        <TextBox x:Name="NameTextBox" x:Uid="ThemeNameField" MaxLength="120" TextChanged="EditorValue_Changed" />
+
+                        <Grid ColumnSpacing="16" RowSpacing="12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <ComboBox x:Name="AppearanceComboBox" x:Uid="ThemeAppearanceField" SelectedValuePath="Tag" SelectionChanged="EditorValue_Changed" HorizontalAlignment="Stretch">
+                                <ComboBoxItem x:Uid="ThemeAppearanceAuto" Tag="auto" />
+                                <ComboBoxItem x:Uid="ThemeAppearanceLight" Tag="light" />
+                                <ComboBoxItem x:Uid="ThemeAppearanceDark" Tag="dark" />
+                            </ComboBox>
+                            <ComboBox x:Name="SafeAreaComboBox" x:Uid="ThemeSafeAreaField" Grid.Column="1" SelectedValuePath="Tag" SelectionChanged="EditorValue_Changed" HorizontalAlignment="Stretch">
+                                <ComboBoxItem x:Uid="ThemeSafeAreaAuto" Tag="auto" />
+                                <ComboBoxItem x:Uid="ThemeSafeAreaLeft" Tag="left" />
+                                <ComboBoxItem x:Uid="ThemeSafeAreaRight" Tag="right" />
+                                <ComboBoxItem x:Uid="ThemeSafeAreaCenter" Tag="center" />
+                                <ComboBoxItem x:Uid="ThemeSafeAreaNone" Tag="none" />
+                            </ComboBox>
+                            <ComboBox x:Name="TaskModeComboBox" x:Uid="ThemeTaskModeField" Grid.Row="1" SelectedValuePath="Tag" SelectionChanged="EditorValue_Changed" HorizontalAlignment="Stretch">
+                                <ComboBoxItem x:Uid="ThemeTaskModeAuto" Tag="auto" />
+                                <ComboBoxItem x:Uid="ThemeTaskModeAmbient" Tag="ambient" />
+                                <ComboBoxItem x:Uid="ThemeTaskModeBanner" Tag="banner" />
+                                <ComboBoxItem x:Uid="ThemeTaskModeOff" Tag="off" />
+                            </ComboBox>
+                            <TextBox x:Name="AccentTextBox" x:Uid="ThemeAccentField" Grid.Row="1" Grid.Column="1" PlaceholderText="#1557b0" MaxLength="9" TextChanged="EditorValue_Changed" />
+                            <StackPanel Grid.Row="2" Spacing="4">
+                                <TextBlock x:Uid="ThemeFocusXLabel" />
+                                <Slider x:Name="FocusXSlider" x:Uid="ThemeFocusXSlider" Minimum="0" Maximum="1" StepFrequency="0.01" ValueChanged="EditorValue_Changed" />
+                            </StackPanel>
+                            <StackPanel Grid.Row="2" Grid.Column="1" Spacing="4">
+                                <TextBlock x:Uid="ThemeFocusYLabel" />
+                                <Slider x:Name="FocusYSlider" x:Uid="ThemeFocusYSlider" Minimum="0" Maximum="1" StepFrequency="0.01" ValueChanged="EditorValue_Changed" />
+                            </StackPanel>
+                        </Grid>
+
+                        <TextBlock x:Name="ReadOnlyHint" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

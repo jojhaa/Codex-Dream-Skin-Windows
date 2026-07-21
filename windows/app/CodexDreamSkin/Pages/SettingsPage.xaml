@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="CodexDreamSkin.Pages.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Style="{StaticResource PageRootStyle}">
+            <StackPanel Spacing="6">
+                <TextBlock x:Uid="SettingsTitle" Style="{StaticResource TitleTextBlockStyle}" />
+                <TextBlock x:Uid="SettingsSubtitle" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
+            </StackPanel>
+
+            <Border Style="{StaticResource StatusCardStyle}">
+                <Grid ColumnSpacing="24">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="220" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Spacing="4">
+                        <TextBlock x:Uid="AppearanceSettingTitle" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                        <TextBlock x:Uid="AppearanceSettingBody" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
+                    </StackPanel>
+                    <ComboBox
+                        x:Name="AppearanceSelector"
+                        Grid.Column="1"
+                        x:Uid="AppearanceSelector"
+                        HorizontalAlignment="Stretch"
+                        SelectedIndex="0"
+                        SelectionChanged="AppearanceSelector_SelectionChanged">
+                        <ComboBoxItem x:Uid="AppearanceSystem" Tag="system" />
+                        <ComboBoxItem x:Uid="AppearanceLight" Tag="light" />
+                        <ComboBoxItem x:Uid="AppearanceDark" Tag="dark" />
+                    </ComboBox>
+                </Grid>
+            </Border>
+
+            <Border Style="{StaticResource StatusCardStyle}">
+                <StackPanel Spacing="6">
+                    <TextBlock x:Uid="StorageSettingTitle" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                    <TextBlock x:Uid="StorageSettingBody" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+
+            <InfoBar
+                x:Uid="SettingsInfo"
+                IsOpen="True"
+                IsClosable="False"
+                Severity="Informational" />
+        </StackPanel>
+    </ScrollViewer>
+</Page>

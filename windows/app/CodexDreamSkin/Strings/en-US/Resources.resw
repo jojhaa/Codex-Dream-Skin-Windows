@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms</value></resheader>
+  <data name="AppTitleBar.Title" xml:space="preserve"><value>Codex Dream Skin</value></data>
+  <data name="ShellNavigationView.PaneTitle" xml:space="preserve"><value>Workspace</value></data>
+  <data name="DashboardNavItem.Content" xml:space="preserve"><value>Overview</value></data>
+  <data name="ThemesNavItem.Content" xml:space="preserve"><value>Themes</value></data>
+  <data name="DiagnosticsNavItem.Content" xml:space="preserve"><value>Diagnostics</value></data>
+  <data name="SettingsNavItem.Content" xml:space="preserve"><value>Settings</value></data>
+  <data name="DashboardTitle.Text" xml:space="preserve"><value>Overview</value></data>
+  <data name="DashboardSubtitle.Text" xml:space="preserve"><value>Track the native app migration and the currently bundled Codex theme.</value></data>
+  <data name="DashboardHeroEyebrow.Text" xml:space="preserve"><value>KANNA BLUE · NATIVE EDITION</value></data>
+  <data name="DashboardHeroTitle.Text" xml:space="preserve"><value>Bring the blue moment into a safer Windows app.</value></data>
+  <data name="DashboardHeroBody.Text" xml:space="preserve"><value>The visual system now connects to a native C# theme engine with strict local security boundaries.</value></data>
+  <data name="DashboardStatusTitle.Text" xml:space="preserve"><value>Migration status</value></data>
+  <data name="AppStatusTitle.Text" xml:space="preserve"><value>Native shell</value></data>
+  <data name="AppStatusBody.Text" xml:space="preserve"><value>Packaged WinUI 3 application is running.</value></data>
+  <data name="ThemeStatusTitle.Text" xml:space="preserve"><value>Theme assets</value></data>
+  <data name="ThemeStatusBody.Text" xml:space="preserve"><value>Kanna Blue 3.4.9 is bundled for preview.</value></data>
+  <data name="EngineStatusTitle.Text" xml:space="preserve"><value>Injection engine</value></data>
+  <data name="EngineStatusBody.Text" xml:space="preserve"><value>Native CDP migration is the next stage.</value></data>
+  <data name="MigrationTitle.Text" xml:space="preserve"><value>Windows app migration</value></data>
+  <data name="MigrationBody.Text" xml:space="preserve"><value>Toolchain, shell, trusted package discovery, CDP injection, and reload monitoring now run in the native app.</value></data>
+  <data name="DashboardInfo.Title" xml:space="preserve"><value>Safe startup</value></data>
+  <data name="DashboardInfo.Message" xml:space="preserve"><value>If Codex is already running without the theme port, close it yourself first. The manager will not force-close your session.</value></data>
+  <data name="ApplyTheme.Text" xml:space="preserve"><value>Apply theme</value></data>
+  <data name="RefreshEngine.Content" xml:space="preserve"><value>Check again</value></data>
+  <data name="RefreshDiagnostics.Content" xml:space="preserve"><value>Run diagnostics again</value></data>
+  <data name="ThemesTitle.Text" xml:space="preserve"><value>Themes</value></data>
+  <data name="ThemesSubtitle.Text" xml:space="preserve"><value>Preview the visual assets that will be managed by the native application.</value></data>
+  <data name="ThemePreviewName.Text" xml:space="preserve"><value>Kanna Blue Moment</value></data>
+  <data name="ThemePreviewMeta.Text" xml:space="preserve"><value>Hashimoto Kanna · blue and porcelain editorial theme</value></data>
+  <data name="ThemeVersionLabel.Text" xml:space="preserve"><value>Version</value></data>
+  <data name="ThemeAssetLabel.Text" xml:space="preserve"><value>Background asset</value></data>
+  <data name="ThemeAppearanceLabel.Text" xml:space="preserve"><value>Appearance</value></data>
+  <data name="ThemeAppearanceValue.Text" xml:space="preserve"><value>Follows Codex light and dark modes</value></data>
+  <data name="ThemeStatusLabel.Text" xml:space="preserve"><value>Asset status</value></data>
+  <data name="ThemeStatusValue.Text" xml:space="preserve"><value>Ready</value></data>
+  <data name="ThemesInfo.Title" xml:space="preserve"><value>Application pending</value></data>
+  <data name="ThemesInfo.Message" xml:space="preserve"><value>Apply, import, and restore commands will be enabled after the native CDP engine is available.</value></data>
+  <data name="DiagnosticsTitle.Text" xml:space="preserve"><value>Diagnostics</value></data>
+  <data name="DiagnosticsSubtitle.Text" xml:space="preserve"><value>Separate verified application capabilities from work that has not migrated yet.</value></data>
+  <data name="DiagnosticsInfo.Title" xml:space="preserve"><value>Stage 1 checks passed</value></data>
+  <data name="DiagnosticsInfo.Message" xml:space="preserve"><value>The packaged x64 app builds and launches with a responsive top-level window.</value></data>
+  <data name="DiagnosticsPackageTitle.Text" xml:space="preserve"><value>Package identity</value></data>
+  <data name="DiagnosticsPackageBody.Text" xml:space="preserve"><value>MSIX development identity and package-aware launch are available.</value></data>
+  <data name="DiagnosticsAssetsTitle.Text" xml:space="preserve"><value>Theme resources</value></data>
+  <data name="DiagnosticsAssetsBody.Text" xml:space="preserve"><value>The reference image and shared light, dark, and high-contrast brushes load from the package.</value></data>
+  <data name="DiagnosticsEngineTitle.Text" xml:space="preserve"><value>Codex connection</value></data>
+  <data name="DiagnosticsEngineBody.Text" xml:space="preserve"><value>Process discovery, port ownership, and CDP sessions have not moved to C# yet.</value></data>
+  <data name="ReadyStatus.Text" xml:space="preserve"><value>Ready</value></data>
+  <data name="PendingStatus.Text" xml:space="preserve"><value>Pending</value></data>
+  <data name="SettingsTitle.Text" xml:space="preserve"><value>Settings</value></data>
+  <data name="SettingsSubtitle.Text" xml:space="preserve"><value>Adjust the native manager without changing Codex itself.</value></data>
+  <data name="AppearanceSettingTitle.Text" xml:space="preserve"><value>Application appearance</value></data>
+  <data name="AppearanceSettingBody.Text" xml:space="preserve"><value>Choose how this manager follows the Windows color mode.</value></data>
+  <data name="AppearanceSelector.Header" xml:space="preserve"><value>Color mode</value></data>
+  <data name="AppearanceSystem.Content" xml:space="preserve"><value>Use system setting</value></data>
+  <data name="AppearanceLight.Content" xml:space="preserve"><value>Light</value></data>
+  <data name="AppearanceDark.Content" xml:space="preserve"><value>Dark</value></data>
+  <data name="StorageSettingTitle.Text" xml:space="preserve"><value>Application data</value></data>
+  <data name="StorageSettingBody.Text" xml:space="preserve"><value>Theme packages, backups, and logs will use the packaged application's local data folder.</value></data>
+  <data name="SettingsInfo.Title" xml:space="preserve"><value>Settings foundation</value></data>
+  <data name="SettingsInfo.Message" xml:space="preserve"><value>The appearance selector works now. Persistent settings arrive with the configuration service.</value></data>
+  <data name="ImportThemeButton.Label" xml:space="preserve"><value>Import image</value></data>
+  <data name="ImportThemeButton.AutomationProperties.Name" xml:space="preserve"><value>Import a theme image</value></data>
+  <data name="SaveThemeButton.Label" xml:space="preserve"><value>Save</value></data>
+  <data name="SaveThemeButton.AutomationProperties.Name" xml:space="preserve"><value>Save theme settings</value></data>
+  <data name="ActivateThemeButton.Label" xml:space="preserve"><value>Make current</value></data>
+  <data name="ActivateThemeButton.AutomationProperties.Name" xml:space="preserve"><value>Make the selected theme current</value></data>
+  <data name="DeleteThemeButton.Label" xml:space="preserve"><value>Delete</value></data>
+  <data name="DeleteThemeButton.AutomationProperties.Name" xml:space="preserve"><value>Delete the selected custom theme</value></data>
+  <data name="ThemeLibraryTitle.Text" xml:space="preserve"><value>Theme library</value></data>
+  <data name="ThemeLibraryList.AutomationProperties.Name" xml:space="preserve"><value>Theme library</value></data>
+  <data name="ThemeNameField.Header" xml:space="preserve"><value>Theme name</value></data>
+  <data name="ThemeAppearanceField.Header" xml:space="preserve"><value>Appearance</value></data>
+  <data name="ThemeAppearanceAuto.Content" xml:space="preserve"><value>Follow Codex</value></data>
+  <data name="ThemeAppearanceLight.Content" xml:space="preserve"><value>Light</value></data>
+  <data name="ThemeAppearanceDark.Content" xml:space="preserve"><value>Dark</value></data>
+  <data name="ThemeSafeAreaField.Header" xml:space="preserve"><value>Text safe area</value></data>
+  <data name="ThemeSafeAreaAuto.Content" xml:space="preserve"><value>Automatic</value></data>
+  <data name="ThemeSafeAreaLeft.Content" xml:space="preserve"><value>Left</value></data>
+  <data name="ThemeSafeAreaRight.Content" xml:space="preserve"><value>Right</value></data>
+  <data name="ThemeSafeAreaCenter.Content" xml:space="preserve"><value>Center</value></data>
+  <data name="ThemeSafeAreaNone.Content" xml:space="preserve"><value>None</value></data>
+  <data name="ThemeTaskModeField.Header" xml:space="preserve"><value>Task composition</value></data>
+  <data name="ThemeTaskModeAuto.Content" xml:space="preserve"><value>Automatic</value></data>
+  <data name="ThemeTaskModeAmbient.Content" xml:space="preserve"><value>Ambient background</value></data>
+  <data name="ThemeTaskModeBanner.Content" xml:space="preserve"><value>Banner</value></data>
+  <data name="ThemeTaskModeOff.Content" xml:space="preserve"><value>Off</value></data>
+  <data name="ThemeAccentField.Header" xml:space="preserve"><value>Accent color</value></data>
+  <data name="ThemeFocusXLabel.Text" xml:space="preserve"><value>Horizontal focus</value></data>
+  <data name="ThemeFocusXSlider.AutomationProperties.Name" xml:space="preserve"><value>Image horizontal focus</value></data>
+  <data name="ThemeFocusYLabel.Text" xml:space="preserve"><value>Vertical focus</value></data>
+  <data name="ThemeFocusYSlider.AutomationProperties.Name" xml:space="preserve"><value>Image vertical focus</value></data>
+</root>

@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "CodexDreamSkin (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "CodexDreamSkin (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms</value></resheader>
+  <data name="AppTitleBar.Title" xml:space="preserve"><value>Codex 梦幻皮肤</value></data>
+  <data name="ShellNavigationView.PaneTitle" xml:space="preserve"><value>工作区</value></data>
+  <data name="DashboardNavItem.Content" xml:space="preserve"><value>概览</value></data>
+  <data name="ThemesNavItem.Content" xml:space="preserve"><value>主题</value></data>
+  <data name="DiagnosticsNavItem.Content" xml:space="preserve"><value>诊断</value></data>
+  <data name="SettingsNavItem.Content" xml:space="preserve"><value>设置</value></data>
+  <data name="DashboardTitle.Text" xml:space="preserve"><value>概览</value></data>
+  <data name="DashboardSubtitle.Text" xml:space="preserve"><value>查看原生应用迁移进度和当前内置的 Codex 主题。</value></data>
+  <data name="DashboardHeroEyebrow.Text" xml:space="preserve"><value>KANNA BLUE · 原生版本</value></data>
+  <data name="DashboardHeroTitle.Text" xml:space="preserve"><value>用更安全的 Windows 应用延续蓝色瞬间。</value></data>
+  <data name="DashboardHeroBody.Text" xml:space="preserve"><value>视觉系统与原生 C# 主题引擎已经接通，并保留严格的本机安全边界。</value></data>
+  <data name="DashboardStatusTitle.Text" xml:space="preserve"><value>迁移状态</value></data>
+  <data name="AppStatusTitle.Text" xml:space="preserve"><value>原生外壳</value></data>
+  <data name="AppStatusBody.Text" xml:space="preserve"><value>打包式 WinUI 3 应用已经运行。</value></data>
+  <data name="ThemeStatusTitle.Text" xml:space="preserve"><value>主题资产</value></data>
+  <data name="ThemeStatusBody.Text" xml:space="preserve"><value>Kanna Blue 3.4.9 已内置并可预览。</value></data>
+  <data name="EngineStatusTitle.Text" xml:space="preserve"><value>注入引擎</value></data>
+  <data name="EngineStatusBody.Text" xml:space="preserve"><value>原生 CDP 迁移是下一阶段。</value></data>
+  <data name="MigrationTitle.Text" xml:space="preserve"><value>Windows 应用迁移</value></data>
+  <data name="MigrationBody.Text" xml:space="preserve"><value>工具链、应用外壳、安全包发现、CDP 注入和重载监控已经迁入原生应用。</value></data>
+  <data name="DashboardInfo.Title" xml:space="preserve"><value>安全启动说明</value></data>
+  <data name="DashboardInfo.Message" xml:space="preserve"><value>若 Codex 已在无主题端口的状态下运行，请先自行关闭；管理器不会强制结束会话。</value></data>
+  <data name="ApplyTheme.Text" xml:space="preserve"><value>应用主题</value></data>
+  <data name="RefreshEngine.Content" xml:space="preserve"><value>重新检查</value></data>
+  <data name="RefreshDiagnostics.Content" xml:space="preserve"><value>重新运行诊断</value></data>
+  <data name="ThemesTitle.Text" xml:space="preserve"><value>主题</value></data>
+  <data name="ThemesSubtitle.Text" xml:space="preserve"><value>预览后续将由原生应用管理的视觉资产。</value></data>
+  <data name="ThemePreviewName.Text" xml:space="preserve"><value>桥本环奈 · 蓝色瞬间</value></data>
+  <data name="ThemePreviewMeta.Text" xml:space="preserve"><value>桥本环奈 · 蓝色与瓷白编辑风格主题</value></data>
+  <data name="ThemeVersionLabel.Text" xml:space="preserve"><value>版本</value></data>
+  <data name="ThemeAssetLabel.Text" xml:space="preserve"><value>背景资产</value></data>
+  <data name="ThemeAppearanceLabel.Text" xml:space="preserve"><value>外观</value></data>
+  <data name="ThemeAppearanceValue.Text" xml:space="preserve"><value>跟随 Codex 浅色和深色模式</value></data>
+  <data name="ThemeStatusLabel.Text" xml:space="preserve"><value>资产状态</value></data>
+  <data name="ThemeStatusValue.Text" xml:space="preserve"><value>已就绪</value></data>
+  <data name="ThemesInfo.Title" xml:space="preserve"><value>应用功能待迁移</value></data>
+  <data name="ThemesInfo.Message" xml:space="preserve"><value>原生 CDP 引擎完成后，才会启用应用、导入和恢复命令。</value></data>
+  <data name="DiagnosticsTitle.Text" xml:space="preserve"><value>诊断</value></data>
+  <data name="DiagnosticsSubtitle.Text" xml:space="preserve"><value>明确区分已验证的应用能力和尚未迁移的工作。</value></data>
+  <data name="DiagnosticsInfo.Title" xml:space="preserve"><value>第 1 阶段检查通过</value></data>
+  <data name="DiagnosticsInfo.Message" xml:space="preserve"><value>x64 打包应用可以构建并启动为响应正常的顶层窗口。</value></data>
+  <data name="DiagnosticsPackageTitle.Text" xml:space="preserve"><value>包身份</value></data>
+  <data name="DiagnosticsPackageBody.Text" xml:space="preserve"><value>MSIX 开发身份和包感知启动已经可用。</value></data>
+  <data name="DiagnosticsAssetsTitle.Text" xml:space="preserve"><value>主题资源</value></data>
+  <data name="DiagnosticsAssetsBody.Text" xml:space="preserve"><value>参考图片以及浅色、深色和高对比度画刷均从应用包加载。</value></data>
+  <data name="DiagnosticsEngineTitle.Text" xml:space="preserve"><value>Codex 连接</value></data>
+  <data name="DiagnosticsEngineBody.Text" xml:space="preserve"><value>进程发现、端口归属和 CDP 会话尚未迁移到 C#。</value></data>
+  <data name="ReadyStatus.Text" xml:space="preserve"><value>已就绪</value></data>
+  <data name="PendingStatus.Text" xml:space="preserve"><value>待迁移</value></data>
+  <data name="SettingsTitle.Text" xml:space="preserve"><value>设置</value></data>
+  <data name="SettingsSubtitle.Text" xml:space="preserve"><value>调整原生管理器，而不直接改动 Codex。</value></data>
+  <data name="AppearanceSettingTitle.Text" xml:space="preserve"><value>应用外观</value></data>
+  <data name="AppearanceSettingBody.Text" xml:space="preserve"><value>选择此管理器如何跟随 Windows 颜色模式。</value></data>
+  <data name="AppearanceSelector.Header" xml:space="preserve"><value>颜色模式</value></data>
+  <data name="AppearanceSystem.Content" xml:space="preserve"><value>使用系统设置</value></data>
+  <data name="AppearanceLight.Content" xml:space="preserve"><value>浅色</value></data>
+  <data name="AppearanceDark.Content" xml:space="preserve"><value>深色</value></data>
+  <data name="StorageSettingTitle.Text" xml:space="preserve"><value>应用数据</value></data>
+  <data name="StorageSettingBody.Text" xml:space="preserve"><value>主题包、备份和日志将使用打包应用的本地数据目录。</value></data>
+  <data name="SettingsInfo.Title" xml:space="preserve"><value>设置基础</value></data>
+  <data name="SettingsInfo.Message" xml:space="preserve"><value>外观选择器已经可用；持久化设置将在配置服务阶段加入。</value></data>
+  <data name="ImportThemeButton.Label" xml:space="preserve"><value>导入图片</value></data>
+  <data name="ImportThemeButton.AutomationProperties.Name" xml:space="preserve"><value>导入主题图片</value></data>
+  <data name="SaveThemeButton.Label" xml:space="preserve"><value>保存</value></data>
+  <data name="SaveThemeButton.AutomationProperties.Name" xml:space="preserve"><value>保存主题设置</value></data>
+  <data name="ActivateThemeButton.Label" xml:space="preserve"><value>设为当前</value></data>
+  <data name="ActivateThemeButton.AutomationProperties.Name" xml:space="preserve"><value>将所选主题设为当前主题</value></data>
+  <data name="DeleteThemeButton.Label" xml:space="preserve"><value>删除</value></data>
+  <data name="DeleteThemeButton.AutomationProperties.Name" xml:space="preserve"><value>删除所选用户主题</value></data>
+  <data name="ThemeLibraryTitle.Text" xml:space="preserve"><value>主题库</value></data>
+  <data name="ThemeLibraryList.AutomationProperties.Name" xml:space="preserve"><value>主题库</value></data>
+  <data name="ThemeNameField.Header" xml:space="preserve"><value>主题名称</value></data>
+  <data name="ThemeAppearanceField.Header" xml:space="preserve"><value>外观</value></data>
+  <data name="ThemeAppearanceAuto.Content" xml:space="preserve"><value>跟随 Codex</value></data>
+  <data name="ThemeAppearanceLight.Content" xml:space="preserve"><value>浅色</value></data>
+  <data name="ThemeAppearanceDark.Content" xml:space="preserve"><value>深色</value></data>
+  <data name="ThemeSafeAreaField.Header" xml:space="preserve"><value>文字安全区</value></data>
+  <data name="ThemeSafeAreaAuto.Content" xml:space="preserve"><value>自动</value></data>
+  <data name="ThemeSafeAreaLeft.Content" xml:space="preserve"><value>左侧</value></data>
+  <data name="ThemeSafeAreaRight.Content" xml:space="preserve"><value>右侧</value></data>
+  <data name="ThemeSafeAreaCenter.Content" xml:space="preserve"><value>居中</value></data>
+  <data name="ThemeSafeAreaNone.Content" xml:space="preserve"><value>无</value></data>
+  <data name="ThemeTaskModeField.Header" xml:space="preserve"><value>任务页构图</value></data>
+  <data name="ThemeTaskModeAuto.Content" xml:space="preserve"><value>自动</value></data>
+  <data name="ThemeTaskModeAmbient.Content" xml:space="preserve"><value>环境背景</value></data>
+  <data name="ThemeTaskModeBanner.Content" xml:space="preserve"><value>横幅</value></data>
+  <data name="ThemeTaskModeOff.Content" xml:space="preserve"><value>关闭</value></data>
+  <data name="ThemeAccentField.Header" xml:space="preserve"><value>强调色</value></data>
+  <data name="ThemeFocusXLabel.Text" xml:space="preserve"><value>水平焦点</value></data>
+  <data name="ThemeFocusXSlider.AutomationProperties.Name" xml:space="preserve"><value>图片水平焦点</value></data>
+  <data name="ThemeFocusYLabel.Text" xml:space="preserve"><value>垂直焦点</value></data>
+  <data name="ThemeFocusYSlider.AutomationProperties.Name" xml:space="preserve"><value>图片垂直焦点</value></data>
+</root>

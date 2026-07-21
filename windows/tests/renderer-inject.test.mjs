@@ -19,6 +19,36 @@ assert.doesNotMatch(
   /main\.main-surface\s*>\s*header\.app-header-tint\s*\{[^}]*\b(?:position|z-index)\s*:/,
   "The skin must preserve Codex's native fixed header so the side-panel toggle remains reachable.",
 );
+assert.match(
+  css,
+  /\.composer-surface-chrome\s+\[class\*="_attachmentsDefault_"\]:not\(:empty\)/,
+  "Populated composer attachment queues must receive a dedicated readable glass layer.",
+);
+assert.match(
+  css,
+  /--dream-composer-attachment-ink:\s*#173b5a/,
+  "Light composer attachment text must use an opaque deep-blue foreground token.",
+);
+assert.match(
+  css,
+  /--dream-composer-attachment-ink:\s*#e7f4ff/,
+  "Dark composer attachment text must use a readable ice-white foreground token.",
+);
+assert.match(
+  css,
+  /\.dream-queued-message-list[\s\S]*--dream-queued-message-ink/,
+  "Queued follow-up text must use its own opaque foreground token.",
+);
+assert.match(
+  template,
+  /\.vertical-scroll-fade-mask\.hide-scrollbar\[class\*="max-h-\[30dvh\]"\]\[class\*="gap-px"\]\[class\*="px-3"\]/,
+  "Queued follow-ups must be distinguished from the activity rail by their exact structural scroll-list traits.",
+);
+assert.match(
+  css,
+  /\.dream-queued-message-list[\s\S]{0,240}\[class\*="_markdownContent_"\][\s\S]{0,240}padding:\s*0\s*!important[\s\S]{0,240}background:\s*transparent\s*!important[\s\S]{0,240}line-height:\s*1rem\s*!important/,
+  "Queued follow-up Markdown must not inherit the full conversation bubble padding or line height.",
+);
 
 function createFixture({
   shellPresent,
@@ -74,6 +104,7 @@ function createFixture({
   root = {
     className: shellAppearance,
     classList: makeClassList(rootClasses, queueRootClassMutation),
+    dataset: {},
     getAttribute() { return null; },
     style: {
       setProperty(key, value) { rootStyles.set(key, value); },
@@ -257,7 +288,7 @@ function createFixture({
 const main = createFixture({ shellPresent: true });
 const mainResult = vm.runInNewContext(payload, main.context);
 assert.equal(mainResult.installed, true);
-assert.equal(mainResult.version, "3.4.4");
+assert.equal(mainResult.version, "3.4.9");
 assert.equal(main.rootClasses.has("codex-dream-skin"), true);
 assert.equal(main.rootStyles.get("--dream-art"), 'url("blob:fixture-1")');
 assert.equal(main.nodes.has("codex-dream-skin-style"), true);

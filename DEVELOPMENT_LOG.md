@@ -348,3 +348,113 @@
 - Stopped the one surviving managed tray PowerShell process after exact executable and command-line validation, refreshed the managed runtime, and verified zero tray shortcuts and zero tray processes remain.
 - Confirmed all remaining installed shortcuts use `RemoteSigned`, contain neither `WindowStyle Hidden` nor `ExecutionPolicy Bypass`, and point only to the hash-matched managed engine. Source inspection found no download execution path; network access is limited to the verified `127.0.0.1` CDP endpoint.
 - Updated skill guardrails, runtime notes, QA policy, and regression assertions. The complete Windows test suite passes after the security hardening.
+
+## 2026-07-21 - Bootstrap the native WinUI application
+
+- Enabled Developer Mode and repaired the WinUI toolchain on the existing Visual Studio Enterprise 2026 installation. Visual Studio 18.8 renamed the C# component from `Microsoft.VisualStudio.ComponentGroup.WindowsAppSDK.Cs` to `Microsoft.VisualStudio.Component.WindowsAppSdkSupport.CSharp`; the current component was installed and verified against the local Visual Studio product catalog.
+- Installed Microsoft's official `Microsoft.WindowsAppSDK.WinUI.CSharp.Templates` CLI template package after confirming the Visual Studio component alone did not register `dotnet new winui`.
+- Generated the packaged .NET 10 application at `windows/app/CodexDreamSkin` from the official WinUI Blank App template. The scaffold currently pins Windows App SDK 2.3.1 and keeps the template's package-aware `dotnet run` support.
+- Built the x64 Debug target with zero warnings and zero errors. Package-aware launch verification opened PID 12548 with the expected `CodexDreamSkin` title, a non-zero main window handle, and a responsive top-level window; the verified instance was intentionally left running.
+- Added repository ignores for Visual Studio state, build outputs, MSIX package output, and user-specific project settings so the native source tree remains clean.
+
+## 2026-07-21 - Build the native application shell and theme preview
+
+- Replaced the blank WinUI page with a standard left `NavigationView` shell containing Overview, Themes, Diagnostics, and Settings destinations. Navigation remains native, collapses automatically at narrow widths, and does not overload the pane with custom branding controls.
+- Added shared light, dark, and high-contrast resources plus a Mica-backed portrait canvas. The Overview hero reuses `dream-reference.png`, keeps the subject in the right-side safe area, and presents the migration state without exposing nonfunctional apply controls.
+- Added responsive migration cards, a Kanna Blue 3.4.4 theme preview, package and asset diagnostics, and a working application appearance selector that can follow the system or select light/dark mode for the current session.
+- Added English and Simplified Chinese `.resw` resources for the shell and all new pages. Removed the unused `systemAIModels` capability from the package manifest and retained only the full-trust capability required by the planned desktop integration.
+- Built the packaged x64 Debug target repeatedly with zero warnings and zero errors. Windows UI Automation selected all four navigation targets, found their unique page content, selected dark appearance, restored system appearance, and confirmed the window remained responsive.
+- Visually inspected the running app through an OS-level window capture. Corrected the initially vertical wide-screen status layout, removed an unsupported title-bar image source, and reset the Overview scroll position on entry. Final capture `codex-shot-2026-07-21_09-50-25.png` shows the expected top-aligned title, right-weighted portrait, three-column status row, and readable light-mode hierarchy.
+
+## 2026-07-21 - Migrate the secure theme engine into C#
+
+- Audited the maintained PowerShell launcher and Node injector before migration. Preserved their important trust boundaries: registered `OpenAI.Codex` package identity, exact `app\ChatGPT.exe` ownership, loopback-only CDP, browser-instance identity, `app://` page filtering, and structural Codex DOM probes.
+- Added native package/process discovery and an IP Helper API listener table reader. Port 9335 is accepted only when its loopback listener PID resolves to the exact executable inside the currently registered Codex package; an occupied port owned by any other process fails closed.
+- Added an `HttpClient` plus `ClientWebSocket` CDP implementation with strict URL validation, correlated commands, fragmented-message handling, timeouts, browser-ID continuity checks, runtime evaluation, and early-document script registration.
+- Added a bounded bundled-theme loader for `theme.json`, the Kanna image, CSS, and renderer bootstrap. It rejects absolute or escaping image paths, unsupported formats, oversized images, and unresolved payload placeholders, then computes a revision used for reload-safe early injection.
+- Added the application-owned theme engine. It can launch a closed Codex with a loopback-only debugging port, attach only to structurally verified Codex pages, apply the current 3.4.4 payload, discover new targets, and repair page reloads while the visible manager runs. It does not create a hidden tray watcher and does not force-close an existing Codex session.
+- Connected live state to Overview and Diagnostics. The app reports the installed Codex version, trusted listener PID and target count, exposes apply/recheck actions, and explains when the user must close an existing non-CDP Codex session. Updated Simplified Chinese and English strings to remove the obsolete preview-only messaging.
+- Built x64 Debug with zero warnings and zero errors. The packaged output contains all four theme assets. Windows UI Automation verified `OpenAI.Codex 26.715.4045.0` discovery and the safe restart-required state; a temporary non-Codex listener on port 9335 produced the expected blocked-connection result. Legacy injector self-test and payload validation still pass.
+- End-to-end native injection was not claimed in this task because doing so requires closing the Codex process that hosts the active development conversation. That cold-start/live-theme acceptance remains the next explicit runtime gate.
+
+## 2026-07-21 - Add the native theme library and editor
+
+- Rebuilt the Themes page around native WinUI controls: a page-level `CommandBar`, keyboard-accessible `ListView`, Fluent form controls, persistent `InfoBar`, image preview, and confirmation `ContentDialog`. The two-column workspace reflows into a single vertical flow below 820 effective pixels.
+- Added `ThemeCatalogService` with a read-only bundled Kanna preset and isolated user themes under the packaged application's `LocalState\Themes`. Active selection is stored atomically in `theme-state.json`; invalid or missing state falls back to `preset-kanna-hashimoto`.
+- Added PNG, JPEG, and WebP import through the desktop-initialized native file picker. Import rejects files outside the 1-byte to 24-MB range, dimensions above 16384 pixels, more than 50 million decoded pixels, unsupported extensions, invalid theme IDs/options/colors, path traversal, and linked user-theme directories or art files.
+- Added editing and persistence for theme name, appearance, safe area, task composition, accent color, and normalized horizontal/vertical image focus. The built-in preset remains non-editable and non-deletable; user-theme deletion requires explicit confirmation and restores the bundled preset when the active theme is removed.
+- Connected `CodexThemeEngine` to the selected theme directory instead of a fixed bundled path. The renderer bootstrap now receives the theme object, exports focus/accent/composition metadata to the document, uses editable focus coordinates for the main portrait surfaces, and derives the Blob MIME type from imported image data rather than assuming PNG.
+- Added English and Simplified Chinese resources plus explicit automation names for all theme commands and focus sliders. Overrode the theme model's accessible string representation so the list no longer exposes the full local storage path to assistive technology.
+- Performed live packaged-app acceptance. Imported three real local images, selected the resulting user theme, changed its name through UI Automation, invoked Save, and verified the exact JSON on disk. Invoked Delete through the native confirmation dialog, verified active selection returned to the bundled preset, then removed the remaining two acceptance themes through the same UI; the final user-theme directory contains zero entries.
+- Final x64 Debug build completes with zero warnings and zero errors. Renderer syntax, loopback CDP self-test, and the 3.4.4 payload check all pass after theme-metadata integration.
+
+## 2026-07-21 - Repair native listener trust and complete live theme acceptance
+
+- Reproduced the user's real failure instead of relying on the earlier code-path result. Port 9335 was listening on `127.0.0.1` under PID 58292; CIM confirmed the exact executable was the currently registered `OpenAI.Codex_26.715.4045.0` package's `app\ChatGPT.exe`, launched with the expected loopback CDP arguments by the native manager.
+- Added explicit listener-inspection diagnostics showing observed PID/path, expected path, and the exact rejection reason. This exposed that the parsed address printed as `127.0.0.1` while `row.Address != IPAddress.Loopback` still returned true because `IPAddress` did not provide the intended value comparison through that operator. Switched the gate to `row.Address.Equals(IPAddress.Loopback)`.
+- Replaced cross-process `Process.MainModule` path reads with `OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION)` plus `QueryFullProcessImageName`, preserving exact path equality while working reliably from the packaged WinUI process.
+- Reproduced the next live failure with the user's selected `custom-80aa...` theme. `ThemePayloadLoader` incorrectly searched the user theme directory for the trusted CSS and renderer bootstrap. It now always loads those engine files from packaged `Assets\Theme`, while reading only `theme.json` and the selected art from the isolated user-theme directory.
+- Queried the current Codex DOM through the verified CDP page. The current build retains `#root`, `main.main-surface`, and `aside.app-shell-left-panel`, but its main element no longer exposes the old `role=main` and the active route does not guarantee `.composer-surface-chrome`. Updated the final structural probe to the stable root/shell/sidebar triplet without weakening package, PID, browser-ID, loopback, `app://`, or target-ID checks.
+- Applied `image_我最喜欢的女孩子#桥本环奈 #樱..._1` through the native manager. The manager reported one attached page. Independent CDP inspection confirmed `codex-dream-skin`, runtime version 3.4.4, 114184 stylesheet characters, the user image Blob URL, 50%/45% focus, `#1557b0`, and a main background containing the Blob.
+- Captured and visually inspected `C:\Users\Administrator\AppData\Local\Temp\codex-shot-2026-07-21_13-56-00.png`; the portrait background and translucent sidebar/task/resource/composer surfaces are visibly active. Forced `Page.reload`, waited for recovery, and independently confirmed the theme class, state, style node, new image Blob, and painted main background all returned.
+- The repaired x64 Debug build completes with zero warnings and zero errors. The native manager and the live themed Codex session were left running.
+
+## 2026-07-21 - Make account and option menus portrait-transparent
+
+- Replaced the generic 98% light and 94% dark native `role="menu"` / `role="listbox"` fills with the same portrait-first low-fog material used by the rest of the theme. Light mode now uses a 6% fallback, 26% to 10% gradient, and 4px blur; dark mode uses an 8% fallback, 42% to 20% gradient, and 5px blur.
+- Cleared direct nested `div` and `section` backgrounds that could restore a solid white panel, reduced highlighted-row layers to 30%/14% in light mode and 34%/18% in dark mode, and retained a restrained two-pixel cobalt/cyan editorial edge for separation from the wallpaper.
+- Kept the rule structural and language-independent so account, usage, pet, settings, sign-out, project, and ordinary option menus remain native controls across language changes. Bumped the renderer to Kanna Blue Skin 3.4.5 / style schema 43 and updated the native manager's bundled-theme status strings.
+- Applied the payload live through the native manager's verified port 9335. CDP measured the real account menu at a 6% fallback, 26% to 10% gradient, 4px blur, and 18% border; all five native menu items retained `pointer-events: auto`. The renderer reported version 3.4.5, complete markers, and no viewport overflow. Visual capture: `windows/kanna-account-menu-glass-v345.png`.
+- The complete Windows regression suite passes. The x64 Release native-manager build succeeds with zero errors; its existing trimming analysis still reports 12 `System.Text.Json` / Windows SDK warnings unrelated to the theme resource change.
+
+## 2026-07-21 - Restore composer file/change queue readability
+
+- Traced the reported low-contrast rows to Codex's structural `_attachmentsDefault_` container inside the real task composer. The outer composer glass remained correct; native filename/action descendants were retaining low-opacity foreground utilities directly over portrait highlights.
+- Added dedicated light and dark attachment tokens. Populated queues now use a restrained 28% to 10% light strip or 36% to 16% midnight strip, while filenames, actions, glyphs, and muted metadata receive fully opaque deep-blue/ice-white foregrounds plus a local glyph shadow. The rule does not add a second opaque card and does not change the empty attachment container's layout.
+- Bumped the renderer to Kanna Blue Skin 3.4.6 / style schema 44 and added regression assertions for the structural queue selector and both appearance-specific foreground tokens.
+- Applied 3.4.6 live through the verified native-manager CDP listener on port 9335. A temporary queue sample was inserted and removed in one evaluation: the formerly 30%-opacity filename computed to opaque `rgb(23, 59, 90)`, the muted action to opaque `rgb(49, 93, 122)`, its pointer events remained active, and the queue retained the intended 28% to 10% translucent gradient.
+- The complete Windows regression suite passes. The updated native-manager x64 Release build succeeds with zero warnings and zero errors.
+
+## 2026-07-21 - Activate the glass fixes from the rebuilt native manager
+
+- Reapplied the theme through the already-running WinUI manager and independently queried the verified CDP renderer. The renderer still reported Kanna Blue 3.4.4 even though the working-tree payload was 3.4.6/schema 44, proving the visible issue was a stale packaged asset rather than a missing selector.
+- Stopped and rebuilt only `CodexDreamSkin`; the active Codex process and conversation were preserved. The x64 Debug build completed with zero warnings and zero errors, and the relaunched manager exposed a responsive `Codex 梦幻皮肤` top-level window.
+- Invoked the native `ApplyThemeButton` after relaunch. Independent browser-instance-bound verification then reported version 3.4.6, the expected style and chrome nodes, a live native composer and sidebar, `pointer-events: none` on decorative chrome, and no horizontal or vertical document overflow.
+- Re-ran renderer syntax and fixture tests, loopback CDP validation, payload assembly validation, the complete PowerShell regression suite, and `git diff --check`; all passed. The fault-injection cleanup warnings emitted by the suite are expected assertions of backup-cleanup failure handling.
+
+## 2026-07-21 - Repair queued follow-up message readability
+
+- Confirmed the live `_attachmentsDefault_` element was empty and inspected the current read-only Codex renderer bundle without modifying `WindowsApps` or `app.asar`. The reported surface is the separate native `QueuedMessageList`, rendered above the composer through a `vertical-scroll-fade-mask` list and `AboveComposerPanelRow` actions.
+- Added language-independent runtime detection scoped to the real composer host. The renderer now marks only the native queued-message list and its immediate panel, removes stale markers when the queue disappears, and cleans both markers during theme removal.
+- Added dedicated light and dark tokens. Light queued messages use opaque `#0b3159` body text and `#204f73` secondary actions over 36% to 16% glass; dark mode uses opaque `#f3f9ff` and `#c9e4f5` over 40% to 20% midnight glass. Warning semantics remain distinct, while drag-row opacity feedback is not overridden.
+- Bumped the payload to Kanna Blue Skin 3.4.7/style schema 45, updated the native manager status resources, skill guardrail, QA inventory, and renderer regressions, then rebuilt and relaunched only the WinUI manager with zero warnings and zero errors.
+- Reapplied the selected live theme and inserted a temporary structure-matched queued row inside the real composer host. Computed light-mode body/action colors were `rgb(11, 49, 89)` and `rgb(32, 79, 115)` at opacity 1; dark-mode values were `rgb(243, 249, 255)` and `rgb(201, 228, 245)` at opacity 1. The action retained `pointer-events: auto` and center-hit coverage; the fixture and markers were removed immediately afterward.
+- Renderer syntax, fixture tests, loopback CDP self-test, payload assembly, live 3.4.7 marker verification, and `git diff --check` pass. The running Codex has no horizontal or vertical document overflow, and the responsive native manager remains open.
+
+### Acceptance correction
+
+- The user's next real queued-message screenshot remained unreadable. Immediate CDP inspection showed the only visible `vertical-scroll-fade-mask` was the unrelated task activity rail and carried no queued-message marker; the real queued row had already become the current message by the time inspection began.
+- Review of the installed read-only `queued-message-list` renderer module proved that the real queue is identified by the combined `max-h-[30dvh]`, `gap-px`, and `px-3` traits. The previous implementation incorrectly searched only the nearest `.min-w-0` ancestor of the composer. The synthetic fixture had been inserted into that same incorrect subtree, so its passing result was a false positive. The corresponding progress milestone is now marked superseded rather than complete.
+
+## 2026-07-21 - Correct real queued-follow-up structural detection
+
+- Replaced nearest-composer-subtree discovery with a task-surface structural selector matching the installed queue module's exact scroll-list traits. This remains language-independent and explicitly excludes the activity rail, whose current signature is `_railList_... max-h-[min(70vh,40rem)]`.
+- Added explicit `-webkit-text-fill-color: currentColor` alongside the opaque foreground and opacity rules so native formatted-text descendants cannot retain a separate faded fill.
+- Bumped the payload to Kanna Blue Skin 3.4.8/style schema 46, updated the native manager status resources, regression assertion, skill guardrail, and QA acceptance requirements, then rebuilt and relaunched only the manager with zero warnings and zero errors.
+- Reapplied the selected live theme and inserted an exact installed-source-shape queue row outside the formerly assumed composer subtree. The correct list and panel were marked, the activity rail remained unmarked, body text computed to `rgb(11, 49, 89)` with matching text fill and opacity 1, the action computed to `rgb(32, 79, 115)` at opacity 1, and its center hit the real button with pointer events enabled. The fixture was removed immediately.
+- This is implementation and structural acceptance, not yet a claim that a real queued row has passed. Final acceptance requires the user to queue another message while a turn is running and confirm the visible row; the QA inventory now requires both that marker and proof that the activity rail is not marked.
+
+## 2026-07-21 - Remove queued-message Markdown bubble clipping
+
+- Reproduced the user's clarified failure with the installed queue's native one-line viewport. The formatted-text child inherited the general assistant Markdown bubble's 10px vertical padding, 12px radius, translucent gradient, and conversation-height treatment, pushing the text down by 10px and leaving only 37.5% of its line box visible.
+- Added a queue-local, specificity-safe Markdown reset instead of another color adjustment. Queued formatted text now has zero margin/padding/border/radius, transparent background, no shadow or blur, a 16px native line height, and no transform; paragraph/div/span descendants also retain a zero-offset 16px line box.
+- Added an explicit dark-mode override with the same selector strength so the later dark conversation-bubble rule cannot repaint the queue. The activity rail remains excluded and the queue list/panel marker logic is unchanged.
+- Bumped the payload to Kanna Blue Skin 3.4.9/style schema 47, updated the native manager resources, skill guardrail, QA inventory, static regression assertion, and added a reusable live CDP regression test for the exact installed queue structure.
+- Rebuilt and relaunched only `CodexDreamSkin`, reapplied the selected theme, and ran the live test against the current Codex page. Light and dark modes both computed 0px vertical padding, 0px radius, no background image, 16px Markdown/text line heights, opacity 1, 0px sink, and a 1.000 visible-glyph ratio. The real activity rail was not marked.
+- This closes the reproduced layout defect and remains implementation-level acceptance until the next real message is visibly queued during an active turn.
+
+## 2026-07-21 - Save the Kanna Blue 3.4.9 theme solution
+
+- Confirmed the active native-manager selection is the bundled `preset-kanna-hashimoto` theme and that its persistent state is stored under the packaged application's `LocalState\theme-state.json`.
+- Compared the source portrait, native-manager bundled portrait, and installed active-theme portrait by SHA-256; all copies are byte-identical. The source and installed runtime `theme.json` files are also byte-identical, preserving focus 64%/44%, left safe area, ambient task mode, automatic appearance, and accent `#1557b0`.
+- Preserved the complete solution as one local Git snapshot: WinUI 3 manager sources and resources, linked theme payload, Kanna image assets, renderer 3.4.9/schema 47, runtime and live regressions, QA requirements, progress, and development log. Build outputs and IDE state remain excluded by `.gitignore`.

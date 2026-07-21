@@ -15,9 +15,12 @@
 
 - Home feature card: click one card and confirm the real composer is populated or the normal action occurs.
 - Project selector: click the real project chip under the "选择项目" label and confirm the native project menu opens.
+- Account menu: open the real profile menu, activate its usage, pet, and settings items in turn, verify keyboard focus remains visible, then reopen it and confirm sign-out is still present without activating that destructive action.
 - Sidebar: open a real task, then return to New Task.
 - Task side panel: open and close the native thread panel twice, resize the window, and repeat; the toggle must remain visible and clickable.
 - Composer: type text, verify caret/readability, then clear it without sending.
+- Composer file queue: attach or generate at least three file/change rows, confirm every filename and trailing action remains readable over portrait highlights, exercise one non-destructive row action, and verify the empty queue returns to the normal composer height.
+- Queued follow-up: while a turn is running, queue a second message and confirm the real list carries the theme marker, its body, drag handle, steer/retry, delete, and overflow controls remain readable, and the activity rail does not carry that marker; exercise drag ordering with two queued messages and leave the queue empty afterward.
 - Reload: use CDP `Page.reload`, wait, and confirm the injection marker returns.
 - Pet overlay: open a desktop pet and confirm its auxiliary window stays transparent with no skin background or decoration layer behind it.
 - Restore/reapply cycle: remove live skin, verify marker absent, apply again, verify marker present.
@@ -34,6 +37,9 @@
 - Narrower window: accept Codex's native responsive card reduction or omission; no essential control is covered and wallpaper cropping preserves the focus/safe-area contract.
 - Normal task: the wallpaper is visibly quieter than home, messages keep high contrast, and composer does not overlap content.
 - Inspect the sidebar, header, wallpaper edges, native card labels when present, project utility row, composer controls, scrollbar, dialogs, and menus.
+- Account and option menus: the portrait must remain recognizable through the low-fog surface in both light and dark modes; nested rows may add only a restrained translucent hover layer, while every label and icon remains readable.
+- Composer attachment/change queue: filenames, muted metadata, guidance labels, remove buttons, and overflow controls use fully opaque foreground tokens on a translucent strip; reject faded or dotted-looking labels without restoring a solid white block.
+- Queued follow-up panel: message text and all actions remain fully opaque over the portrait-first layer in light and dark mode; nested Markdown has no inner bubble, padding, radius, or conversation-height override, at least 95% of its glyph box stays inside the native single-line viewport, and the dedicated surface does not suppress native drag/edit opacity feedback.
 - Reject black/transparent sidebar artifacts, clipped controls, duplicated/disconnected project labels, rasterized native controls, fake UI inside the wallpaper, weak contrast, or decorations intercepting clicks.
 
 ## Exploratory checks

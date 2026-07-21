@@ -1,11 +1,11 @@
 (() => {
   try {
-    return ((cssText, artDataUrl) => {
+    return ((cssText, artDataUrl, theme) => {
   const STATE_KEY = "__CODEX_DREAM_SKIN_STATE__";
   const STYLE_ID = "codex-dream-skin-style";
   const CHROME_ID = "codex-dream-skin-chrome";
   const DIFF_SHADOW_STYLE_ID = "codex-dream-skin-diff-shadow-style";
-  const STYLE_SCHEMA = "42";
+  const STYLE_SCHEMA = "47";
   const diffShadowCss = `
     :host {
       --vscode-editor-background: transparent !important;
@@ -68,7 +68,8 @@
     const binary = atob(artDataUrl.slice(comma + 1));
     const bytes = new Uint8Array(binary.length);
     for (let index = 0; index < binary.length; index += 1) bytes[index] = binary.charCodeAt(index);
-    return URL.createObjectURL(new Blob([bytes], { type: "image/png" }));
+    const mime = artDataUrl.slice(5, comma).split(";")[0] || "application/octet-stream";
+    return URL.createObjectURL(new Blob([bytes], { type: mime }));
   })();
   const existingStyle = document.getElementById(STYLE_ID);
   if (existingStyle) {
@@ -111,6 +112,14 @@
     }
     root.classList.add("codex-dream-skin");
     root.style.setProperty("--dream-art", `url("${artUrl}")`);
+    const focusX = Number.isFinite(theme?.art?.focusX) ? Math.max(0, Math.min(1, theme.art.focusX)) : .64;
+    const focusY = Number.isFinite(theme?.art?.focusY) ? Math.max(0, Math.min(1, theme.art.focusY)) : .44;
+    root.style.setProperty("--dream-focus-x", `${(focusX * 100).toFixed(2)}%`);
+    root.style.setProperty("--dream-focus-y", `${(focusY * 100).toFixed(2)}%`);
+    if (theme?.palette?.accent) root.style.setProperty("--dream-accent", theme.palette.accent);
+    root.dataset.dreamAppearance = theme?.appearance || "auto";
+    root.dataset.dreamSafeArea = theme?.art?.safeArea || "auto";
+    root.dataset.dreamTaskMode = theme?.art?.taskMode || "auto";
 
     let style = document.getElementById(STYLE_ID);
     if (!style) {
@@ -137,6 +146,20 @@
       ? shellMain.querySelector(".main-surface") : null;
     const taskComposer = typeof shellMain.querySelector === "function"
       ? shellMain.querySelector(".composer-surface-chrome") : null;
+    const queuedMessageLists = typeof shellMain.querySelectorAll === "function"
+      ? [...shellMain.querySelectorAll(
+        '.vertical-scroll-fade-mask.hide-scrollbar[class*="max-h-[30dvh]"][class*="gap-px"][class*="px-3"]'
+      )]
+      : [];
+    const queuedMessagePanels = new Set(queuedMessageLists.map((list) => list.parentElement).filter(Boolean));
+    for (const list of document.querySelectorAll(".dream-queued-message-list")) {
+      list.classList.toggle("dream-queued-message-list", queuedMessageLists.includes(list));
+    }
+    for (const panel of document.querySelectorAll(".dream-queued-message-panel")) {
+      panel.classList.toggle("dream-queued-message-panel", queuedMessagePanels.has(panel));
+    }
+    for (const list of queuedMessageLists) list.classList.add("dream-queued-message-list");
+    for (const panel of queuedMessagePanels) panel.classList.add("dream-queued-message-panel");
     const utilityOpaqueRoot = typeof shellMain.querySelector === "function" ? shellMain.querySelector(
       '.app-shell-main-content-frame [class~="h-full"][class~="min-h-0"][class~="flex-col"][class~="bg-token-main-surface-primary"]'
     ) : null;
@@ -203,12 +226,22 @@
     window.__CODEX_DREAM_SKIN_DISABLED__ = true;
     document.documentElement?.classList.remove("codex-dream-skin");
     document.documentElement?.style.removeProperty("--dream-art");
+    document.documentElement?.style.removeProperty("--dream-focus-x");
+    document.documentElement?.style.removeProperty("--dream-focus-y");
+    document.documentElement?.style.removeProperty("--dream-accent");
+    if (document.documentElement) {
+      delete document.documentElement.dataset.dreamAppearance;
+      delete document.documentElement.dataset.dreamSafeArea;
+      delete document.documentElement.dataset.dreamTaskMode;
+    }
     document.querySelectorAll(".dream-home").forEach((node) => node.classList.remove("dream-home"));
     document.querySelectorAll(".dream-home-shell").forEach((node) => node.classList.remove("dream-home-shell"));
     document.querySelectorAll(".dream-settings-shell").forEach((node) => node.classList.remove("dream-settings-shell"));
     document.querySelectorAll(".dream-settings-sidebar").forEach((node) => node.classList.remove("dream-settings-sidebar"));
     document.querySelectorAll(".dream-utility-shell").forEach((node) => node.classList.remove("dream-utility-shell"));
     document.querySelectorAll(".dream-task-shell").forEach((node) => node.classList.remove("dream-task-shell"));
+    document.querySelectorAll(".dream-queued-message-list").forEach((node) => node.classList.remove("dream-queued-message-list"));
+    document.querySelectorAll(".dream-queued-message-panel").forEach((node) => node.classList.remove("dream-queued-message-panel"));
     document.querySelectorAll('[class*="dream-suggestion-"]').forEach((node) => {
       for (let item = 1; item <= 4; item += 1) node.classList.remove(`dream-suggestion-${item}`);
     });
@@ -239,14 +272,14 @@
   const observer = new MutationObserver(scheduleEnsure);
   observer.observe(document.documentElement, { childList: true, subtree: true });
   const timer = setInterval(ensure, 5000);
-  window[STATE_KEY] = { ensure, cleanup, observer, timer, scheduler, artUrl, unlockedTaskItems, version: "3.4.4" };
+  window[STATE_KEY] = { ensure, cleanup, observer, timer, scheduler, artUrl, unlockedTaskItems, version: "3.4.9" };
   try {
     ensure();
   } catch (error) {
     throw new Error(`Dream skin ensure failed: ${error?.message || error}`);
   }
-  return { installed: true, version: "3.4.4" };
-    })(__DREAM_CSS_JSON__, __DREAM_ART_JSON__);
+  return { installed: true, version: "3.4.9" };
+    })(__DREAM_CSS_JSON__, __DREAM_ART_JSON__, __DREAM_THEME_JSON__);
   } catch (error) {
     throw new Error(`Dream skin bootstrap failed: ${error?.message || error}\n${error?.stack || ''}`);
   }
