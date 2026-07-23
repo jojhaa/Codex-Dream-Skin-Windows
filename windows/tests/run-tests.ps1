@@ -750,7 +750,10 @@ try {
 
   $css = Read-DreamSkinUtf8File -Path (Join-Path $Root 'assets\dream-skin.css')
   foreach ($requiredCss in @(
-    'background-image: var(--dream-art)',
+    'var(--dream-art) !important',
+    'var(--dream-sidebar-art, var(--dream-art))',
+    'var(--dream-composer-art, var(--dream-art))',
+    'var(--dream-home-art, var(--dream-art))',
     'main.main-surface > header.app-header-tint',
     'main.main-surface.dream-utility-shell',
     '.app-shell-main-content-top-fade',
@@ -934,6 +937,12 @@ try {
   $imageMetadataTest = Invoke-DreamSkinNative -FilePath $node.Path -ArgumentList @(
     (Join-Path $PSScriptRoot 'image-metadata.test.mjs'))
   if ($imageMetadataTest.ExitCode -ne 0) { throw 'Image metadata regression test failed.' }
+  $themeManagerSourceTest = Invoke-DreamSkinNative -FilePath $node.Path -ArgumentList @(
+    (Join-Path $PSScriptRoot 'theme-manager-source.test.mjs'))
+  if ($themeManagerSourceTest.ExitCode -ne 0) { throw 'Theme manager package/history contract test failed.' }
+  $multiImageThemeTest = Invoke-DreamSkinNative -FilePath $node.Path -ArgumentList @(
+    (Join-Path $PSScriptRoot 'multi-image-theme.test.mjs'))
+  if ($multiImageThemeTest.ExitCode -ne 0) { throw 'Schema-5 composition and component-material theme regression test failed.' }
 
   Write-Host 'PASS: config transactions, restore scoping, state safety, argument quoting, and loopback CDP validation.'
 } finally {

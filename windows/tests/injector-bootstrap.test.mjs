@@ -13,7 +13,7 @@ function createFixture() {
   const observers = [];
   const timers = new Map();
   let nextTimer = 1;
-  const markers = { shell: false, sidebar: false };
+  const markers = { shell: false, sidebar: false, content: false };
   const context = {
     window: { installs: [] },
     document: {
@@ -22,6 +22,7 @@ function createFixture() {
       querySelector(selector) {
         if (selector === "main.main-surface") return markers.shell ? {} : null;
         if (selector === "aside.app-shell-left-panel") return markers.sidebar ? {} : null;
+        if (selector === '.composer-surface-chrome, [role="main"]') return markers.content ? {} : null;
         return null;
       },
     },
@@ -49,16 +50,20 @@ vm.runInNewContext(earlyPayloadFor('window.installs.push("guarded")', "guarded")
 assert.deepEqual(guarded.context.window.installs, [], "Auxiliary app targets must remain untouched.");
 guarded.markers.shell = true;
 guarded.observers[0].callback([]);
-assert.deepEqual(guarded.context.window.installs, [], "A main surface without the Codex sidebar is not sufficient.");
-guarded.markers.sidebar = true;
+assert.deepEqual(guarded.context.window.installs, [], "A main surface without Codex content markers is not sufficient.");
+guarded.markers.content = true;
 guarded.observers[0].callback([]);
-assert.deepEqual(guarded.context.window.installs, ["guarded"], "The guarded payload should install once the shell is complete.");
+assert.deepEqual(
+  guarded.context.window.installs,
+  ["guarded"],
+  "A complete Codex shell must install while the optional sidebar is collapsed.",
+);
 
 const generations = createFixture();
 vm.runInNewContext(earlyPayloadFor('window.installs.push("old")', "old"), generations.context);
 vm.runInNewContext(earlyPayloadFor('window.installs.push("new")', "new"), generations.context);
 generations.markers.shell = true;
-generations.markers.sidebar = true;
+generations.markers.content = true;
 for (const observer of generations.observers) observer.callback([]);
 assert.deepEqual(
   generations.context.window.installs,

@@ -7,7 +7,7 @@ import { readImageMetadata } from "./image-metadata.mjs";
 const scriptPath = fileURLToPath(import.meta.url);
 const here = path.dirname(scriptPath);
 const root = path.resolve(here, "..");
-const SKIN_VERSION = "3.4.9";
+const SKIN_VERSION = "3.9.4";
 const MAX_ART_BYTES = 16 * 1024 * 1024;
 const STRONG_THEME_AUDIT_MS = 30000;
 const LOOPBACK_HOSTS = new Set(["127.0.0.1", "localhost", "[::1]", "::1"]);
@@ -407,6 +407,7 @@ const THEME_CHOICES = {
   appearance: new Set(["auto", "light", "dark"]),
   safeArea: new Set(["auto", "left", "right", "center", "none"]),
   taskMode: new Set(["auto", "ambient", "banner", "off"]),
+  fit: new Set(["auto", "cover", "contain", "fill"]),
 };
 
 function normalizedUnit(value, name) {
@@ -414,6 +415,15 @@ function normalizedUnit(value, name) {
   const number = Number(value);
   if (!Number.isFinite(number) || number < 0 || number > 1) {
     throw new Error(`${name} must be null or a number between 0 and 1`);
+  }
+  return number;
+}
+
+function normalizedRange(value, name, minimum, maximum, fallback) {
+  if (value === null || value === undefined || value === "") return fallback;
+  const number = Number(value);
+  if (!Number.isFinite(number) || number < minimum || number > maximum) {
+    throw new Error(`${name} must be between ${minimum} and ${maximum}`);
   }
   return number;
 }
@@ -440,29 +450,116 @@ async function loadTheme(themeDir) {
   if (!raw || typeof raw !== "object" || Array.isArray(raw)) {
     throw new Error("Theme root must be an object");
   }
+  const schemaVersion = raw.schemaVersion ?? 1;
+  if (![1, 2, 3, 4, 5, 6, 7, 8].includes(schemaVersion)) throw new Error(`Unsupported theme schema: ${schemaVersion}`);
   const image = normalizedText(raw.image, "image", null, 240);
-  if (!image || path.isAbsolute(image)) throw new Error("Theme image must be a relative path");
-  const imagePath = path.resolve(realThemeDir, image);
-  const relativeImage = path.relative(realThemeDir, imagePath);
-  if (!relativeImage || relativeImage.startsWith("..") || path.isAbsolute(relativeImage)) {
-    throw new Error("Theme image must remain inside the selected theme directory");
-  }
-  const extension = path.extname(imagePath).toLowerCase();
-  if (![".png", ".jpg", ".jpeg", ".webp"].includes(extension)) {
-    throw new Error(`Unsupported theme image format: ${extension || "missing"}`);
-  }
-  const realImagePath = await fs.realpath(imagePath);
-  const realRelativeImage = path.relative(realThemeDir, realImagePath);
-  if (!realRelativeImage || realRelativeImage.startsWith("..") || path.isAbsolute(realRelativeImage)) {
-    throw new Error("Theme image cannot escape through a link or junction");
-  }
+  if (!image) throw new Error("Theme image must be a relative path");
+  const images = raw.images && typeof raw.images === "object" && !Array.isArray(raw.images) ? raw.images : {};
+  const imageNames = {
+    background: image,
+    sidebar: normalizedText(images.sidebar, "images.sidebar", image, 240),
+    composer: normalizedText(images.composer, "images.composer", image, 240),
+    home: normalizedText(images.home, "images.home", image, 240),
+    homeComposer: normalizedText(images.homeComposer, "images.homeComposer", images.composer || image, 240),
+    polaroid: normalizedText(images.polaroid, "images.polaroid", images.home || image, 240),
+  };
+  const loadImage = async (name) => {
+    if (path.isAbsolute(name) || path.basename(name) !== name) {
+      throw new Error("Theme images must be top-level relative files");
+    }
+    const imagePath = path.resolve(realThemeDir, name);
+    const relativeImage = path.relative(realThemeDir, imagePath);
+    if (!relativeImage || relativeImage.startsWith("..") || path.isAbsolute(relativeImage)) {
+      throw new Error("Theme image must remain inside the selected theme directory");
+    }
+    const extension = path.extname(imagePath).toLowerCase();
+    if (![".png", ".jpg", ".jpeg", ".webp"].includes(extension)) {
+      throw new Error(`Unsupported theme image format: ${extension || "missing"}`);
+    }
+    const realImagePath = await fs.realpath(imagePath);
+    const realRelativeImage = path.relative(realThemeDir, realImagePath);
+    if (!realRelativeImage || realRelativeImage.startsWith("..") || path.isAbsolute(realRelativeImage)) {
+      throw new Error("Theme image cannot escape through a link or junction");
+    }
+    const imageStat = await fs.stat(realImagePath);
+    if (!imageStat.isFile() || imageStat.size < 1 || imageStat.size > MAX_ART_BYTES) {
+      throw new Error(`Theme image must be between 1 byte and ${MAX_ART_BYTES / 1024 / 1024} MB`);
+    }
+    const imageBytes = await fs.readFile(realImagePath);
+    const metadata = readImageMetadata(imageBytes, extension);
+    if (!metadata) throw new Error("Theme image metadata is invalid or exceeds the 16384px / 50MP safety limit");
+    return { name, imagePath: realImagePath, imageBytes, imageStat, metadata };
+  };
+  const loadedByName = new Map();
+  for (const name of new Set(Object.values(imageNames))) loadedByName.set(name, await loadImage(name));
+  const loadedImages = Object.fromEntries(Object.entries(imageNames).map(([slot, name]) => [slot, loadedByName.get(name)]));
   const art = raw.art && typeof raw.art === "object" && !Array.isArray(raw.art) ? raw.art : {};
+  const compositions = raw.compositions && typeof raw.compositions === "object" && !Array.isArray(raw.compositions)
+    ? raw.compositions : {};
+  const composition = (name) => {
+    const value = compositions[name] && typeof compositions[name] === "object" && !Array.isArray(compositions[name])
+      ? compositions[name] : {};
+    return {
+      focusX: normalizedRange(value.focusX, `compositions.${name}.focusX`, 0, 1, normalizedUnit(art.focusX, "art.focusX") ?? .64),
+      focusY: normalizedRange(value.focusY, `compositions.${name}.focusY`, 0, 1, normalizedUnit(art.focusY, "art.focusY") ?? .44),
+      zoom: normalizedRange(value.zoom, `compositions.${name}.zoom`, .5, 3, 1),
+      fit: normalizedChoice(value.fit, `compositions.${name}.fit`, THEME_CHOICES.fit, "auto"),
+      offsetX: normalizedRange(value.offsetX, `compositions.${name}.offsetX`, -1, 1, 0),
+      offsetY: normalizedRange(value.offsetY, `compositions.${name}.offsetY`, -1, 1, 0),
+    };
+  };
   const palette = raw.palette && typeof raw.palette === "object" && !Array.isArray(raw.palette)
     ? raw.palette : {};
+  const materials = raw.materials && typeof raw.materials === "object" && !Array.isArray(raw.materials)
+    ? raw.materials : {};
+  const materialGroup = (name, fallbacks) => {
+    const group = materials[name] && typeof materials[name] === "object" && !Array.isArray(materials[name])
+      ? materials[name] : {};
+    return Object.fromEntries(Object.entries(fallbacks).map(([key, fallback]) => {
+      const value = group[key] ?? fallback;
+      const number = Number(value);
+      if (!Number.isFinite(number) || number < .04 || number > .92) {
+        throw new Error(`materials.${name}.${key} must be between .04 and .92`);
+      }
+      return [key, number];
+    }));
+  };
+  const componentDefaults = {
+    messages: { light: { color: "#FDFFFF", opacity: .18 }, dark: { color: "#051423", opacity: .42 } },
+    summaries: { light: { color: "#FDFFFF", opacity: .18 }, dark: { color: "#051423", opacity: .42 } },
+    previews: { light: { color: "#E0F1F7", opacity: .88 }, dark: { color: "#061728", opacity: .88 } },
+    menus: { light: { color: "#F9FDFD", opacity: .26 }, dark: { color: "#051423", opacity: .42 } },
+    workspace: { light: { color: "#FDFFFF", opacity: .18 }, dark: { color: "#051423", opacity: .44 } },
+    code: { light: { color: "#FAFDFC", opacity: .12 }, dark: { color: "#071B2E", opacity: .24 } },
+    suggestions: { light: { color: "#FFFFFF", opacity: .36 }, dark: { color: "#071A2D", opacity: .46 } },
+  };
+  const rawComponents = materials.components && typeof materials.components === "object" && !Array.isArray(materials.components)
+    ? materials.components : {};
+  const componentMaterial = (name) => {
+    const fallback = componentDefaults[name];
+    const value = rawComponents[name] && typeof rawComponents[name] === "object" && !Array.isArray(rawComponents[name])
+      ? rawComponents[name] : {};
+    const mode = (modeName) => {
+      const group = value[modeName] && typeof value[modeName] === "object" && !Array.isArray(value[modeName])
+        ? value[modeName] : {};
+      const color = group.color ?? fallback[modeName].color;
+      const opacity = Number(group.opacity ?? fallback[modeName].opacity);
+      if (typeof color !== "string" || !/^#[0-9a-f]{6}$/i.test(color)) {
+        throw new Error(`materials.components.${name}.${modeName}.color must be #RRGGBB`);
+      }
+      if (!Number.isFinite(opacity) || opacity < .04 || opacity > .92) {
+        throw new Error(`materials.components.${name}.${modeName}.opacity must be between .04 and .92`);
+      }
+      return { color: color.toUpperCase(), opacity };
+    };
+    return { light: mode("light"), dark: mode("dark") };
+  };
   const theme = {
+    schemaVersion,
     id: normalizedText(raw.id, "id", "custom", 80),
     name: normalizedText(raw.name, "name", "Codex Dream Skin", 120),
     image,
+    images: { sidebar: imageNames.sidebar, composer: imageNames.composer, home: imageNames.home, homeComposer: imageNames.homeComposer, polaroid: imageNames.polaroid },
     appearance: normalizedChoice(raw.appearance, "appearance", THEME_CHOICES.appearance, "auto"),
     art: {
       focusX: normalizedUnit(art.focusX, "art.focusX"),
@@ -470,7 +567,20 @@ async function loadTheme(themeDir) {
       safeArea: normalizedChoice(art.safeArea, "art.safeArea", THEME_CHOICES.safeArea, "auto"),
       taskMode: normalizedChoice(art.taskMode, "art.taskMode", THEME_CHOICES.taskMode, "auto"),
     },
+    compositions: {
+      background: composition("background"),
+      sidebar: composition("sidebar"),
+      composer: composition("composer"),
+      home: composition("home"),
+      homeComposer: composition("homeComposer"),
+      polaroid: composition("polaroid"),
+    },
     palette: {},
+    materials: {
+      light: materialGroup("light", { page: .56, sidebar: .58, composer: .48, card: .18 }),
+      dark: materialGroup("dark", { page: .68, sidebar: .74, composer: .62, card: .42 }),
+      components: Object.fromEntries(Object.keys(componentDefaults).map(name => [name, componentMaterial(name)])),
+    },
   };
   if (typeof palette.accent === "string" && palette.accent.trim()) {
     const accent = palette.accent.trim();
@@ -479,33 +589,23 @@ async function loadTheme(themeDir) {
     }
     theme.palette.accent = accent;
   }
-  const [themeStat, imageStat] = await Promise.all([fs.stat(themePath), fs.stat(realImagePath)]);
-  if (!imageStat.isFile()) throw new Error("Theme image is not a file");
-  if (imageStat.size < 1) throw new Error("Theme image cannot be empty");
-  if (imageStat.size > MAX_ART_BYTES) {
-    throw new Error(`Theme image exceeds the ${MAX_ART_BYTES / 1024 / 1024} MB limit`);
-  }
-  const imageBytes = await fs.readFile(realImagePath);
-  if (imageBytes.length < 1 || imageBytes.length > MAX_ART_BYTES) {
-    throw new Error(`Theme image must be between 1 byte and ${MAX_ART_BYTES / 1024 / 1024} MB`);
-  }
-  const artMetadata = readImageMetadata(imageBytes, extension);
-  if (!artMetadata) {
-    throw new Error("Theme image metadata is invalid or exceeds the 16384px / 50MP safety limit");
-  }
-  theme.artMetadata = artMetadata;
-  const fingerprint = createHash("sha256")
-    .update(themeText, "utf8")
-    .update("\0")
-    .update(imageBytes)
-    .digest("hex");
+  const themeStat = await fs.stat(themePath);
+  theme.artMetadata = loadedImages.background.metadata;
+  theme.imageMetadata = Object.fromEntries(
+    Object.entries(loadedImages).map(([slot, loaded]) => [slot, loaded.metadata]),
+  );
+  const hash = createHash("sha256").update(themeText, "utf8");
+  for (const loaded of loadedByName.values()) hash.update("\0").update(loaded.imageBytes);
+  const fingerprint = hash.digest("hex");
   return {
     theme,
     themePath,
-    imagePath: realImagePath,
-    imageBytes,
+    imagePath: loadedImages.background.imagePath,
+    imageBytes: loadedImages.background.imageBytes,
+    imagePaths: Object.fromEntries(Object.entries(loadedImages).map(([slot, loaded]) => [slot, loaded.imagePath])),
+    imageBytesBySlot: Object.fromEntries(Object.entries(loadedImages).map(([slot, loaded]) => [slot, loaded.imageBytes])),
     fingerprint,
-    sourceStamp: `${themeStat.size}:${themeStat.mtimeMs}:${imageStat.size}:${imageStat.mtimeMs}`,
+    sourceStamp: [themeStat.size, themeStat.mtimeMs, ...[...loadedByName.values()].flatMap(loaded => [loaded.imageStat.size, loaded.imageStat.mtimeMs])].join(":"),
   };
 }
 
@@ -515,15 +615,24 @@ async function loadPayload(themeDir = path.join(root, "assets"), candidateTheme 
     fs.readFile(path.join(root, "assets", "dream-skin.css"), "utf8"),
     fs.readFile(path.join(root, "assets", "renderer-inject.js"), "utf8"),
   ]);
-  const extension = path.extname(loadedTheme.imagePath).toLowerCase();
-  const mime = extension === ".jpg" || extension === ".jpeg" ? "image/jpeg"
-    : extension === ".webp" ? "image/webp" : "image/png";
-  const artDataUrl = `data:${mime};base64,${loadedTheme.imageBytes.toString("base64")}`;
+  const dataUrl = (slot) => {
+    const imagePath = loadedTheme.imagePaths?.[slot] ?? loadedTheme.imagePath;
+    const imageBytes = loadedTheme.imageBytesBySlot?.[slot] ?? loadedTheme.imageBytes;
+    const extension = path.extname(imagePath).toLowerCase();
+    const mime = extension === ".jpg" || extension === ".jpeg" ? "image/jpeg"
+      : extension === ".webp" ? "image/webp" : "image/png";
+    return `data:${mime};base64,${imageBytes.toString("base64")}`;
+  };
   const payload = template
     .replace("__DREAM_CSS_JSON__", JSON.stringify(css))
-    .replace("__DREAM_ART_JSON__", JSON.stringify(artDataUrl))
+    .replace("__DREAM_ART_JSON__", JSON.stringify(dataUrl("background")))
+    .replace("__DREAM_SIDEBAR_ART_JSON__", JSON.stringify(loadedTheme.imagePaths?.sidebar === loadedTheme.imagePaths?.background ? null : dataUrl("sidebar")))
+    .replace("__DREAM_COMPOSER_ART_JSON__", JSON.stringify(loadedTheme.imagePaths?.composer === loadedTheme.imagePaths?.background ? null : dataUrl("composer")))
+    .replace("__DREAM_HOME_ART_JSON__", JSON.stringify(loadedTheme.imagePaths?.home === loadedTheme.imagePaths?.background ? null : dataUrl("home")))
+    .replace("__DREAM_HOME_COMPOSER_ART_JSON__", JSON.stringify(loadedTheme.imagePaths?.homeComposer === loadedTheme.imagePaths?.composer ? null : dataUrl("homeComposer")))
+    .replace("__DREAM_POLAROID_ART_JSON__", JSON.stringify(loadedTheme.imagePaths?.polaroid === loadedTheme.imagePaths?.home ? null : dataUrl("polaroid")))
     .replace("__DREAM_THEME_JSON__", JSON.stringify(loadedTheme.theme));
-  const { imageBytes: _imageBytes, ...themeState } = loadedTheme;
+  const { imageBytes: _imageBytes, imageBytesBySlot: _imageBytesBySlot, ...themeState } = loadedTheme;
   return { ...themeState, payload };
 }
 
@@ -538,11 +647,9 @@ async function fileExists(filePath) {
 }
 
 async function readThemeSourceStamp(loadedTheme) {
-  const [themeStat, imageStat] = await Promise.all([
-    fs.stat(loadedTheme.themePath),
-    fs.stat(loadedTheme.imagePath),
-  ]);
-  return `${themeStat.size}:${themeStat.mtimeMs}:${imageStat.size}:${imageStat.mtimeMs}`;
+  const paths = loadedTheme.imagePaths ? [...new Set(Object.values(loadedTheme.imagePaths))] : [loadedTheme.imagePath];
+  const [themeStat, ...imageStats] = await Promise.all([fs.stat(loadedTheme.themePath), ...paths.map(file => fs.stat(file))]);
+  return [themeStat.size, themeStat.mtimeMs, ...imageStats.flatMap(stat => [stat.size, stat.mtimeMs])].join(":");
 }
 
 async function probeSession(session) {
@@ -555,7 +662,7 @@ async function probeSession(session) {
     };
     return {
       markers,
-      codex: location.protocol === 'app:' && markers.shell && markers.sidebar && (markers.composer || markers.main),
+      codex: location.protocol === 'app:' && markers.shell && (markers.composer || markers.main),
     };
   })()`);
 }
@@ -632,8 +739,8 @@ export function earlyPayloadFor(payload, revision) {
       const root = document.documentElement;
       if (!root || !document.body) return false;
       const shell = document.querySelector('main.main-surface');
-      const sidebar = document.querySelector('aside.app-shell-left-panel');
-      if (!shell || !sidebar) return false;
+      const content = document.querySelector('.composer-surface-chrome, [role="main"]');
+      if (!shell || !content) return false;
       stop();
       ${payload};
       window[appliedKey] = generation;
@@ -843,7 +950,12 @@ async function removeFromSession(session) {
       'dream-task-ambient', 'dream-task-banner', 'dream-task-off'
     );
     for (const property of [
-      '--dream-art', '--dream-art-position', '--dream-focus-x', '--dream-focus-y',
+      '--dream-art', '--dream-sidebar-art', '--dream-composer-art', '--dream-home-art',
+      '--dream-art-position', '--dream-focus-x', '--dream-focus-y',
+      '--dream-background-position', '--dream-background-size', '--dream-background-zoom',
+      '--dream-sidebar-position', '--dream-sidebar-size', '--dream-sidebar-zoom',
+      '--dream-composer-position', '--dream-composer-size', '--dream-composer-zoom',
+      '--dream-home-position', '--dream-home-size', '--dream-home-zoom',
       '--dream-accent', '--dream-accent-ink', '--dream-image-luma'
     ]) document.documentElement?.style.removeProperty(property);
     document.querySelectorAll('.dream-home').forEach((node) => node.classList.remove('dream-home'));
@@ -1377,7 +1489,10 @@ if (path.resolve(process.argv[1] || "") === path.resolve(scriptPath)) {
   console.log(JSON.stringify({ pass: true, version: SKIN_VERSION, test: "loopback-cdp-validation" }));
   } else if (options.mode === "check-payload") {
     const loaded = await loadPayload(options.themeDir);
-    const unresolved = ["__DREAM_CSS_JSON__", "__DREAM_ART_JSON__", "__DREAM_THEME_JSON__"]
+    const unresolved = [
+      "__DREAM_CSS_JSON__", "__DREAM_ART_JSON__", "__DREAM_SIDEBAR_ART_JSON__",
+      "__DREAM_COMPOSER_ART_JSON__", "__DREAM_HOME_ART_JSON__", "__DREAM_HOME_COMPOSER_ART_JSON__", "__DREAM_POLAROID_ART_JSON__", "__DREAM_THEME_JSON__"
+    ]
       .some((placeholder) => loaded.payload.includes(placeholder));
     if (unresolved) {
       throw new Error("Payload placeholders were not fully replaced");

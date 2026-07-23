@@ -19,7 +19,7 @@
   <data name="AppStatusTitle.Text" xml:space="preserve"><value>原生外壳</value></data>
   <data name="AppStatusBody.Text" xml:space="preserve"><value>打包式 WinUI 3 应用已经运行。</value></data>
   <data name="ThemeStatusTitle.Text" xml:space="preserve"><value>主题资产</value></data>
-  <data name="ThemeStatusBody.Text" xml:space="preserve"><value>Kanna Blue 3.4.9 已内置并可预览。</value></data>
+  <data name="ThemeStatusBody.Text" xml:space="preserve"><value>Kanna Blue 3.8.0 已支持任务悬浮预览独立材质，并修复深色文字对比度。</value></data>
   <data name="EngineStatusTitle.Text" xml:space="preserve"><value>注入引擎</value></data>
   <data name="EngineStatusBody.Text" xml:space="preserve"><value>原生 CDP 迁移是下一阶段。</value></data>
   <data name="MigrationTitle.Text" xml:space="preserve"><value>Windows 应用迁移</value></data>
@@ -30,7 +30,7 @@
   <data name="RefreshEngine.Content" xml:space="preserve"><value>重新检查</value></data>
   <data name="RefreshDiagnostics.Content" xml:space="preserve"><value>重新运行诊断</value></data>
   <data name="ThemesTitle.Text" xml:space="preserve"><value>主题</value></data>
-  <data name="ThemesSubtitle.Text" xml:space="preserve"><value>预览后续将由原生应用管理的视觉资产。</value></data>
+  <data name="ThemesSubtitle.Text" xml:space="preserve"><value>在草稿中调整构图和颜色，临时预览后再保存并应用。</value></data>
   <data name="ThemePreviewName.Text" xml:space="preserve"><value>桥本环奈 · 蓝色瞬间</value></data>
   <data name="ThemePreviewMeta.Text" xml:space="preserve"><value>桥本环奈 · 蓝色与瓷白编辑风格主题</value></data>
   <data name="ThemeVersionLabel.Text" xml:space="preserve"><value>版本</value></data>
@@ -63,14 +63,37 @@
   <data name="AppearanceDark.Content" xml:space="preserve"><value>深色</value></data>
   <data name="StorageSettingTitle.Text" xml:space="preserve"><value>应用数据</value></data>
   <data name="StorageSettingBody.Text" xml:space="preserve"><value>主题包、备份和日志将使用打包应用的本地数据目录。</value></data>
-  <data name="SettingsInfo.Title" xml:space="preserve"><value>设置基础</value></data>
-  <data name="SettingsInfo.Message" xml:space="preserve"><value>外观选择器已经可用；持久化设置将在配置服务阶段加入。</value></data>
+  <data name="AutoTakeoverTitle.Text" xml:space="preserve"><value>普通 Codex 自动套用主题</value></data>
+  <data name="AutoTakeoverBody.Text" xml:space="preserve"><value>在后台识别普通启动的当前 Store Codex，安全重启为回环主题会话，并应用已保存主题。启用后关闭管理器窗口会转入后台。</value></data>
+  <data name="AutoTakeoverToggle.OnContent" xml:space="preserve"><value>已托管</value></data>
+  <data name="AutoTakeoverToggle.OffContent" xml:space="preserve"><value>关闭</value></data>
+  <data name="TakeoverStatusText.Text" xml:space="preserve"><value>正在读取托管状态…</value></data>
+  <data name="StartupTaskTitle.Text" xml:space="preserve"><value>登录 Windows 后启动监控</value></data>
+  <data name="StartupTaskBody.Text" xml:space="preserve"><value>使用 Windows 原生启动任务在登录后静默保持监控；不创建脚本、启动目录快捷方式或修改 Codex 文件。</value></data>
+  <data name="StartupTaskToggle.OnContent" xml:space="preserve"><value>已启用</value></data>
+  <data name="StartupTaskToggle.OffContent" xml:space="preserve"><value>关闭</value></data>
+  <data name="StartupTaskStatusText.Text" xml:space="preserve"><value>正在读取 Windows 启动状态…</value></data>
+  <data name="ExitManagerButton.Content" xml:space="preserve"><value>完全退出管理器</value></data>
+  <data name="ExitManagerButton.AutomationProperties.Name" xml:space="preserve"><value>完全退出主题管理器和后台监控</value></data>
+  <data name="SettingsInfo.Title" xml:space="preserve"><value>原生普通启动托管</value></data>
+  <data name="SettingsInfo.Message" xml:space="preserve"><value>此功能默认关闭。启用后普通 Codex 会被重启一次，未发送的输入可能丢失；只处理动态识别并再次核验的官方 Store 包。</value></data>
+  <data name="AutoTakeoverDialogTitle" xml:space="preserve"><value>启用普通 Codex 自动套用主题？</value></data>
+  <data name="AutoTakeoverDialogBody" xml:space="preserve"><value>管理器会驻留后台。检测到普通启动的官方 Codex 后，它会先尝试正常关闭，再清理经过包身份复核的残留进程，并以安全回环主题端口重新启动。这个过程可能丢失 Codex 中尚未发送的输入。</value></data>
+  <data name="AutoTakeoverDialogConfirm" xml:space="preserve"><value>启用并允许重启</value></data>
+  <data name="AutoTakeoverDialogCancel" xml:space="preserve"><value>取消</value></data>
+  <data name="StartupTaskEnabled" xml:space="preserve"><value>Windows 登录启动已启用。</value></data>
+  <data name="StartupTaskDisabled" xml:space="preserve"><value>Windows 登录启动已关闭；管理器退出后将无法自动接管。</value></data>
+  <data name="StartupTaskDisabledByUser" xml:space="preserve"><value>已被用户在“启动应用”中禁用，请在 Windows 设置中重新启用。</value></data>
+  <data name="StartupTaskDisabledByPolicy" xml:space="preserve"><value>此设备策略禁止登录启动。</value></data>
+  <data name="StartupTaskUnavailable" xml:space="preserve"><value>当前安装未注册原生启动任务；请重新部署应用包。</value></data>
   <data name="ImportThemeButton.Label" xml:space="preserve"><value>导入图片</value></data>
   <data name="ImportThemeButton.AutomationProperties.Name" xml:space="preserve"><value>导入主题图片</value></data>
+  <data name="ImportThemePackageButton.Label" xml:space="preserve"><value>导入主题包</value></data>
+  <data name="ImportThemePackageButton.AutomationProperties.Name" xml:space="preserve"><value>安全导入 Codex 主题包</value></data>
   <data name="SaveThemeButton.Label" xml:space="preserve"><value>保存</value></data>
   <data name="SaveThemeButton.AutomationProperties.Name" xml:space="preserve"><value>保存主题设置</value></data>
-  <data name="ActivateThemeButton.Label" xml:space="preserve"><value>设为当前</value></data>
-  <data name="ActivateThemeButton.AutomationProperties.Name" xml:space="preserve"><value>将所选主题设为当前主题</value></data>
+  <data name="ActivateThemeButton.Label" xml:space="preserve"><value>正式应用</value></data>
+  <data name="ActivateThemeButton.AutomationProperties.Name" xml:space="preserve"><value>保存选择并将主题正式应用到 Codex</value></data>
   <data name="DeleteThemeButton.Label" xml:space="preserve"><value>删除</value></data>
   <data name="DeleteThemeButton.AutomationProperties.Name" xml:space="preserve"><value>删除所选用户主题</value></data>
   <data name="ThemeLibraryTitle.Text" xml:space="preserve"><value>主题库</value></data>
@@ -96,4 +119,153 @@
   <data name="ThemeFocusXSlider.AutomationProperties.Name" xml:space="preserve"><value>图片水平焦点</value></data>
   <data name="ThemeFocusYLabel.Text" xml:space="preserve"><value>垂直焦点</value></data>
   <data name="ThemeFocusYSlider.AutomationProperties.Name" xml:space="preserve"><value>图片垂直焦点</value></data>
+  <data name="DuplicateThemeButton.Label" xml:space="preserve"><value>创建副本</value></data>
+  <data name="DuplicateThemeButton.AutomationProperties.Name" xml:space="preserve"><value>复制所选主题以便编辑</value></data>
+  <data name="ExportThemeButton.Label" xml:space="preserve"><value>导出</value></data>
+  <data name="ExportThemeButton.AutomationProperties.Name" xml:space="preserve"><value>导出已保存的主题包</value></data>
+  <data name="ThemeHistoryButton.Label" xml:space="preserve"><value>历史</value></data>
+  <data name="ThemeHistoryButton.AutomationProperties.Name" xml:space="preserve"><value>查看并恢复主题历史版本</value></data>
+  <data name="UndoThemeButton.Label" xml:space="preserve"><value>撤销</value></data>
+  <data name="UndoThemeButton.AutomationProperties.Name" xml:space="preserve"><value>撤销主题草稿更改</value></data>
+  <data name="RedoThemeButton.Label" xml:space="preserve"><value>重做</value></data>
+  <data name="RedoThemeButton.AutomationProperties.Name" xml:space="preserve"><value>重做主题草稿更改</value></data>
+  <data name="PreviewThemeButton.Label" xml:space="preserve"><value>临时预览</value></data>
+  <data name="PreviewThemeButton.AutomationProperties.Name" xml:space="preserve"><value>在 Codex 中临时预览草稿</value></data>
+  <data name="CancelPreviewThemeButton.Label" xml:space="preserve"><value>取消预览</value></data>
+  <data name="CancelPreviewThemeButton.AutomationProperties.Name" xml:space="preserve"><value>取消临时预览并恢复当前主题</value></data>
+  <data name="ThemeAccentPicker.Header" xml:space="preserve"><value>可视化颜色选择器</value></data>
+  <data name="ThemeAccentColorPicker.AutomationProperties.Name" xml:space="preserve"><value>选择主题强调色</value></data>
+  <data name="ThemeMaterialsEditor.Header" xml:space="preserve"><value>组件玻璃材质</value></data>
+  <data name="ThemeImagesEditor.Header" xml:space="preserve"><value>区域图片</value></data>
+  <data name="ThemeBackgroundImageLabel.Text" xml:space="preserve"><value>主背景</value></data>
+  <data name="ThemeSidebarImageLabel.Text" xml:space="preserve"><value>左侧栏</value></data>
+  <data name="ThemeComposerImageLabel.Text" xml:space="preserve"><value>任务输入框</value></data>
+  <data name="ThemeHomeImageLabel.Text" xml:space="preserve"><value>首页照片框</value></data>
+  <data name="ThemeHomeComposerImageLabel.Text" xml:space="preserve"><value>首页输入框</value></data>
+  <data name="ThemePolaroidImageLabel.Text" xml:space="preserve"><value>首页宝丽来照片框</value></data>
+  <data name="ThemeBackgroundImageButton.AutomationProperties.Name" xml:space="preserve"><value>更换主背景图片</value></data>
+  <data name="ThemeSidebarImageButton.AutomationProperties.Name" xml:space="preserve"><value>更换左侧栏图片</value></data>
+  <data name="ThemeComposerImageButton.AutomationProperties.Name" xml:space="preserve"><value>更换任务输入框图片</value></data>
+  <data name="ThemeHomeImageButton.AutomationProperties.Name" xml:space="preserve"><value>更换首页照片框图片</value></data>
+  <data name="ThemeHomeComposerImageButton.AutomationProperties.Name" xml:space="preserve"><value>更换首页输入框图片</value></data>
+  <data name="ThemePolaroidImageButton.AutomationProperties.Name" xml:space="preserve"><value>更换首页宝丽来照片框图片</value></data>
+  <data name="ThemeBaseImageState.Text" xml:space="preserve"><value>基础图片</value></data>
+  <data name="ThemeSidebarResetButton.Content" xml:space="preserve"><value>跟随主背景</value></data>
+  <data name="ThemeSidebarResetButton.AutomationProperties.Name" xml:space="preserve"><value>让左侧栏图片跟随主背景</value></data>
+  <data name="ThemeComposerResetButton.Content" xml:space="preserve"><value>跟随主背景</value></data>
+  <data name="ThemeComposerResetButton.AutomationProperties.Name" xml:space="preserve"><value>让输入框图片跟随主背景</value></data>
+  <data name="ThemeHomeResetButton.Content" xml:space="preserve"><value>跟随主背景</value></data>
+  <data name="ThemeHomeResetButton.AutomationProperties.Name" xml:space="preserve"><value>让首页照片框图片跟随主背景</value></data>
+  <data name="ThemeHomeComposerResetButton.Content" xml:space="preserve"><value>跟随任务输入框</value></data>
+  <data name="ThemeHomeComposerResetButton.AutomationProperties.Name" xml:space="preserve"><value>让首页输入框图片跟随任务输入框</value></data>
+  <data name="ThemePolaroidResetButton.Content" xml:space="preserve"><value>跟随首页照片框</value></data>
+  <data name="ThemePolaroidResetButton.AutomationProperties.Name" xml:space="preserve"><value>让宝丽来照片框图片跟随首页照片框</value></data>
+  <data name="ThemeLightMaterialsTitle.Text" xml:space="preserve"><value>浅色模式</value></data>
+  <data name="ThemeDarkMaterialsTitle.Text" xml:space="preserve"><value>深色模式</value></data>
+  <data name="ThemePageOpacityLabel.Text" xml:space="preserve"><value>页面背景遮罩</value></data>
+  <data name="ThemeSidebarOpacityLabel.Text" xml:space="preserve"><value>侧边栏玻璃</value></data>
+  <data name="ThemeComposerOpacityLabel.Text" xml:space="preserve"><value>输入框玻璃</value></data>
+  <data name="ThemeCardOpacityLabel.Text" xml:space="preserve"><value>消息与摘要卡片</value></data>
+  <data name="ThemeLightPageOpacitySlider.AutomationProperties.Name" xml:space="preserve"><value>浅色页面背景遮罩强度</value></data>
+  <data name="ThemeLightSidebarOpacitySlider.AutomationProperties.Name" xml:space="preserve"><value>浅色侧边栏玻璃强度</value></data>
+  <data name="ThemeLightComposerOpacitySlider.AutomationProperties.Name" xml:space="preserve"><value>浅色输入框玻璃强度</value></data>
+  <data name="ThemeLightCardOpacitySlider.AutomationProperties.Name" xml:space="preserve"><value>浅色消息与摘要卡片强度</value></data>
+  <data name="ThemeDarkPageOpacitySlider.AutomationProperties.Name" xml:space="preserve"><value>深色页面背景遮罩强度</value></data>
+  <data name="ThemeDarkSidebarOpacitySlider.AutomationProperties.Name" xml:space="preserve"><value>深色侧边栏玻璃强度</value></data>
+  <data name="ThemeDarkComposerOpacitySlider.AutomationProperties.Name" xml:space="preserve"><value>深色输入框玻璃强度</value></data>
+  <data name="ThemeDarkCardOpacitySlider.AutomationProperties.Name" xml:space="preserve"><value>深色消息与摘要卡片强度</value></data>
+  <data name="ThemeCompositionEditor.Header" xml:space="preserve"><value>区域独立构图</value></data>
+  <data name="ThemeCompositionSlot.Header" xml:space="preserve"><value>编辑区域</value></data>
+  <data name="ThemeCompositionBackgroundItem.Content" xml:space="preserve"><value>主背景</value></data>
+  <data name="ThemeCompositionSidebarItem.Content" xml:space="preserve"><value>左侧栏</value></data>
+  <data name="ThemeCompositionComposerItem.Content" xml:space="preserve"><value>任务输入框</value></data>
+  <data name="ThemeCompositionHomeItem.Content" xml:space="preserve"><value>首页照片框</value></data>
+  <data name="ThemeCompositionHomeComposerItem.Content" xml:space="preserve"><value>首页输入框</value></data>
+  <data name="ThemeCompositionPolaroidItem.Content" xml:space="preserve"><value>首页宝丽来照片框</value></data>
+  <data name="ThemeCompositionPreviewSample.Text" xml:space="preserve"><value>拖动取景框 · Ctrl + 滚轮缩放 · 点击重新定位</value></data>
+  <data name="ThemeCompositionCropSurface.AutomationProperties.Name" xml:space="preserve"><value>完整原图区域取景画布</value></data>
+  <data name="ThemeCompositionCropSurface.AutomationProperties.HelpText" xml:space="preserve"><value>原图保持完整；拖动蓝色取景框选择区域，按住 Ctrl 并使用滚轮缩放，也可使用方向键微调。普通滚轮用于滚动页面。</value></data>
+  <data name="ThemeCompositionFocusXLabel.Text" xml:space="preserve"><value>焦点 X</value></data>
+  <data name="ThemeCompositionFocusYLabel.Text" xml:space="preserve"><value>焦点 Y</value></data>
+  <data name="ThemeCompositionZoomLabel.Text" xml:space="preserve"><value>缩放</value></data>
+  <data name="ThemeCompositionOffsetXLabel.Text" xml:space="preserve"><value>水平偏移</value></data>
+  <data name="ThemeCompositionOffsetYLabel.Text" xml:space="preserve"><value>垂直偏移</value></data>
+  <data name="ThemeCompositionFit.Header" xml:space="preserve"><value>填充方式</value></data>
+  <data name="ThemeCompositionFitAuto.Content" xml:space="preserve"><value>主题推荐</value></data>
+  <data name="ThemeCompositionFitCover.Content" xml:space="preserve"><value>覆盖裁切</value></data>
+  <data name="ThemeCompositionFitContain.Content" xml:space="preserve"><value>完整显示</value></data>
+  <data name="ThemeCompositionFitFill.Content" xml:space="preserve"><value>拉伸填满</value></data>
+  <data name="ThemeCompositionFocusXSlider.AutomationProperties.Name" xml:space="preserve"><value>区域图片焦点 X</value></data>
+  <data name="ThemeCompositionFocusYSlider.AutomationProperties.Name" xml:space="preserve"><value>区域图片焦点 Y</value></data>
+  <data name="ThemeCompositionZoomSlider.AutomationProperties.Name" xml:space="preserve"><value>区域图片缩放</value></data>
+  <data name="ThemeCompositionOffsetXSlider.AutomationProperties.Name" xml:space="preserve"><value>区域图片水平偏移</value></data>
+  <data name="ThemeCompositionOffsetYSlider.AutomationProperties.Name" xml:space="preserve"><value>区域图片垂直偏移</value></data>
+  <data name="ThemeCopyBackgroundCompositionButton.Content" xml:space="preserve"><value>复制主背景参数</value></data>
+  <data name="ThemeCopyBackgroundCompositionButton.AutomationProperties.Name" xml:space="preserve"><value>将主背景构图参数复制到当前区域</value></data>
+  <data name="ThemeResetCompositionButton.Content" xml:space="preserve"><value>恢复推荐构图</value></data>
+  <data name="ThemeResetCompositionButton.AutomationProperties.Name" xml:space="preserve"><value>恢复当前区域的推荐构图</value></data>
+  <data name="ThemeCropToFrameButton.Content" xml:space="preserve"><value>适配当前框</value></data>
+  <data name="ThemeCropToFrameButton.AutomationProperties.Name" xml:space="preserve"><value>将图片覆盖裁剪到当前区域框</value></data>
+  <data name="ThemeAppearancePreview.Header" xml:space="preserve"><value>明暗模式即时预览</value></data>
+  <data name="ThemePreviewDarkModeToggle.Header" xml:space="preserve"><value>预览模式</value></data>
+  <data name="ThemeLivePreviewToggle.Header" xml:space="preserve"><value>实时同步到 Codex</value></data>
+  <data name="ThemeLivePreviewToggle.OffContent" xml:space="preserve"><value>关闭</value></data>
+  <data name="ThemeLivePreviewToggle.OnContent" xml:space="preserve"><value>开启</value></data>
+  <data name="ThemeLivePreviewToggle.AutomationProperties.Name" xml:space="preserve"><value>编辑时自动热重载主题到 Codex</value></data>
+  <data name="ThemeLivePreviewStatus.Text" xml:space="preserve"><value>开启后，草稿变化会在短暂防抖后自动预览，不会自动保存。</value></data>
+  <data name="ThemePreviewDarkModeToggle.OffContent" xml:space="preserve"><value>浅色</value></data>
+  <data name="ThemePreviewDarkModeToggle.OnContent" xml:space="preserve"><value>深色</value></data>
+  <data name="ThemeMessagePreviewLabel.Text" xml:space="preserve"><value>消息区文字对比度预览</value></data>
+  <data name="ThemeAutoPalette.Header" xml:space="preserve"><value>自动配色</value></data>
+  <data name="ThemePaletteAnalysisHint.Text" xml:space="preserve"><value>选择方案后将分析当前区域图片，并避开肤色生成强调色和玻璃参数。</value></data>
+  <data name="ThemeFreshPaletteButton.Content" xml:space="preserve"><value>清新蓝白</value></data>
+  <data name="ThemeFreshPaletteButton.AutomationProperties.Name" xml:space="preserve"><value>从图片生成清新蓝白配色</value></data>
+  <data name="ThemeMidnightPaletteButton.Content" xml:space="preserve"><value>深蓝夜景</value></data>
+  <data name="ThemeMidnightPaletteButton.AutomationProperties.Name" xml:space="preserve"><value>从图片生成深蓝夜景配色</value></data>
+  <data name="ThemeLowFogPaletteButton.Content" xml:space="preserve"><value>低雾透明</value></data>
+  <data name="ThemeLowFogPaletteButton.AutomationProperties.Name" xml:space="preserve"><value>从图片生成低雾透明配色</value></data>
+  <data name="ThemeComponentMaterialsEditor.Header" xml:space="preserve"><value>组件级高级材质</value></data>
+  <data name="ThemeComponentMaterialSlot.Header" xml:space="preserve"><value>编辑组件</value></data>
+  <data name="ThemeComponentMessages.Content" xml:space="preserve"><value>助手消息</value></data>
+  <data name="ThemeComponentSummaries.Content" xml:space="preserve"><value>文件与输出摘要</value></data>
+  <data name="ThemeComponentPreviews.Content" xml:space="preserve"><value>任务悬浮预览</value></data>
+  <data name="ThemeComponentMenus.Content" xml:space="preserve"><value>菜单与弹窗</value></data>
+  <data name="ThemeComponentWorkspace.Content" xml:space="preserve"><value>终端与右侧工作区</value></data>
+  <data name="ThemeComponentCode.Content" xml:space="preserve"><value>代码差异</value></data>
+  <data name="ThemeComponentSuggestions.Content" xml:space="preserve"><value>首页建议卡</value></data>
+  <data name="ThemeComponentColorLabel.Text" xml:space="preserve"><value>主题色（#RRGGBB）</value></data>
+  <data name="ThemeComponentOpacityLabel.Text" xml:space="preserve"><value>透明度</value></data>
+  <data name="ThemeLightComponentColorTextBox.AutomationProperties.Name" xml:space="preserve"><value>浅色组件主题色</value></data>
+  <data name="ThemeDarkComponentColorTextBox.AutomationProperties.Name" xml:space="preserve"><value>深色组件主题色</value></data>
+  <data name="ThemeLightComponentOpacitySlider.AutomationProperties.Name" xml:space="preserve"><value>浅色组件透明度</value></data>
+  <data name="ThemeDarkComponentOpacitySlider.AutomationProperties.Name" xml:space="preserve"><value>深色组件透明度</value></data>
+  <data name="ThemeResetComponentMaterialButton.Content" xml:space="preserve"><value>恢复当前组件推荐材质</value></data>
+  <data name="ThemeResetComponentMaterialButton.AutomationProperties.Name" xml:space="preserve"><value>恢复当前组件的推荐颜色和透明度</value></data>
+  <data name="ThemeActualRegionStatus.Text" xml:space="preserve"><value>正在读取 Codex 实际区域…</value></data>
+  <data name="ThemeRefreshActualRegionButton.Content" xml:space="preserve"><value>刷新实际尺寸</value></data>
+  <data name="ThemeRefreshActualRegionButton.AutomationProperties.Name" xml:space="preserve"><value>从当前 Codex 窗口刷新区域实际尺寸</value></data>
+  <data name="DiagnosticsPortsTitle.Text" xml:space="preserve"><value>主题端口与占用进程</value></data>
+  <data name="DiagnosticsPortsBody.Text" xml:space="preserve"><value>检测受管回环端口，并仅允许关闭已验证的官方 Codex 进程。</value></data>
+  <data name="RefreshPorts.Content" xml:space="preserve"><value>检测端口</value></data>
+  <data name="RefreshPorts.AutomationProperties.Name" xml:space="preserve"><value>重新检测主题端口和占用进程</value></data>
+  <data name="ClosePortProcess.Content" xml:space="preserve"><value>关闭进程</value></data>
+  <data name="ClosePortProcess.AutomationProperties.Name" xml:space="preserve"><value>关闭占用该端口的已验证 Codex 进程</value></data>
+  <data name="PortPackageMissing" xml:space="preserve"><value>未发现当前 Codex Store 包，无法验证端口进程。</value></data>
+  <data name="PortSummaryFormat" xml:space="preserve"><value>已检测回环端口 {0}–{1}，发现 {2} 个监听项。</value></data>
+  <data name="PortStatusFree" xml:space="preserve"><value>可用</value></data>
+  <data name="PortStatusCurrentCodex" xml:space="preserve"><value>当前 Codex</value></data>
+  <data name="PortStatusPreviousCodex" xml:space="preserve"><value>旧版 Codex</value></data>
+  <data name="PortStatusOtherProcess" xml:space="preserve"><value>其他进程</value></data>
+  <data name="PortStatusNonLoopback" xml:space="preserve"><value>非回环监听</value></data>
+  <data name="PortStatusUnreadable" xml:space="preserve"><value>身份不可读</value></data>
+  <data name="PortDetailAvailable" xml:space="preserve"><value>当前没有进程占用</value></data>
+  <data name="PortDetailUnknown" xml:space="preserve"><value>进程身份不可用</value></data>
+  <data name="ClosePortDialogTitle" xml:space="preserve"><value>关闭端口占用进程？</value></data>
+  <data name="ClosePortDialogBodyFormat" xml:space="preserve"><value>将先尝试正常关闭 PID {0}，必要时结束其进程树，并释放端口 {1}。仅当再次验证为官方 Codex 进程时才会执行；受保护进程会显示 Windows 管理员确认。</value></data>
+  <data name="ClosePortDialogConfirm" xml:space="preserve"><value>关闭进程</value></data>
+  <data name="ClosePortDialogCancel" xml:space="preserve"><value>取消</value></data>
+  <data name="ClosePortSuccess" xml:space="preserve"><value>端口进程已关闭</value></data>
+  <data name="ClosePortPending" xml:space="preserve"><value>进程已处理，端口仍在释放</value></data>
+  <data name="ClosePortFailed" xml:space="preserve"><value>无法关闭端口进程</value></data>
+  <data name="ClosePortResultFormat" xml:space="preserve"><value>端口 {0}，PID {1}。</value></data>
 </root>

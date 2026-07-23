@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Windows.ApplicationModel;
 using CodexDreamSkin.Models;
 using Windows.Management.Deployment;
 
@@ -11,6 +12,7 @@ public sealed class CodexPackageLocator
         var package = new PackageManager()
             .FindPackagesForUser(string.Empty)
             .Where(candidate => string.Equals(candidate.Id.Name, "OpenAI.Codex", StringComparison.Ordinal))
+            .Where(candidate => candidate.SignatureKind == PackageSignatureKind.Store)
             .OrderByDescending(candidate => candidate.Id.Version.Major)
             .ThenByDescending(candidate => candidate.Id.Version.Minor)
             .ThenByDescending(candidate => candidate.Id.Version.Build)
@@ -47,8 +49,14 @@ public sealed class CodexPackageLocator
         {
             try
             {
-                var path = ProcessPathResolver.TryGetPath(process.Id);
-                if (path is not null && string.Equals(Path.GetFullPath(path), trustedExecutable, StringComparison.OrdinalIgnoreCase))
+                var identity = ProcessPathResolver.TryGetIdentity(process.Id);
+                var pathMatches = identity?.ExecutablePath is not null &&
+                    string.Equals(Path.GetFullPath(identity.ExecutablePath), trustedExecutable, StringComparison.OrdinalIgnoreCase);
+                var currentPackageMatches = string.Equals(
+                    identity?.PackageFullName,
+                    installation.PackageFullName,
+                    StringComparison.OrdinalIgnoreCase);
+                if (pathMatches || currentPackageMatches)
                 {
                     matches.Add(process);
                 }

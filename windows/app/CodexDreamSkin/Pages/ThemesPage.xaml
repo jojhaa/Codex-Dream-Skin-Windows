@@ -4,50 +4,91 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Loaded="ThemesPage_Loaded"
+    Unloaded="ThemesPage_Unloaded"
     SizeChanged="ThemesPage_SizeChanged">
 
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+    <ScrollViewer
+        x:Name="PageScrollViewer"
+        HorizontalScrollBarVisibility="Disabled"
+        HorizontalScrollMode="Disabled"
+        VerticalScrollBarVisibility="Auto"
+        VerticalScrollMode="Enabled">
         <StackPanel Style="{StaticResource PageRootStyle}">
-            <Grid ColumnSpacing="16">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
+            <Grid x:Name="ThemesHeader" RowSpacing="8">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
                 <StackPanel Spacing="6">
                     <TextBlock x:Uid="ThemesTitle" Style="{StaticResource TitleTextBlockStyle}" />
                     <TextBlock x:Uid="ThemesSubtitle" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
+                    <TextBlock x:Name="DraftStatusText" Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}" FontWeight="SemiBold" />
                 </StackPanel>
-                <CommandBar Grid.Column="1" Background="Transparent" DefaultLabelPosition="Right">
+                <CommandBar Grid.Row="1" Background="Transparent" DefaultLabelPosition="Right" HorizontalAlignment="Stretch" IsDynamicOverflowEnabled="True">
                     <AppBarButton x:Name="ImportButton" x:Uid="ImportThemeButton" Icon="Add" Click="ImportButton_Click" />
+                    <AppBarButton x:Name="ImportPackageButton" x:Uid="ImportThemePackageButton" Icon="OpenFile" Click="ImportPackageButton_Click" />
+                    <AppBarButton x:Name="DuplicateButton" x:Uid="DuplicateThemeButton" Icon="Copy" Click="DuplicateButton_Click" />
+                    <AppBarButton x:Name="ExportButton" x:Uid="ExportThemeButton" Icon="SaveLocal" Click="ExportButton_Click" />
+                    <AppBarSeparator />
+                    <AppBarButton x:Name="UndoButton" x:Uid="UndoThemeButton" Icon="Undo" Click="UndoButton_Click" />
+                    <AppBarButton x:Name="RedoButton" x:Uid="RedoThemeButton" Icon="Redo" Click="RedoButton_Click" />
                     <AppBarButton x:Name="SaveButton" x:Uid="SaveThemeButton" Icon="Save" Click="SaveButton_Click" />
+                    <AppBarButton x:Name="HistoryButton" x:Uid="ThemeHistoryButton" Icon="Clock" Click="HistoryButton_Click" />
+                    <AppBarButton x:Name="PreviewButton" x:Uid="PreviewThemeButton" Icon="View" Click="PreviewButton_Click" />
                     <AppBarButton x:Name="ActivateButton" x:Uid="ActivateThemeButton" Icon="Play" Click="ActivateButton_Click" />
+                    <AppBarButton x:Name="CancelPreviewButton" x:Uid="CancelPreviewThemeButton" Icon="Cancel" Click="CancelPreviewButton_Click" />
                     <AppBarButton x:Name="DeleteButton" x:Uid="DeleteThemeButton" Icon="Delete" Click="DeleteButton_Click" />
                 </CommandBar>
             </Grid>
 
             <InfoBar x:Name="ThemeInfoBar" IsOpen="False" IsClosable="True" />
 
+            <Grid ColumnSpacing="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <ToggleSwitch x:Name="LivePreviewToggle" x:Uid="ThemeLivePreviewToggle" Toggled="LivePreviewToggle_Toggled" />
+                <ProgressRing x:Name="LivePreviewProgressRing" Grid.Column="1" Width="18" Height="18" IsActive="False" VerticalAlignment="Center" />
+                <TextBlock x:Name="LivePreviewStatusText" x:Uid="ThemeLivePreviewStatus" Grid.Column="2" VerticalAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
+            </Grid>
+
             <Grid x:Name="ThemesWorkspace" ColumnSpacing="20" RowSpacing="20">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition x:Name="LibraryColumn" Width="280" />
-                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition x:Name="LibraryColumn" Width="*" />
+                    <ColumnDefinition Width="0" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <StackPanel x:Name="LibraryPanel" Spacing="10">
+                <Grid x:Name="LibraryPanel" Grid.ColumnSpan="2" RowSpacing="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
                     <TextBlock x:Uid="ThemeLibraryTitle" Style="{StaticResource SubtitleTextBlockStyle}" />
                     <ListView
                         x:Name="ThemesList"
-                        Height="430"
+                        Grid.Row="1"
+                        Height="110"
+                        ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                        ScrollViewer.HorizontalScrollMode="Enabled"
+                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                        ScrollViewer.VerticalScrollMode="Disabled"
                         SelectionMode="Single"
                         SelectionChanged="ThemesList_SelectionChanged"
                         x:Uid="ThemeLibraryList">
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <ItemsStackPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Grid Padding="6" ColumnSpacing="12">
+                                <Grid Width="210" Padding="10,6" ColumnSpacing="12">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="40" />
                                         <ColumnDefinition Width="*" />
@@ -63,18 +104,247 @@
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-                </StackPanel>
+                </Grid>
 
-                <Border x:Name="EditorPanel" Grid.Column="1" Style="{StaticResource StatusCardStyle}">
-                    <StackPanel Spacing="18">
-                        <Grid Height="250">
+                <Grid x:Name="EditorPanel" Grid.Row="1" Grid.ColumnSpan="2" RowSpacing="20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition x:Name="InspectorColumn" Width="0" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition x:Name="EditorCanvasRow" Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid x:Name="EditorCanvasHost">
+                        <StackPanel x:Name="EditorCanvasPanel" Spacing="16" Padding="0,0,4,12">
+                        <Border CornerRadius="16" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1">
+                        <Grid
+                            x:Name="PreviewSurface"
+                            Height="220"
+                            Background="Transparent"
+                            PointerPressed="PreviewSurface_PointerPressed"
+                            SizeChanged="PreviewSurface_SizeChanged">
                             <Image x:Name="PreviewImage" Stretch="UniformToFill" />
                             <Border Background="{ThemeResource KannaHeroOverlayBrush}" Opacity="0.42" />
                             <StackPanel Margin="24" VerticalAlignment="Bottom" Spacing="4">
                                 <TextBlock x:Name="PreviewName" Foreground="White" FontSize="24" FontWeight="SemiBold" TextWrapping="Wrap" />
                                 <TextBlock x:Name="PreviewStatus" Foreground="#FFF2F8FF" />
                             </StackPanel>
+                            <Canvas IsHitTestVisible="False">
+                                <Ellipse
+                                    x:Name="FocusMarker"
+                                    Width="30"
+                                    Height="30"
+                                    Fill="#2200A4EF"
+                                    Stroke="White"
+                                    StrokeThickness="2" />
+                            </Canvas>
                         </Grid>
+                        </Border>
+
+                        <Expander x:Uid="ThemeImagesEditor" IsExpanded="True">
+                            <Grid x:Name="ImagesGrid" ColumnSpacing="12" RowSpacing="12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Button x:Name="BackgroundImageButton" x:Uid="ThemeBackgroundImageButton" Tag="Background" Click="ImageSlotButton_Click" HorizontalAlignment="Stretch">
+                                    <StackPanel Spacing="8">
+                                        <Image x:Name="BackgroundImagePreview" Height="72" Stretch="UniformToFill" />
+                                        <TextBlock x:Uid="ThemeBackgroundImageLabel" TextAlignment="Center" TextWrapping="Wrap" />
+                                        <TextBlock x:Uid="ThemeBaseImageState" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextAlignment="Center" />
+                                    </StackPanel>
+                                </Button>
+                                <Button x:Name="SidebarImageButton" x:Uid="ThemeSidebarImageButton" Grid.Column="1" Tag="Sidebar" Click="ImageSlotButton_Click" HorizontalAlignment="Stretch">
+                                    <StackPanel Spacing="8">
+                                        <Image x:Name="SidebarImagePreview" Height="72" Stretch="UniformToFill" />
+                                        <TextBlock x:Uid="ThemeSidebarImageLabel" TextAlignment="Center" TextWrapping="Wrap" />
+                                        <TextBlock x:Name="SidebarImageState" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextAlignment="Center" />
+                                    </StackPanel>
+                                </Button>
+                                <Button x:Name="ComposerImageButton" x:Uid="ThemeComposerImageButton" Grid.Column="2" Tag="Composer" Click="ImageSlotButton_Click" HorizontalAlignment="Stretch">
+                                    <StackPanel Spacing="8">
+                                        <Image x:Name="ComposerImagePreview" Height="72" Stretch="UniformToFill" />
+                                        <TextBlock x:Uid="ThemeComposerImageLabel" TextAlignment="Center" TextWrapping="Wrap" />
+                                        <TextBlock x:Name="ComposerImageState" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextAlignment="Center" />
+                                    </StackPanel>
+                                </Button>
+                                <Button x:Name="HomeImageButton" x:Uid="ThemeHomeImageButton" Grid.Column="3" Tag="Home" Click="ImageSlotButton_Click" HorizontalAlignment="Stretch">
+                                    <StackPanel Spacing="8">
+                                        <Image x:Name="HomeImagePreview" Height="72" Stretch="UniformToFill" />
+                                        <TextBlock x:Uid="ThemeHomeImageLabel" TextAlignment="Center" TextWrapping="Wrap" />
+                                        <TextBlock x:Name="HomeImageState" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextAlignment="Center" />
+                                    </StackPanel>
+                                </Button>
+                                <Button x:Name="HomeComposerImageButton" x:Uid="ThemeHomeComposerImageButton" Grid.Column="4" Tag="HomeComposer" Click="ImageSlotButton_Click" HorizontalAlignment="Stretch">
+                                    <StackPanel Spacing="8">
+                                        <Image x:Name="HomeComposerImagePreview" Height="72" Stretch="UniformToFill" />
+                                        <TextBlock x:Uid="ThemeHomeComposerImageLabel" TextAlignment="Center" TextWrapping="Wrap" />
+                                        <TextBlock x:Name="HomeComposerImageState" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextAlignment="Center" />
+                                    </StackPanel>
+                                </Button>
+                                <Button x:Name="PolaroidImageButton" x:Uid="ThemePolaroidImageButton" Grid.Column="5" Tag="Polaroid" Click="ImageSlotButton_Click" HorizontalAlignment="Stretch">
+                                    <StackPanel Spacing="8">
+                                        <Image x:Name="PolaroidImagePreview" Height="72" Stretch="UniformToFill" />
+                                        <TextBlock x:Uid="ThemePolaroidImageLabel" TextAlignment="Center" TextWrapping="Wrap" />
+                                        <TextBlock x:Name="PolaroidImageState" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextAlignment="Center" />
+                                    </StackPanel>
+                                </Button>
+                                <HyperlinkButton x:Name="SidebarResetButton" x:Uid="ThemeSidebarResetButton" Grid.Row="1" Grid.Column="1" Tag="Sidebar" Click="ResetImageSlot_Click" HorizontalAlignment="Center" />
+                                <HyperlinkButton x:Name="ComposerResetButton" x:Uid="ThemeComposerResetButton" Grid.Row="1" Grid.Column="2" Tag="Composer" Click="ResetImageSlot_Click" HorizontalAlignment="Center" />
+                                <HyperlinkButton x:Name="HomeResetButton" x:Uid="ThemeHomeResetButton" Grid.Row="1" Grid.Column="3" Tag="Home" Click="ResetImageSlot_Click" HorizontalAlignment="Center" />
+                                <HyperlinkButton x:Name="HomeComposerResetButton" x:Uid="ThemeHomeComposerResetButton" Grid.Row="1" Grid.Column="4" Tag="HomeComposer" Click="ResetImageSlot_Click" HorizontalAlignment="Center" />
+                                <HyperlinkButton x:Name="PolaroidResetButton" x:Uid="ThemePolaroidResetButton" Grid.Row="1" Grid.Column="5" Tag="Polaroid" Click="ResetImageSlot_Click" HorizontalAlignment="Center" />
+                            </Grid>
+                        </Expander>
+
+                        <Expander
+                            x:Name="CompositionEditorExpander"
+                            x:Uid="ThemeCompositionEditor"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Stretch"
+                            IsExpanded="True">
+                            <StackPanel HorizontalAlignment="Stretch" Spacing="14">
+                                <ComboBox x:Name="CompositionSlotComboBox" x:Uid="ThemeCompositionSlot" SelectedValuePath="Tag" SelectionChanged="CompositionSlot_SelectionChanged" HorizontalAlignment="Stretch">
+                                    <ComboBoxItem x:Uid="ThemeCompositionBackgroundItem" Tag="Background" />
+                                    <ComboBoxItem x:Uid="ThemeCompositionSidebarItem" Tag="Sidebar" />
+                                    <ComboBoxItem x:Uid="ThemeCompositionComposerItem" Tag="Composer" />
+                                    <ComboBoxItem x:Uid="ThemeCompositionHomeItem" Tag="Home" />
+                                    <ComboBoxItem x:Uid="ThemeCompositionHomeComposerItem" Tag="HomeComposer" />
+                                    <ComboBoxItem x:Uid="ThemeCompositionPolaroidItem" Tag="Polaroid" />
+                                </ComboBox>
+                                <Grid ColumnSpacing="12">
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                                    <TextBlock x:Name="ActualRegionStatusText" x:Uid="ThemeActualRegionStatus" VerticalAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
+                                    <Button x:Name="RefreshActualRegionButton" x:Uid="ThemeRefreshActualRegionButton" Grid.Column="1" Click="RefreshActualRegionButton_Click" />
+                                </Grid>
+                                <Border x:Name="CompositionPreviewFrame" Height="180" HorizontalAlignment="Stretch" CornerRadius="12" Background="{ThemeResource LayerFillColorDefaultBrush}">
+                                    <Grid
+                                        x:Name="CompositionPreviewSurface"
+                                        x:Uid="ThemeCompositionCropSurface"
+                                        Background="Transparent"
+                                        IsTabStop="True"
+                                        KeyDown="CompositionPreview_KeyDown"
+                                        SizeChanged="CompositionPreview_SizeChanged">
+                                        <Image x:Name="CompositionPreviewImage" Stretch="Uniform" ImageOpened="CompositionPreviewImage_ImageOpened" ImageFailed="CompositionPreviewImage_ImageFailed" />
+                                        <Canvas x:Name="CompositionSelectionCanvas" IsHitTestVisible="False">
+                                            <Border x:Name="CompositionShadeTop" Background="#88051B30" />
+                                            <Border x:Name="CompositionShadeLeft" Background="#88051B30" />
+                                            <Border x:Name="CompositionShadeRight" Background="#88051B30" />
+                                            <Border x:Name="CompositionShadeBottom" Background="#88051B30" />
+                                            <Border x:Name="CompositionSelectionFrame" BorderBrush="#FF63D5FF" BorderThickness="3" CornerRadius="5">
+                                                <Grid Opacity="0.82">
+                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions><RowDefinition Height="*" /><RowDefinition Height="*" /><RowDefinition Height="*" /></Grid.RowDefinitions>
+                                                    <Border Grid.Column="1" Grid.RowSpan="3" BorderBrush="White" BorderThickness="1,0,1,0" />
+                                                    <Border Grid.Row="1" Grid.ColumnSpan="3" BorderBrush="White" BorderThickness="0,1,0,1" />
+                                                </Grid>
+                                            </Border>
+                                            <Ellipse x:Name="CompositionFocusMarker" Width="22" Height="22" Fill="#5500A4EF" Stroke="White" StrokeThickness="2" />
+                                        </Canvas>
+                                        <Border Margin="12" Padding="8,4" HorizontalAlignment="Right" VerticalAlignment="Top" CornerRadius="8" Background="#99051B30" IsHitTestVisible="False">
+                                            <TextBlock x:Name="CropTargetText" Foreground="White" FontWeight="SemiBold" />
+                                        </Border>
+                                        <TextBlock x:Name="CropInstructionText" x:Uid="ThemeCompositionPreviewSample" Margin="14" VerticalAlignment="Bottom" Foreground="White" FontWeight="SemiBold" TextWrapping="Wrap" IsHitTestVisible="False" />
+                                    </Grid>
+                                </Border>
+                                <Grid ColumnSpacing="18" RowSpacing="10">
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /></Grid.RowDefinitions>
+                                    <StackPanel Spacing="4">
+                                        <TextBlock x:Uid="ThemeCompositionFocusXLabel" />
+                                        <Slider x:Name="CompositionFocusXSlider" x:Uid="ThemeCompositionFocusXSlider" Minimum="0" Maximum="1" StepFrequency="0.01" ValueChanged="EditorValue_Changed" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1" Spacing="4">
+                                        <TextBlock x:Uid="ThemeCompositionFocusYLabel" />
+                                        <Slider x:Name="CompositionFocusYSlider" x:Uid="ThemeCompositionFocusYSlider" Minimum="0" Maximum="1" StepFrequency="0.01" ValueChanged="EditorValue_Changed" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="1" Spacing="4">
+                                        <TextBlock x:Uid="ThemeCompositionZoomLabel" />
+                                        <Slider x:Name="CompositionZoomSlider" x:Uid="ThemeCompositionZoomSlider" Minimum="0.5" Maximum="3" StepFrequency="0.05" ValueChanged="EditorValue_Changed" />
+                                    </StackPanel>
+                                    <ComboBox x:Name="CompositionFitComboBox" x:Uid="ThemeCompositionFit" Grid.Row="1" Grid.Column="1" SelectedValuePath="Tag" SelectionChanged="EditorValue_Changed" HorizontalAlignment="Stretch">
+                                        <ComboBoxItem x:Uid="ThemeCompositionFitAuto" Tag="auto" />
+                                        <ComboBoxItem x:Uid="ThemeCompositionFitCover" Tag="cover" />
+                                        <ComboBoxItem x:Uid="ThemeCompositionFitContain" Tag="contain" />
+                                        <ComboBoxItem x:Uid="ThemeCompositionFitFill" Tag="fill" />
+                                    </ComboBox>
+                                    <StackPanel Grid.Row="2" Spacing="4">
+                                        <TextBlock x:Uid="ThemeCompositionOffsetXLabel" />
+                                        <Slider x:Name="CompositionOffsetXSlider" x:Uid="ThemeCompositionOffsetXSlider" Minimum="-1" Maximum="1" StepFrequency="0.01" ValueChanged="EditorValue_Changed" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="2" Grid.Column="1" Spacing="4">
+                                        <TextBlock x:Uid="ThemeCompositionOffsetYLabel" />
+                                        <Slider x:Name="CompositionOffsetYSlider" x:Uid="ThemeCompositionOffsetYSlider" Minimum="-1" Maximum="1" StepFrequency="0.01" ValueChanged="EditorValue_Changed" />
+                                    </StackPanel>
+                                </Grid>
+                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                    <Button x:Name="CropToFrameButton" x:Uid="ThemeCropToFrameButton" Click="CropToFrame_Click" />
+                                    <Button x:Name="CopyBackgroundCompositionButton" x:Uid="ThemeCopyBackgroundCompositionButton" Click="CopyBackgroundComposition_Click" />
+                                    <Button x:Name="ResetCompositionButton" x:Uid="ThemeResetCompositionButton" Click="ResetComposition_Click" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Expander>
+
+                        </StackPanel>
+                    </Grid>
+
+                    <Border x:Name="InspectorChrome" Grid.Row="1" Grid.ColumnSpan="2" Background="{ThemeResource LayerFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="12" Padding="18,10,14,18">
+                        <Grid x:Name="InspectorHost">
+                            <StackPanel x:Name="InspectorPanel" HorizontalAlignment="Stretch" Spacing="14">
+
+                        <Expander x:Name="AppearancePreviewExpander" x:Uid="ThemeAppearancePreview" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" IsExpanded="True">
+                            <StackPanel HorizontalAlignment="Stretch" Spacing="12">
+                                <ToggleSwitch x:Name="PreviewDarkModeToggle" x:Uid="ThemePreviewDarkModeToggle" Toggled="PreviewDarkModeToggle_Toggled" />
+                                <Grid x:Name="AppearancePreviewGrid" ColumnSpacing="12" RowSpacing="12">
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /></Grid.RowDefinitions>
+                                    <Border x:Name="SidebarModePreview" HorizontalAlignment="Center" VerticalAlignment="Center" CornerRadius="10" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1">
+                                        <Grid x:Name="SidebarModePreviewSurface"><Canvas><Image x:Name="SidebarModePreviewImage" Stretch="UniformToFill" /></Canvas><Border x:Name="SidebarModePreviewOverlay" /><TextBlock x:Name="SidebarModePreviewText" x:Uid="ThemeSidebarImageLabel" Margin="10" VerticalAlignment="Bottom" Foreground="White" FontWeight="SemiBold" /></Grid>
+                                    </Border>
+                                    <Border x:Name="MessageModePreview" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" CornerRadius="10" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1">
+                                        <Grid x:Name="MessageModePreviewSurface"><Canvas><Image x:Name="MessageModePreviewImage" Stretch="UniformToFill" /></Canvas><Border x:Name="MessageModePreviewOverlay" /><TextBlock x:Name="MessageModePreviewText" x:Uid="ThemeMessagePreviewLabel" Margin="12" Foreground="White" TextWrapping="Wrap" VerticalAlignment="Center" /></Grid>
+                                    </Border>
+                                    <Border x:Name="ComposerModePreview" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" CornerRadius="10" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1">
+                                        <Grid x:Name="ComposerModePreviewSurface"><Canvas><Image x:Name="ComposerModePreviewImage" Stretch="UniformToFill" /></Canvas><Border x:Name="ComposerModePreviewOverlay" /><TextBlock x:Name="ComposerModePreviewText" x:Uid="ThemeComposerImageLabel" Margin="12" Foreground="White" FontWeight="SemiBold" VerticalAlignment="Center" /></Grid>
+                                    </Border>
+                                    <Border x:Name="HomeModePreview" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" CornerRadius="10" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1">
+                                        <Grid x:Name="HomeModePreviewSurface"><Canvas><Image x:Name="HomeModePreviewImage" Stretch="UniformToFill" /></Canvas><Border x:Name="HomeModePreviewOverlay" /><TextBlock x:Name="HomeModePreviewText" x:Uid="ThemeHomeImageLabel" Margin="12" Foreground="White" FontWeight="SemiBold" VerticalAlignment="Bottom" /></Grid>
+                                    </Border>
+                                    <Border x:Name="HomeComposerModePreview" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" CornerRadius="10" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1">
+                                        <Grid x:Name="HomeComposerModePreviewSurface"><Canvas><Image x:Name="HomeComposerModePreviewImage" Stretch="UniformToFill" /></Canvas><Border x:Name="HomeComposerModePreviewOverlay" /><TextBlock x:Name="HomeComposerModePreviewText" x:Uid="ThemeHomeComposerImageLabel" Margin="12" Foreground="White" FontWeight="SemiBold" VerticalAlignment="Center" /></Grid>
+                                    </Border>
+                                    <Border x:Name="PolaroidModePreview" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" CornerRadius="3" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="7,7,7,20">
+                                        <Grid x:Name="PolaroidModePreviewSurface"><Canvas><Image x:Name="PolaroidModePreviewImage" Stretch="UniformToFill" /></Canvas><Border x:Name="PolaroidModePreviewOverlay" /><TextBlock x:Name="PolaroidModePreviewText" x:Uid="ThemePolaroidImageLabel" Margin="8" Foreground="White" FontSize="11" FontWeight="SemiBold" VerticalAlignment="Bottom" TextWrapping="Wrap" /></Grid>
+                                    </Border>
+                                </Grid>
+                                <InfoBar x:Name="PreviewContrastInfoBar" IsClosable="False" />
+                            </StackPanel>
+                        </Expander>
+
+                        <Expander x:Name="AutoPaletteExpander" x:Uid="ThemeAutoPalette" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" IsExpanded="True">
+                            <StackPanel HorizontalAlignment="Stretch" Spacing="12">
+                                <TextBlock x:Name="PaletteAnalysisText" x:Uid="ThemePaletteAnalysisHint" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
+                                <Grid x:Name="PaletteActionsGrid" ColumnSpacing="8">
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+                                    <Button x:Name="FreshPaletteButton" x:Uid="ThemeFreshPaletteButton" HorizontalAlignment="Stretch" Tag="fresh" Click="ApplyPalette_Click" />
+                                    <Button x:Name="MidnightPaletteButton" x:Uid="ThemeMidnightPaletteButton" Grid.Column="1" HorizontalAlignment="Stretch" Tag="midnight" Click="ApplyPalette_Click" />
+                                    <Button x:Name="LowFogPaletteButton" x:Uid="ThemeLowFogPaletteButton" Grid.Column="2" HorizontalAlignment="Stretch" Tag="lowfog" Click="ApplyPalette_Click" />
+                                </Grid>
+                            </StackPanel>
+                        </Expander>
 
                         <TextBox x:Name="NameTextBox" x:Uid="ThemeNameField" MaxLength="120" TextChanged="EditorValue_Changed" />
 
@@ -84,6 +354,7 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
@@ -107,19 +378,102 @@
                                 <ComboBoxItem x:Uid="ThemeTaskModeOff" Tag="off" />
                             </ComboBox>
                             <TextBox x:Name="AccentTextBox" x:Uid="ThemeAccentField" Grid.Row="1" Grid.Column="1" PlaceholderText="#1557b0" MaxLength="9" TextChanged="EditorValue_Changed" />
-                            <StackPanel Grid.Row="2" Spacing="4">
-                                <TextBlock x:Uid="ThemeFocusXLabel" />
-                                <Slider x:Name="FocusXSlider" x:Uid="ThemeFocusXSlider" Minimum="0" Maximum="1" StepFrequency="0.01" ValueChanged="EditorValue_Changed" />
-                            </StackPanel>
-                            <StackPanel Grid.Row="2" Grid.Column="1" Spacing="4">
-                                <TextBlock x:Uid="ThemeFocusYLabel" />
-                                <Slider x:Name="FocusYSlider" x:Uid="ThemeFocusYSlider" Minimum="0" Maximum="1" StepFrequency="0.01" ValueChanged="EditorValue_Changed" />
-                            </StackPanel>
+                            <Expander x:Name="AccentPickerExpander" x:Uid="ThemeAccentPicker" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                                <ColorPicker
+                                    x:Name="AccentColorPicker"
+                                    x:Uid="ThemeAccentColorPicker"
+                                    HorizontalAlignment="Stretch"
+                                    IsAlphaEnabled="False"
+                                    IsColorChannelTextInputVisible="True"
+                                    IsHexInputVisible="True"
+                                    ColorChanged="AccentColorPicker_ColorChanged" />
+                            </Expander>
                         </Grid>
 
+                        <Expander x:Name="MaterialsEditorExpander" x:Uid="ThemeMaterialsEditor" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" IsExpanded="True">
+                            <Grid x:Name="MaterialsGrid" ColumnSpacing="24" RowSpacing="18">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <StackPanel x:Name="LightMaterialsPanel" Spacing="10">
+                                    <TextBlock x:Uid="ThemeLightMaterialsTitle" Style="{StaticResource SubtitleTextBlockStyle}" />
+                                    <TextBlock x:Uid="ThemePageOpacityLabel" />
+                                    <Slider x:Name="LightPageOpacitySlider" x:Uid="ThemeLightPageOpacitySlider" Minimum="0.04" Maximum="0.92" StepFrequency="0.01" ValueChanged="EditorValue_Changed" />
+                                    <TextBlock x:Uid="ThemeSidebarOpacityLabel" />
+                                    <Slider x:Name="LightSidebarOpacitySlider" x:Uid="ThemeLightSidebarOpacitySlider" Minimum="0.04" Maximum="0.92" StepFrequency="0.01" ValueChanged="EditorValue_Changed" />
+                                    <TextBlock x:Uid="ThemeComposerOpacityLabel" />
+                                    <Slider x:Name="LightComposerOpacitySlider" x:Uid="ThemeLightComposerOpacitySlider" Minimum="0.04" Maximum="0.92" StepFrequency="0.01" ValueChanged="EditorValue_Changed" />
+                                    <TextBlock x:Uid="ThemeCardOpacityLabel" />
+                                    <Slider x:Name="LightCardOpacitySlider" x:Uid="ThemeLightCardOpacitySlider" Minimum="0.04" Maximum="0.92" StepFrequency="0.01" ValueChanged="EditorValue_Changed" />
+                                </StackPanel>
+                                <StackPanel x:Name="DarkMaterialsPanel" Grid.Column="1" Spacing="10">
+                                    <TextBlock x:Uid="ThemeDarkMaterialsTitle" Style="{StaticResource SubtitleTextBlockStyle}" />
+                                    <TextBlock x:Uid="ThemePageOpacityLabel" />
+                                    <Slider x:Name="DarkPageOpacitySlider" x:Uid="ThemeDarkPageOpacitySlider" Minimum="0.04" Maximum="0.92" StepFrequency="0.01" ValueChanged="EditorValue_Changed" />
+                                    <TextBlock x:Uid="ThemeSidebarOpacityLabel" />
+                                    <Slider x:Name="DarkSidebarOpacitySlider" x:Uid="ThemeDarkSidebarOpacitySlider" Minimum="0.04" Maximum="0.92" StepFrequency="0.01" ValueChanged="EditorValue_Changed" />
+                                    <TextBlock x:Uid="ThemeComposerOpacityLabel" />
+                                    <Slider x:Name="DarkComposerOpacitySlider" x:Uid="ThemeDarkComposerOpacitySlider" Minimum="0.04" Maximum="0.92" StepFrequency="0.01" ValueChanged="EditorValue_Changed" />
+                                    <TextBlock x:Uid="ThemeCardOpacityLabel" />
+                                    <Slider x:Name="DarkCardOpacitySlider" x:Uid="ThemeDarkCardOpacitySlider" Minimum="0.04" Maximum="0.92" StepFrequency="0.01" ValueChanged="EditorValue_Changed" />
+                                </StackPanel>
+                            </Grid>
+                        </Expander>
+
+                        <Expander x:Name="ComponentMaterialsEditorExpander" x:Uid="ThemeComponentMaterialsEditor" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                            <StackPanel HorizontalAlignment="Stretch" Spacing="12">
+                                <ComboBox
+                                    x:Name="ComponentMaterialSlotComboBox"
+                                    x:Uid="ThemeComponentMaterialSlot"
+                                    SelectionChanged="ComponentMaterialSlotComboBox_SelectionChanged">
+                                    <ComboBoxItem x:Uid="ThemeComponentMessages" Tag="Messages" />
+                                    <ComboBoxItem x:Uid="ThemeComponentSummaries" Tag="Summaries" />
+                                    <ComboBoxItem x:Uid="ThemeComponentPreviews" Tag="Previews" />
+                                    <ComboBoxItem x:Uid="ThemeComponentMenus" Tag="Menus" />
+                                    <ComboBoxItem x:Uid="ThemeComponentWorkspace" Tag="Workspace" />
+                                    <ComboBoxItem x:Uid="ThemeComponentCode" Tag="Code" />
+                                    <ComboBoxItem x:Uid="ThemeComponentSuggestions" Tag="Suggestions" />
+                                </ComboBox>
+                                <Grid x:Name="ComponentMaterialsGrid" ColumnSpacing="24" RowSpacing="12">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <StackPanel x:Name="LightComponentMaterialPanel" Spacing="8">
+                                        <TextBlock x:Uid="ThemeLightMaterialsTitle" Style="{StaticResource SubtitleTextBlockStyle}" />
+                                        <TextBlock x:Uid="ThemeComponentColorLabel" />
+                                        <TextBox x:Name="LightComponentColorTextBox" x:Uid="ThemeLightComponentColorTextBox" TextChanged="EditorValue_Changed" />
+                                        <TextBlock x:Uid="ThemeComponentOpacityLabel" />
+                                        <Slider x:Name="LightComponentOpacitySlider" x:Uid="ThemeLightComponentOpacitySlider" Minimum="0.04" Maximum="0.92" StepFrequency="0.01" ValueChanged="EditorValue_Changed" />
+                                        <Border x:Name="LightComponentPreview" Height="38" CornerRadius="8" BorderThickness="1" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" />
+                                    </StackPanel>
+                                    <StackPanel x:Name="DarkComponentMaterialPanel" Grid.Column="1" Spacing="8">
+                                        <TextBlock x:Uid="ThemeDarkMaterialsTitle" Style="{StaticResource SubtitleTextBlockStyle}" />
+                                        <TextBlock x:Uid="ThemeComponentColorLabel" />
+                                        <TextBox x:Name="DarkComponentColorTextBox" x:Uid="ThemeDarkComponentColorTextBox" TextChanged="EditorValue_Changed" />
+                                        <TextBlock x:Uid="ThemeComponentOpacityLabel" />
+                                        <Slider x:Name="DarkComponentOpacitySlider" x:Uid="ThemeDarkComponentOpacitySlider" Minimum="0.04" Maximum="0.92" StepFrequency="0.01" ValueChanged="EditorValue_Changed" />
+                                        <Border x:Name="DarkComponentPreview" Height="38" CornerRadius="8" BorderThickness="1" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" />
+                                    </StackPanel>
+                                </Grid>
+                                <Button x:Name="ResetComponentMaterialButton" x:Uid="ThemeResetComponentMaterialButton" Click="ResetComponentMaterialButton_Click" />
+                            </StackPanel>
+                        </Expander>
+
                         <TextBlock x:Name="ReadOnlyHint" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
-                    </StackPanel>
-                </Border>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </Grid>
             </Grid>
         </StackPanel>
     </ScrollViewer>

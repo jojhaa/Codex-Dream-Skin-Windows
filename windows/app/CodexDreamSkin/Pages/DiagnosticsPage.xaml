@@ -64,6 +64,60 @@
                 </StackPanel>
             </Border>
 
+            <Border Style="{StaticResource StatusCardStyle}">
+                <StackPanel Spacing="12">
+                    <Grid ColumnSpacing="12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Spacing="3">
+                            <TextBlock x:Uid="DiagnosticsPortsTitle" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                            <TextBlock x:Name="PortsSummaryText" x:Uid="DiagnosticsPortsBody" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
+                        </StackPanel>
+                        <Button
+                            x:Name="RefreshPortsButton"
+                            Grid.Column="1"
+                            x:Uid="RefreshPorts"
+                            Click="RefreshPortsButton_Click" />
+                    </Grid>
+
+                    <InfoBar
+                        x:Name="PortActionInfoBar"
+                        IsOpen="False"
+                        IsClosable="True" />
+
+                    <ItemsControl x:Name="PortRowsControl">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Padding="0,8" ColumnSpacing="12">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <FontIcon
+                                        Glyph="&#xE839;"
+                                        Foreground="{ThemeResource KannaAccentBrush}"
+                                        VerticalAlignment="Center" />
+                                    <StackPanel Grid.Column="1" Spacing="2">
+                                        <TextBlock Text="{Binding Title}" FontWeight="SemiBold" />
+                                        <TextBlock Text="{Binding Detail}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2" HorizontalAlignment="Right" Spacing="6">
+                                        <TextBlock Text="{Binding Status}" HorizontalAlignment="Right" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                                        <Button
+                                            x:Uid="ClosePortProcess"
+                                            Click="ClosePortProcessButton_Click"
+                                            IsEnabled="{Binding CanTerminate}" />
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
             <Button x:Uid="RefreshDiagnostics" Click="RefreshButton_Click" HorizontalAlignment="Left" />
         </StackPanel>
     </ScrollViewer>

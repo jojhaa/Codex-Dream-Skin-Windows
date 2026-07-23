@@ -16,7 +16,8 @@ public sealed record EngineSnapshot(
     string Detail,
     string? PackageVersion = null,
     int? ListenerProcessId = null,
-    int TargetCount = 0)
+    int TargetCount = 0,
+    int? ListenerPort = null)
 {
     public static EngineSnapshot Idle { get; } = new(
         EngineState.Idle,

@@ -19,7 +19,7 @@
   <data name="AppStatusTitle.Text" xml:space="preserve"><value>Native shell</value></data>
   <data name="AppStatusBody.Text" xml:space="preserve"><value>Packaged WinUI 3 application is running.</value></data>
   <data name="ThemeStatusTitle.Text" xml:space="preserve"><value>Theme assets</value></data>
-  <data name="ThemeStatusBody.Text" xml:space="preserve"><value>Kanna Blue 3.4.9 is bundled for preview.</value></data>
+  <data name="ThemeStatusBody.Text" xml:space="preserve"><value>Kanna Blue 3.8.0 adds independent task-hover material and repairs dark-mode text contrast.</value></data>
   <data name="EngineStatusTitle.Text" xml:space="preserve"><value>Injection engine</value></data>
   <data name="EngineStatusBody.Text" xml:space="preserve"><value>Native CDP migration is the next stage.</value></data>
   <data name="MigrationTitle.Text" xml:space="preserve"><value>Windows app migration</value></data>
@@ -30,7 +30,7 @@
   <data name="RefreshEngine.Content" xml:space="preserve"><value>Check again</value></data>
   <data name="RefreshDiagnostics.Content" xml:space="preserve"><value>Run diagnostics again</value></data>
   <data name="ThemesTitle.Text" xml:space="preserve"><value>Themes</value></data>
-  <data name="ThemesSubtitle.Text" xml:space="preserve"><value>Preview the visual assets that will be managed by the native application.</value></data>
+  <data name="ThemesSubtitle.Text" xml:space="preserve"><value>Edit composition and color as a draft, preview temporarily, then save and apply.</value></data>
   <data name="ThemePreviewName.Text" xml:space="preserve"><value>Kanna Blue Moment</value></data>
   <data name="ThemePreviewMeta.Text" xml:space="preserve"><value>Hashimoto Kanna · blue and porcelain editorial theme</value></data>
   <data name="ThemeVersionLabel.Text" xml:space="preserve"><value>Version</value></data>
@@ -63,14 +63,37 @@
   <data name="AppearanceDark.Content" xml:space="preserve"><value>Dark</value></data>
   <data name="StorageSettingTitle.Text" xml:space="preserve"><value>Application data</value></data>
   <data name="StorageSettingBody.Text" xml:space="preserve"><value>Theme packages, backups, and logs will use the packaged application's local data folder.</value></data>
-  <data name="SettingsInfo.Title" xml:space="preserve"><value>Settings foundation</value></data>
-  <data name="SettingsInfo.Message" xml:space="preserve"><value>The appearance selector works now. Persistent settings arrive with the configuration service.</value></data>
+  <data name="AutoTakeoverTitle.Text" xml:space="preserve"><value>Theme ordinary Codex launches automatically</value></data>
+  <data name="AutoTakeoverBody.Text" xml:space="preserve"><value>Detect an ordinary launch of the current Store Codex, safely restart it as a loopback theme session, and apply the saved theme. Closing the manager keeps it in the background while enabled.</value></data>
+  <data name="AutoTakeoverToggle.OnContent" xml:space="preserve"><value>Managed</value></data>
+  <data name="AutoTakeoverToggle.OffContent" xml:space="preserve"><value>Off</value></data>
+  <data name="TakeoverStatusText.Text" xml:space="preserve"><value>Reading takeover status…</value></data>
+  <data name="StartupTaskTitle.Text" xml:space="preserve"><value>Start monitoring after Windows sign-in</value></data>
+  <data name="StartupTaskBody.Text" xml:space="preserve"><value>Use the native Windows startup task to keep monitoring after sign-in. No scripts, Startup-folder shortcuts, or Codex file modifications are created.</value></data>
+  <data name="StartupTaskToggle.OnContent" xml:space="preserve"><value>Enabled</value></data>
+  <data name="StartupTaskToggle.OffContent" xml:space="preserve"><value>Off</value></data>
+  <data name="StartupTaskStatusText.Text" xml:space="preserve"><value>Reading Windows startup state…</value></data>
+  <data name="ExitManagerButton.Content" xml:space="preserve"><value>Exit manager completely</value></data>
+  <data name="ExitManagerButton.AutomationProperties.Name" xml:space="preserve"><value>Exit the theme manager and background monitor completely</value></data>
+  <data name="SettingsInfo.Title" xml:space="preserve"><value>Native ordinary-launch takeover</value></data>
+  <data name="SettingsInfo.Message" xml:space="preserve"><value>This is off by default. Enabling it restarts ordinary Codex once and may lose unsent input. Only the dynamically discovered and reverified official Store package is handled.</value></data>
+  <data name="AutoTakeoverDialogTitle" xml:space="preserve"><value>Theme ordinary Codex launches automatically?</value></data>
+  <data name="AutoTakeoverDialogBody" xml:space="preserve"><value>The manager stays in the background. When an ordinary official Codex launch is detected, it first requests a normal close, then clears only residual processes whose package identity is reverified, and restarts Codex with a safe loopback theme port. Unsent Codex input may be lost.</value></data>
+  <data name="AutoTakeoverDialogConfirm" xml:space="preserve"><value>Enable and allow restart</value></data>
+  <data name="AutoTakeoverDialogCancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="StartupTaskEnabled" xml:space="preserve"><value>Windows sign-in startup is enabled.</value></data>
+  <data name="StartupTaskDisabled" xml:space="preserve"><value>Windows sign-in startup is off; automatic takeover stops after the manager exits.</value></data>
+  <data name="StartupTaskDisabledByUser" xml:space="preserve"><value>You disabled this app in Startup Apps. Re-enable it in Windows Settings.</value></data>
+  <data name="StartupTaskDisabledByPolicy" xml:space="preserve"><value>Sign-in startup is blocked by device policy.</value></data>
+  <data name="StartupTaskUnavailable" xml:space="preserve"><value>The native startup task is not registered for this installation. Redeploy the app package.</value></data>
   <data name="ImportThemeButton.Label" xml:space="preserve"><value>Import image</value></data>
   <data name="ImportThemeButton.AutomationProperties.Name" xml:space="preserve"><value>Import a theme image</value></data>
+  <data name="ImportThemePackageButton.Label" xml:space="preserve"><value>Import package</value></data>
+  <data name="ImportThemePackageButton.AutomationProperties.Name" xml:space="preserve"><value>Safely import a Codex theme package</value></data>
   <data name="SaveThemeButton.Label" xml:space="preserve"><value>Save</value></data>
   <data name="SaveThemeButton.AutomationProperties.Name" xml:space="preserve"><value>Save theme settings</value></data>
-  <data name="ActivateThemeButton.Label" xml:space="preserve"><value>Make current</value></data>
-  <data name="ActivateThemeButton.AutomationProperties.Name" xml:space="preserve"><value>Make the selected theme current</value></data>
+  <data name="ActivateThemeButton.Label" xml:space="preserve"><value>Apply</value></data>
+  <data name="ActivateThemeButton.AutomationProperties.Name" xml:space="preserve"><value>Save the selection and formally apply the theme to Codex</value></data>
   <data name="DeleteThemeButton.Label" xml:space="preserve"><value>Delete</value></data>
   <data name="DeleteThemeButton.AutomationProperties.Name" xml:space="preserve"><value>Delete the selected custom theme</value></data>
   <data name="ThemeLibraryTitle.Text" xml:space="preserve"><value>Theme library</value></data>
@@ -96,4 +119,153 @@
   <data name="ThemeFocusXSlider.AutomationProperties.Name" xml:space="preserve"><value>Image horizontal focus</value></data>
   <data name="ThemeFocusYLabel.Text" xml:space="preserve"><value>Vertical focus</value></data>
   <data name="ThemeFocusYSlider.AutomationProperties.Name" xml:space="preserve"><value>Image vertical focus</value></data>
+  <data name="DuplicateThemeButton.Label" xml:space="preserve"><value>Create copy</value></data>
+  <data name="DuplicateThemeButton.AutomationProperties.Name" xml:space="preserve"><value>Copy the selected theme for editing</value></data>
+  <data name="ExportThemeButton.Label" xml:space="preserve"><value>Export</value></data>
+  <data name="ExportThemeButton.AutomationProperties.Name" xml:space="preserve"><value>Export the saved theme package</value></data>
+  <data name="ThemeHistoryButton.Label" xml:space="preserve"><value>History</value></data>
+  <data name="ThemeHistoryButton.AutomationProperties.Name" xml:space="preserve"><value>View and restore saved theme versions</value></data>
+  <data name="UndoThemeButton.Label" xml:space="preserve"><value>Undo</value></data>
+  <data name="UndoThemeButton.AutomationProperties.Name" xml:space="preserve"><value>Undo the theme draft change</value></data>
+  <data name="RedoThemeButton.Label" xml:space="preserve"><value>Redo</value></data>
+  <data name="RedoThemeButton.AutomationProperties.Name" xml:space="preserve"><value>Redo the theme draft change</value></data>
+  <data name="PreviewThemeButton.Label" xml:space="preserve"><value>Preview</value></data>
+  <data name="PreviewThemeButton.AutomationProperties.Name" xml:space="preserve"><value>Temporarily preview the draft in Codex</value></data>
+  <data name="CancelPreviewThemeButton.Label" xml:space="preserve"><value>Cancel preview</value></data>
+  <data name="CancelPreviewThemeButton.AutomationProperties.Name" xml:space="preserve"><value>Cancel the temporary preview and restore the current theme</value></data>
+  <data name="ThemeAccentPicker.Header" xml:space="preserve"><value>Visual color picker</value></data>
+  <data name="ThemeAccentColorPicker.AutomationProperties.Name" xml:space="preserve"><value>Select the theme accent color</value></data>
+  <data name="ThemeMaterialsEditor.Header" xml:space="preserve"><value>Component glass materials</value></data>
+  <data name="ThemeImagesEditor.Header" xml:space="preserve"><value>Regional images</value></data>
+  <data name="ThemeBackgroundImageLabel.Text" xml:space="preserve"><value>Main background</value></data>
+  <data name="ThemeSidebarImageLabel.Text" xml:space="preserve"><value>Sidebar</value></data>
+  <data name="ThemeComposerImageLabel.Text" xml:space="preserve"><value>Task composer</value></data>
+  <data name="ThemeHomeImageLabel.Text" xml:space="preserve"><value>Home photo frame</value></data>
+  <data name="ThemeHomeComposerImageLabel.Text" xml:space="preserve"><value>Home composer</value></data>
+  <data name="ThemePolaroidImageLabel.Text" xml:space="preserve"><value>Home Polaroid frame</value></data>
+  <data name="ThemeBackgroundImageButton.AutomationProperties.Name" xml:space="preserve"><value>Change the main background image</value></data>
+  <data name="ThemeSidebarImageButton.AutomationProperties.Name" xml:space="preserve"><value>Change the sidebar image</value></data>
+  <data name="ThemeComposerImageButton.AutomationProperties.Name" xml:space="preserve"><value>Change the task composer image</value></data>
+  <data name="ThemeHomeImageButton.AutomationProperties.Name" xml:space="preserve"><value>Change the home photo frame image</value></data>
+  <data name="ThemeHomeComposerImageButton.AutomationProperties.Name" xml:space="preserve"><value>Change the home composer image</value></data>
+  <data name="ThemePolaroidImageButton.AutomationProperties.Name" xml:space="preserve"><value>Change the home Polaroid frame image</value></data>
+  <data name="ThemeBaseImageState.Text" xml:space="preserve"><value>Base image</value></data>
+  <data name="ThemeSidebarResetButton.Content" xml:space="preserve"><value>Follow main background</value></data>
+  <data name="ThemeSidebarResetButton.AutomationProperties.Name" xml:space="preserve"><value>Make the sidebar image follow the main background</value></data>
+  <data name="ThemeComposerResetButton.Content" xml:space="preserve"><value>Follow main background</value></data>
+  <data name="ThemeComposerResetButton.AutomationProperties.Name" xml:space="preserve"><value>Make the composer image follow the main background</value></data>
+  <data name="ThemeHomeResetButton.Content" xml:space="preserve"><value>Follow main background</value></data>
+  <data name="ThemeHomeResetButton.AutomationProperties.Name" xml:space="preserve"><value>Make the home photo frame image follow the main background</value></data>
+  <data name="ThemeHomeComposerResetButton.Content" xml:space="preserve"><value>Follow task composer</value></data>
+  <data name="ThemeHomeComposerResetButton.AutomationProperties.Name" xml:space="preserve"><value>Make the home composer image follow the task composer</value></data>
+  <data name="ThemePolaroidResetButton.Content" xml:space="preserve"><value>Follow home frame</value></data>
+  <data name="ThemePolaroidResetButton.AutomationProperties.Name" xml:space="preserve"><value>Make the Polaroid image follow the home photo frame</value></data>
+  <data name="ThemeLightMaterialsTitle.Text" xml:space="preserve"><value>Light mode</value></data>
+  <data name="ThemeDarkMaterialsTitle.Text" xml:space="preserve"><value>Dark mode</value></data>
+  <data name="ThemePageOpacityLabel.Text" xml:space="preserve"><value>Page background veil</value></data>
+  <data name="ThemeSidebarOpacityLabel.Text" xml:space="preserve"><value>Sidebar glass</value></data>
+  <data name="ThemeComposerOpacityLabel.Text" xml:space="preserve"><value>Composer glass</value></data>
+  <data name="ThemeCardOpacityLabel.Text" xml:space="preserve"><value>Message and summary cards</value></data>
+  <data name="ThemeLightPageOpacitySlider.AutomationProperties.Name" xml:space="preserve"><value>Light page background veil strength</value></data>
+  <data name="ThemeLightSidebarOpacitySlider.AutomationProperties.Name" xml:space="preserve"><value>Light sidebar glass strength</value></data>
+  <data name="ThemeLightComposerOpacitySlider.AutomationProperties.Name" xml:space="preserve"><value>Light composer glass strength</value></data>
+  <data name="ThemeLightCardOpacitySlider.AutomationProperties.Name" xml:space="preserve"><value>Light message and summary card strength</value></data>
+  <data name="ThemeDarkPageOpacitySlider.AutomationProperties.Name" xml:space="preserve"><value>Dark page background veil strength</value></data>
+  <data name="ThemeDarkSidebarOpacitySlider.AutomationProperties.Name" xml:space="preserve"><value>Dark sidebar glass strength</value></data>
+  <data name="ThemeDarkComposerOpacitySlider.AutomationProperties.Name" xml:space="preserve"><value>Dark composer glass strength</value></data>
+  <data name="ThemeDarkCardOpacitySlider.AutomationProperties.Name" xml:space="preserve"><value>Dark message and summary card strength</value></data>
+  <data name="ThemeCompositionEditor.Header" xml:space="preserve"><value>Independent regional composition</value></data>
+  <data name="ThemeCompositionSlot.Header" xml:space="preserve"><value>Edit region</value></data>
+  <data name="ThemeCompositionBackgroundItem.Content" xml:space="preserve"><value>Main background</value></data>
+  <data name="ThemeCompositionSidebarItem.Content" xml:space="preserve"><value>Sidebar</value></data>
+  <data name="ThemeCompositionComposerItem.Content" xml:space="preserve"><value>Task composer</value></data>
+  <data name="ThemeCompositionHomeItem.Content" xml:space="preserve"><value>Home photo frame</value></data>
+  <data name="ThemeCompositionHomeComposerItem.Content" xml:space="preserve"><value>Home composer</value></data>
+  <data name="ThemeCompositionPolaroidItem.Content" xml:space="preserve"><value>Home Polaroid frame</value></data>
+  <data name="ThemeCompositionPreviewSample.Text" xml:space="preserve"><value>Move viewport · Ctrl + wheel to resize · click to relocate</value></data>
+  <data name="ThemeCompositionCropSurface.AutomationProperties.Name" xml:space="preserve"><value>Region viewport over the complete source image</value></data>
+  <data name="ThemeCompositionCropSurface.AutomationProperties.HelpText" xml:space="preserve"><value>The source stays complete. Move the blue viewport to select a region, hold Ctrl and use the wheel to resize it, or fine-tune it with arrow keys. The plain wheel scrolls the page.</value></data>
+  <data name="ThemeCompositionFocusXLabel.Text" xml:space="preserve"><value>Focus X</value></data>
+  <data name="ThemeCompositionFocusYLabel.Text" xml:space="preserve"><value>Focus Y</value></data>
+  <data name="ThemeCompositionZoomLabel.Text" xml:space="preserve"><value>Zoom</value></data>
+  <data name="ThemeCompositionOffsetXLabel.Text" xml:space="preserve"><value>Horizontal offset</value></data>
+  <data name="ThemeCompositionOffsetYLabel.Text" xml:space="preserve"><value>Vertical offset</value></data>
+  <data name="ThemeCompositionFit.Header" xml:space="preserve"><value>Fit mode</value></data>
+  <data name="ThemeCompositionFitAuto.Content" xml:space="preserve"><value>Theme recommended</value></data>
+  <data name="ThemeCompositionFitCover.Content" xml:space="preserve"><value>Cover and crop</value></data>
+  <data name="ThemeCompositionFitContain.Content" xml:space="preserve"><value>Show complete image</value></data>
+  <data name="ThemeCompositionFitFill.Content" xml:space="preserve"><value>Stretch to fill</value></data>
+  <data name="ThemeCompositionFocusXSlider.AutomationProperties.Name" xml:space="preserve"><value>Regional image focus X</value></data>
+  <data name="ThemeCompositionFocusYSlider.AutomationProperties.Name" xml:space="preserve"><value>Regional image focus Y</value></data>
+  <data name="ThemeCompositionZoomSlider.AutomationProperties.Name" xml:space="preserve"><value>Regional image zoom</value></data>
+  <data name="ThemeCompositionOffsetXSlider.AutomationProperties.Name" xml:space="preserve"><value>Regional image horizontal offset</value></data>
+  <data name="ThemeCompositionOffsetYSlider.AutomationProperties.Name" xml:space="preserve"><value>Regional image vertical offset</value></data>
+  <data name="ThemeCopyBackgroundCompositionButton.Content" xml:space="preserve"><value>Copy main background parameters</value></data>
+  <data name="ThemeCopyBackgroundCompositionButton.AutomationProperties.Name" xml:space="preserve"><value>Copy the main background composition to the current region</value></data>
+  <data name="ThemeResetCompositionButton.Content" xml:space="preserve"><value>Restore recommended composition</value></data>
+  <data name="ThemeResetCompositionButton.AutomationProperties.Name" xml:space="preserve"><value>Restore the recommended composition for the current region</value></data>
+  <data name="ThemeCropToFrameButton.Content" xml:space="preserve"><value>Fit current frame</value></data>
+  <data name="ThemeCropToFrameButton.AutomationProperties.Name" xml:space="preserve"><value>Cover-crop the image to the current region frame</value></data>
+  <data name="ThemeAppearancePreview.Header" xml:space="preserve"><value>Instant light and dark preview</value></data>
+  <data name="ThemePreviewDarkModeToggle.Header" xml:space="preserve"><value>Preview mode</value></data>
+  <data name="ThemeLivePreviewToggle.Header" xml:space="preserve"><value>Live sync to Codex</value></data>
+  <data name="ThemeLivePreviewToggle.OffContent" xml:space="preserve"><value>Off</value></data>
+  <data name="ThemeLivePreviewToggle.OnContent" xml:space="preserve"><value>On</value></data>
+  <data name="ThemeLivePreviewToggle.AutomationProperties.Name" xml:space="preserve"><value>Automatically hot reload theme edits into Codex</value></data>
+  <data name="ThemeLivePreviewStatus.Text" xml:space="preserve"><value>When enabled, draft changes preview automatically after a short debounce and are never auto-saved.</value></data>
+  <data name="ThemePreviewDarkModeToggle.OffContent" xml:space="preserve"><value>Light</value></data>
+  <data name="ThemePreviewDarkModeToggle.OnContent" xml:space="preserve"><value>Dark</value></data>
+  <data name="ThemeMessagePreviewLabel.Text" xml:space="preserve"><value>Message text contrast preview</value></data>
+  <data name="ThemeAutoPalette.Header" xml:space="preserve"><value>Automatic palette</value></data>
+  <data name="ThemePaletteAnalysisHint.Text" xml:space="preserve"><value>Choose a preset to analyze the current regional image while excluding skin tones from accent and glass suggestions.</value></data>
+  <data name="ThemeFreshPaletteButton.Content" xml:space="preserve"><value>Fresh blue-white</value></data>
+  <data name="ThemeFreshPaletteButton.AutomationProperties.Name" xml:space="preserve"><value>Generate a fresh blue-white palette from the image</value></data>
+  <data name="ThemeMidnightPaletteButton.Content" xml:space="preserve"><value>Midnight blue</value></data>
+  <data name="ThemeMidnightPaletteButton.AutomationProperties.Name" xml:space="preserve"><value>Generate a midnight blue palette from the image</value></data>
+  <data name="ThemeLowFogPaletteButton.Content" xml:space="preserve"><value>Low-fog glass</value></data>
+  <data name="ThemeLowFogPaletteButton.AutomationProperties.Name" xml:space="preserve"><value>Generate a low-fog glass palette from the image</value></data>
+  <data name="ThemeComponentMaterialsEditor.Header" xml:space="preserve"><value>Advanced component materials</value></data>
+  <data name="ThemeComponentMaterialSlot.Header" xml:space="preserve"><value>Edit component</value></data>
+  <data name="ThemeComponentMessages.Content" xml:space="preserve"><value>Assistant messages</value></data>
+  <data name="ThemeComponentSummaries.Content" xml:space="preserve"><value>File and output summaries</value></data>
+  <data name="ThemeComponentPreviews.Content" xml:space="preserve"><value>Task hover previews</value></data>
+  <data name="ThemeComponentMenus.Content" xml:space="preserve"><value>Menus and popups</value></data>
+  <data name="ThemeComponentWorkspace.Content" xml:space="preserve"><value>Terminal and right workspace</value></data>
+  <data name="ThemeComponentCode.Content" xml:space="preserve"><value>Code diffs</value></data>
+  <data name="ThemeComponentSuggestions.Content" xml:space="preserve"><value>Home suggestions</value></data>
+  <data name="ThemeComponentColorLabel.Text" xml:space="preserve"><value>Tint (#RRGGBB)</value></data>
+  <data name="ThemeComponentOpacityLabel.Text" xml:space="preserve"><value>Opacity</value></data>
+  <data name="ThemeLightComponentColorTextBox.AutomationProperties.Name" xml:space="preserve"><value>Light component tint</value></data>
+  <data name="ThemeDarkComponentColorTextBox.AutomationProperties.Name" xml:space="preserve"><value>Dark component tint</value></data>
+  <data name="ThemeLightComponentOpacitySlider.AutomationProperties.Name" xml:space="preserve"><value>Light component opacity</value></data>
+  <data name="ThemeDarkComponentOpacitySlider.AutomationProperties.Name" xml:space="preserve"><value>Dark component opacity</value></data>
+  <data name="ThemeResetComponentMaterialButton.Content" xml:space="preserve"><value>Restore recommended material</value></data>
+  <data name="ThemeResetComponentMaterialButton.AutomationProperties.Name" xml:space="preserve"><value>Restore the selected component color and opacity</value></data>
+  <data name="ThemeActualRegionStatus.Text" xml:space="preserve"><value>Reading live Codex regions…</value></data>
+  <data name="ThemeRefreshActualRegionButton.Content" xml:space="preserve"><value>Refresh live size</value></data>
+  <data name="ThemeRefreshActualRegionButton.AutomationProperties.Name" xml:space="preserve"><value>Refresh actual region sizes from the current Codex window</value></data>
+  <data name="DiagnosticsPortsTitle.Text" xml:space="preserve"><value>Theme ports and owning processes</value></data>
+  <data name="DiagnosticsPortsBody.Text" xml:space="preserve"><value>Inspect managed loopback ports and close only verified official Codex processes.</value></data>
+  <data name="RefreshPorts.Content" xml:space="preserve"><value>Inspect ports</value></data>
+  <data name="RefreshPorts.AutomationProperties.Name" xml:space="preserve"><value>Inspect theme ports and owning processes again</value></data>
+  <data name="ClosePortProcess.Content" xml:space="preserve"><value>Close process</value></data>
+  <data name="ClosePortProcess.AutomationProperties.Name" xml:space="preserve"><value>Close the verified Codex process that owns this port</value></data>
+  <data name="PortPackageMissing" xml:space="preserve"><value>The current Codex Store package was not found, so port owners cannot be verified.</value></data>
+  <data name="PortSummaryFormat" xml:space="preserve"><value>Inspected loopback ports {0}–{1}; found {2} listener entries.</value></data>
+  <data name="PortStatusFree" xml:space="preserve"><value>Available</value></data>
+  <data name="PortStatusCurrentCodex" xml:space="preserve"><value>Current Codex</value></data>
+  <data name="PortStatusPreviousCodex" xml:space="preserve"><value>Previous Codex</value></data>
+  <data name="PortStatusOtherProcess" xml:space="preserve"><value>Other process</value></data>
+  <data name="PortStatusNonLoopback" xml:space="preserve"><value>Non-loopback listener</value></data>
+  <data name="PortStatusUnreadable" xml:space="preserve"><value>Identity unavailable</value></data>
+  <data name="PortDetailAvailable" xml:space="preserve"><value>No process is currently using this port</value></data>
+  <data name="PortDetailUnknown" xml:space="preserve"><value>Process identity unavailable</value></data>
+  <data name="ClosePortDialogTitle" xml:space="preserve"><value>Close the port-owning process?</value></data>
+  <data name="ClosePortDialogBodyFormat" xml:space="preserve"><value>PID {0} will be closed gracefully first and its process tree ended if required to release port {1}. This runs only after the process is verified again as official Codex; protected processes show a Windows administrator confirmation.</value></data>
+  <data name="ClosePortDialogConfirm" xml:space="preserve"><value>Close process</value></data>
+  <data name="ClosePortDialogCancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="ClosePortSuccess" xml:space="preserve"><value>Port process closed</value></data>
+  <data name="ClosePortPending" xml:space="preserve"><value>Process handled; the port is still being released</value></data>
+  <data name="ClosePortFailed" xml:space="preserve"><value>Could not close port process</value></data>
+  <data name="ClosePortResultFormat" xml:space="preserve"><value>Port {0}, PID {1}.</value></data>
 </root>

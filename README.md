@@ -5,6 +5,11 @@
 </p>
 
 <p align="center">
+  <strong>jojhaa 个人维护版 · v0.3.2</strong><br>
+  Windows 原生主题管理器 · 分区域构图 · 实时热重载 · 浅色/深色玻璃材质
+</p>
+
+<p align="center">
   <strong>给 Codex 桌面端换一张会呼吸的脸。</strong><br>
   外部主题 / 换肤工具 · 本机 CDP 注入 · 不改官方安装包
 </p>
@@ -16,6 +21,39 @@
 <p align="center">
   非 OpenAI 官方产品。不修改 <code>.app</code> / <code>app.asar</code> / WindowsApps。
 </p>
+
+## v0.3.2 个人维护版
+
+这是一个发布在 [`jojhaa/Codex-Dream-Skin-Windows`](https://github.com/jojhaa/Codex-Dream-Skin-Windows) 下的独立个人仓库，不会向 `Fei-Away/Codex-Dream-Skin` 推送。当前版本以 Windows 为主要开发和验收平台，在原有外部主题方案上加入可视化管理器和完整的 Kanna Blue 玻璃主题。
+
+核心能力：
+
+- **Windows 原生管理器**：WinUI 3 工作区，支持主题库、导入导出、历史恢复、诊断和安全接管。
+- **六区域独立图片与构图**：主背景、侧边栏、任务输入框、首页照片框、首页输入框和 Polaroid 分别设置图片、焦点、缩放、填充与偏移。
+- **所见即所得编辑**：按 Codex 实际区域比例取景，不生成破坏原图的裁剪副本；支持真实尺寸刷新和推荐构图恢复。
+- **实时主题预览**：浅色/深色即时切换、自动配色、肤色规避、对比度警告、组件级颜色与透明度编辑。
+- **热重载与普通启动接管**：保存前可连续预览；可选后台接管普通 Codex 启动，并动态适配更新后的 Store 版本。
+- **完整界面玻璃化**：任务页、设置页、插件/站点/拉取请求、聊天、终端、审查侧栏、菜单、悬停抽屉和消息组件均有浅色/深色适配。
+- **安全边界明确**：仅使用本机回环 CDP，不修改 Codex 安装目录，不替换官方二进制，不创建隐藏托盘快捷方式。
+
+详细更新内容见 [`CHANGELOG.md`](./CHANGELOG.md)。
+
+### Windows 快速启动
+
+脚本模式：
+
+```powershell
+git clone https://github.com/jojhaa/Codex-Dream-Skin-Windows.git
+cd Codex-Dream-Skin-Windows\windows
+powershell -ExecutionPolicy RemoteSigned -File .\scripts\install-dream-skin.ps1
+powershell -ExecutionPolicy RemoteSigned -File .\scripts\start-dream-skin.ps1
+```
+
+原生主题管理器开发启动（需要 .NET 10 SDK）：
+
+```powershell
+dotnet run --project .\app\CodexDreamSkin\CodexDreamSkin.csproj -c Release -p:Platform=x64
+```
 
 ## 赞助商
 

@@ -42,6 +42,58 @@
                 </StackPanel>
             </Border>
 
+            <Border Style="{StaticResource StatusCardStyle}">
+                <Grid ColumnSpacing="24">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Spacing="6">
+                        <TextBlock x:Uid="AutoTakeoverTitle" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                        <TextBlock x:Uid="AutoTakeoverBody" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
+                        <TextBlock
+                            x:Name="TakeoverStatusText"
+                            x:Uid="TakeoverStatusText"
+                            Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+                    <ToggleSwitch
+                        x:Name="AutoTakeoverToggle"
+                        Grid.Column="1"
+                        x:Uid="AutoTakeoverToggle"
+                        Toggled="AutoTakeoverToggle_Toggled" />
+                </Grid>
+            </Border>
+
+            <Border Style="{StaticResource StatusCardStyle}">
+                <Grid ColumnSpacing="24">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Spacing="6">
+                        <TextBlock x:Uid="StartupTaskTitle" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                        <TextBlock x:Uid="StartupTaskBody" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
+                        <TextBlock
+                            x:Name="StartupTaskStatusText"
+                            x:Uid="StartupTaskStatusText"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+                    <ToggleSwitch
+                        x:Name="StartupTaskToggle"
+                        Grid.Column="1"
+                        x:Uid="StartupTaskToggle"
+                        Toggled="StartupTaskToggle_Toggled" />
+                </Grid>
+            </Border>
+
+            <Button
+                x:Name="ExitManagerButton"
+                x:Uid="ExitManagerButton"
+                HorizontalAlignment="Left"
+                Click="ExitManagerButton_Click" />
+
             <InfoBar
                 x:Uid="SettingsInfo"
                 IsOpen="True"

@@ -664,7 +664,7 @@ function Read-DreamSkinState {
     if ($properties -contains 'schemaVersion') {
       $schemaVersion = 0
       if (-not [int]::TryParse("$($state.schemaVersion)", [ref]$schemaVersion) -or
-        $schemaVersion -lt 1 -or $schemaVersion -gt 3) {
+        $schemaVersion -lt 1 -or $schemaVersion -gt 4) {
         throw 'State schema is not supported.'
       }
     }

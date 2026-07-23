@@ -5,6 +5,11 @@
 </p>
 
 <p align="center">
+  <strong>jojhaa personal edition · v0.3.2</strong><br>
+  Native Windows theme manager · per-region composition · live reload · light/dark glass materials
+</p>
+
+<p align="center">
   <strong>Give Codex a face that breathes.</strong><br>
   External themes for the Codex desktop app · Local CDP inject · No official package mutation
 </p>
@@ -16,6 +21,39 @@
 <p align="center">
   Unofficial. Does not modify <code>.app</code> / <code>app.asar</code> / WindowsApps.
 </p>
+
+## v0.3.2 personal edition
+
+This is an independent personal repository published at [`jojhaa/Codex-Dream-Skin-Windows`](https://github.com/jojhaa/Codex-Dream-Skin-Windows). It does not push changes to `Fei-Away/Codex-Dream-Skin`. Windows is the primary development and acceptance platform for this release, which adds a visual manager and the complete Kanna Blue glass theme to the external skin workflow.
+
+Highlights:
+
+- Native WinUI 3 manager with a theme library, import/export, history, diagnostics, and guarded takeover.
+- Independent images and composition for the page, sidebar, task composer, home hero, home composer, and Polaroid.
+- Source-image viewport editing against live Codex region ratios without creating destructive cropped copies.
+- Instant light/dark preview, automatic palette extraction, skin-tone avoidance, contrast warnings, and component-level material controls.
+- Continuous live preview plus optional background takeover for ordinary Codex launches and Store-version updates.
+- Glass treatment for tasks, Settings, plugins, sites, pull requests, chat, terminal, review panels, menus, hover drawers, and message components.
+- Loopback-only CDP, no Codex binary replacement, no WindowsApps modification, and no hidden tray shortcut.
+
+See [`CHANGELOG.md`](./CHANGELOG.md) for the complete release summary.
+
+### Windows quick start
+
+Script workflow:
+
+```powershell
+git clone https://github.com/jojhaa/Codex-Dream-Skin-Windows.git
+cd Codex-Dream-Skin-Windows\windows
+powershell -ExecutionPolicy RemoteSigned -File .\scripts\install-dream-skin.ps1
+powershell -ExecutionPolicy RemoteSigned -File .\scripts\start-dream-skin.ps1
+```
+
+Native manager development launch (.NET 10 SDK required):
+
+```powershell
+dotnet run --project .\app\CodexDreamSkin\CodexDreamSkin.csproj -c Release -p:Platform=x64
+```
 
 ## Sponsors
 

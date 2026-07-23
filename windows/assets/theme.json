@@ -1,8 +1,15 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 8,
   "id": "preset-kanna-hashimoto",
   "name": "桥本环奈 · 蓝色瞬间",
   "image": "dream-reference.png",
+  "images": {
+    "sidebar": "dream-reference.png",
+    "composer": "dream-reference.png",
+    "home": "dream-reference.png",
+    "homeComposer": "dream-reference.png",
+    "polaroid": "dream-reference.png"
+  },
   "appearance": "auto",
   "art": {
     "focusX": 0.64,
@@ -10,7 +17,38 @@
     "safeArea": "left",
     "taskMode": "ambient"
   },
+  "compositions": {
+    "background": { "focusX": 0.64, "focusY": 0.44, "zoom": 1.0, "fit": "auto", "offsetX": 0.0, "offsetY": 0.0 },
+    "sidebar": { "focusX": 0.64, "focusY": 0.44, "zoom": 1.0, "fit": "auto", "offsetX": 0.0, "offsetY": 0.0 },
+    "composer": { "focusX": 0.64, "focusY": 0.44, "zoom": 1.0, "fit": "auto", "offsetX": 0.0, "offsetY": 0.0 },
+    "home": { "focusX": 0.64, "focusY": 0.44, "zoom": 1.0, "fit": "auto", "offsetX": 0.0, "offsetY": 0.0 },
+    "homeComposer": { "focusX": 0.64, "focusY": 0.44, "zoom": 1.0, "fit": "auto", "offsetX": 0.0, "offsetY": 0.0 },
+    "polaroid": { "focusX": 0.64, "focusY": 0.44, "zoom": 1.0, "fit": "auto", "offsetX": 0.0, "offsetY": 0.0 }
+  },
   "palette": {
     "accent": "#1557b0"
+  },
+  "materials": {
+    "light": {
+      "page": 0.56,
+      "sidebar": 0.58,
+      "composer": 0.48,
+      "card": 0.18
+    },
+    "dark": {
+      "page": 0.68,
+      "sidebar": 0.74,
+      "composer": 0.62,
+      "card": 0.42
+    },
+    "components": {
+      "messages": { "light": { "color": "#FDFFFF", "opacity": 0.18 }, "dark": { "color": "#051423", "opacity": 0.42 } },
+      "summaries": { "light": { "color": "#FDFFFF", "opacity": 0.18 }, "dark": { "color": "#051423", "opacity": 0.42 } },
+      "previews": { "light": { "color": "#E0F1F7", "opacity": 0.88 }, "dark": { "color": "#061728", "opacity": 0.88 } },
+      "menus": { "light": { "color": "#F9FDFD", "opacity": 0.26 }, "dark": { "color": "#051423", "opacity": 0.42 } },
+      "workspace": { "light": { "color": "#FDFFFF", "opacity": 0.18 }, "dark": { "color": "#051423", "opacity": 0.44 } },
+      "code": { "light": { "color": "#FAFDFC", "opacity": 0.12 }, "dark": { "color": "#071B2E", "opacity": 0.24 } },
+      "suggestions": { "light": { "color": "#FFFFFF", "opacity": 0.36 }, "dark": { "color": "#071A2D", "opacity": 0.46 } }
+    }
   }
 }
