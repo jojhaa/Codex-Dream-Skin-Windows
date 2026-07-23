@@ -1,5 +1,13 @@
 # Development Log
 
+## 2026-07-23 - Publish personal GitHub release v0.3.2
+
+- Published the independent public repository at `https://github.com/jojhaa/Codex-Dream-Skin-Windows`. GitHub reports the configured description, `main` default branch, and topics for Codex, Windows, WinUI 3, theming, desktop customization, and OpenAI.
+- Preserved the repository initialization commit through a non-destructive `ours` merge instead of force-pushing unrelated history. The annotated `v0.3.2` tag resolves to merge commit `a9fb485f7a2efb801395428c79e0afefa59ea6df`.
+- Published `Codex Dream Skin Windows v0.3.2` as a non-draft, non-prerelease latest Release at `https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases/tag/v0.3.2`.
+- Uploaded `Codex-Dream-Skin-Windows-v0.3.2-source.zip` (20,749,247 bytes) and its checksum file. GitHub independently reports archive digest `sha256:7a2740152620f5fd1c43fdaa976df7fa45902c376bf2506507f3dd32eca94347`, matching the locally generated SHA-256.
+- Reconfigured remotes so `origin` fetches and pushes only to the personal repository. `upstream` may fetch from `Fei-Away/Codex-Dream-Skin`, but its push URL is deliberately `DISABLED`.
+
 ## 2026-07-23 - Prepare the independent personal v0.3.2 GitHub release
 
 - Confirmed the active GitHub CLI identity is the personal account `jojhaa`; publication targets the standalone public repository `jojhaa/Codex-Dream-Skin-Windows`. The Fei-Away remote is retained only as a fetch-only upstream and is never used as a push target.
