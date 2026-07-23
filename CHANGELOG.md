@@ -26,7 +26,7 @@ This release turns the Windows theme workflow into a native, visual theme studio
 ### Safety
 
 - CDP remains bound to `127.0.0.1`.
-- Codex binaries, WindowsApps, `.app`, and `app.asar` are not modified.
+- Codex binaries, WindowsApps, and `app.asar` are not modified.
 - No hidden PowerShell tray shortcut is installed.
 - Package/process identity is revalidated before any guarded takeover or close operation.
 

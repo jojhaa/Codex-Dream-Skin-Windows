@@ -1,16 +1,25 @@
 # Development Log
 
+## 2026-07-23 - Convert the public repository to Windows-only
+
+- Replaced `README.md` and `README.en.md` from scratch with Windows-only product positioning, features, setup, commands, runtime architecture, safety boundaries, repository structure, development checks, limitations, and links to the personal repository. No sponsor block, inherited gallery, macOS table, or original README copy remains.
+- Kept the original project link only in the final acknowledgements section of each README, where it is credited for the initial external-theming idea and foundation.
+- Removed the complete `macos/` tree, obsolete cross-platform/project/promotion documents, inherited sponsor/gallery images, and tracked QA screenshots that are not public product assets. Local untracked acceptance captures remain excluded from Git.
+- Rebuilt `AGENTS.md`, the pull-request template, and all Issue forms as clean UTF-8 Windows-only guidance pointing at `jojhaa/Codex-Dream-Skin-Windows`.
+- Removed platform-comparison wording from Windows runtime comments and regression failure text, changed the bundled Gothic preset link to the personal repository, and narrowed the changelog safety wording to Windows artifacts.
+- Validation: repository text outside historical development records contains no macOS, sponsor, gallery, or cross-platform references; `git diff --check` passes; `windows/tests/run-tests.ps1` passes; the expected forced-cleanup warning fixtures remain unchanged; `dotnet build windows/app/CodexDreamSkin/CodexDreamSkin.csproj -c Release -p:Platform=x64 -nologo` succeeds with zero warnings and zero errors.
+
 ## 2026-07-23 - Publish personal GitHub release v0.3.2
 
 - Published the independent public repository at `https://github.com/jojhaa/Codex-Dream-Skin-Windows`. GitHub reports the configured description, `main` default branch, and topics for Codex, Windows, WinUI 3, theming, desktop customization, and OpenAI.
 - Preserved the repository initialization commit through a non-destructive `ours` merge instead of force-pushing unrelated history. The annotated `v0.3.2` tag resolves to merge commit `a9fb485f7a2efb801395428c79e0afefa59ea6df`.
 - Published `Codex Dream Skin Windows v0.3.2` as a non-draft, non-prerelease latest Release at `https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases/tag/v0.3.2`.
 - Uploaded `Codex-Dream-Skin-Windows-v0.3.2-source.zip` (20,749,247 bytes) and its checksum file. GitHub independently reports archive digest `sha256:7a2740152620f5fd1c43fdaa976df7fa45902c376bf2506507f3dd32eca94347`, matching the locally generated SHA-256.
-- Reconfigured remotes so `origin` fetches and pushes only to the personal repository. `upstream` may fetch from `Fei-Away/Codex-Dream-Skin`, but its push URL is deliberately `DISABLED`.
+- Reconfigured remotes so `origin` fetches and pushes only to the personal repository. The legacy `upstream` remains fetch-only, and its push URL is deliberately `DISABLED`.
 
 ## 2026-07-23 - Prepare the independent personal v0.3.2 GitHub release
 
-- Confirmed the active GitHub CLI identity is the personal account `jojhaa`; publication targets the standalone public repository `jojhaa/Codex-Dream-Skin-Windows`. The Fei-Away remote is retained only as a fetch-only upstream and is never used as a push target.
+- Confirmed the active GitHub CLI identity is the personal account `jojhaa`; publication targets the standalone public repository `jojhaa/Codex-Dream-Skin-Windows`. The legacy remote is retained only as a fetch-only upstream and is never used as a push target.
 - Unified the WinUI package identity version, assembly version, and file version at `0.3.2` / `0.3.2.0`.
 - Added Chinese and English personal-edition introductions, Windows quick-start commands, a root changelog, and dedicated `docs/releases/v0.3.2.md` release notes.
 - Scanned public text sources for token/private-key patterns. The only matches are development-log examples of generated local theme IDs; no credential was found.

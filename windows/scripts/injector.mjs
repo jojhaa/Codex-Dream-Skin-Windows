@@ -16,7 +16,7 @@ const OPERATION_UI_HOST_ID = "chatgpt-dream-skin-operation";
 const OPERATION_UI_REGISTRY_KEY = "__CHATGPT_DREAM_SKIN_OPERATION_UI__";
 const OPERATION_KINDS = new Set(["apply", "pause", "switch"]);
 const OPERATION_UI_STATES = new Set(["success", "error", "cancelled"]);
-// Shared with macOS: in-renderer progress for pause/apply so both platforms feel the same.
+// In-renderer progress keeps pause/apply transitions visible and consistent.
 const OPERATION_UI_CSS = `
   :host {
     all: initial;

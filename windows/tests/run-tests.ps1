@@ -774,7 +774,7 @@ try {
     -not $traySource.Contains("Set-DreamSkinPaused -Paused `$true") -or
     -not $traySource.Contains("Set-DreamSkinPaused -Paused `$false") -or
     -not $traySource.Contains('[System.Windows.Forms.Application]::Exit()')) {
-    throw 'Tray pause/resume no longer mirrors macOS live-remove and re-apply semantics.'
+    throw 'Tray pause/resume no longer preserves live-remove and re-apply semantics.'
   }
   $themeWindowsSource = Read-DreamSkinUtf8File -Path (Join-Path $Root 'scripts\theme-windows.ps1')
   foreach ($requiredLiveRemoveToken in @(

@@ -240,7 +240,7 @@ function Initialize-DreamSkinThemeStore {
     Assert-DreamSkinNoReparseComponents -Path $presetTheme
     Copy-Item -LiteralPath (Join-Path $assetRoot 'theme.json') -Destination $presetTheme -Force
   }
-  # Bundled Gothic Void Crusade (same pack as macOS presets/).
+  # Bundled Gothic Void Crusade preset.
   $gothicSource = Join-Path $SkillRoot 'presets\preset-gothic-void-crusade'
   $gothicDirectory = Join-Path $paths.Saved 'preset-gothic-void-crusade'
   $gothicTheme = Join-Path $gothicDirectory 'theme.json'
@@ -502,7 +502,7 @@ function Show-DreamSkinOperationUi {
   }
 }
 
-# Mirror macOS pause: mark paused, show in-app loading, then strip the live skin over CDP.
+# Pause safely: mark paused, show in-app loading, then strip the live skin over CDP.
 # Writing only the pause file leaves CSS in the renderer until the watcher polls.
 function Invoke-DreamSkinLiveRemove {
   param(

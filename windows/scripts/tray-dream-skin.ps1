@@ -97,10 +97,10 @@ try {
       }
       $notify.ShowBalloonTip(1800, 'Codex Dream Skin', '正在应用皮肤…', [System.Windows.Forms.ToolTipIcon]::Info)
     }
-    # Match macOS menubar: pause = mark + live remove; resume = clear pause + re-apply.
+    # Keep pause/resume symmetric: pause marks and removes live styling; resume clears and reapplies.
     if ($paused) {
       $null = Add-DreamSkinTrayItem -Items $menu.Items -Text '继续显示皮肤' -Action {
-        # Match macOS: clear pause + apply path; show in-window loading when CDP is up.
+        # Clear the pause marker and reapply; show in-window loading when CDP is available.
         Set-DreamSkinPaused -Paused $false -StateRoot $StateRoot | Out-Null
         $session = Get-DreamSkinLiveSessionContext -StateRoot $StateRoot
         $begin = $null
@@ -121,7 +121,7 @@ try {
       }
     } else {
       $null = Add-DreamSkinTrayItem -Items $menu.Items -Text '暂停皮肤' -Action {
-        # Match macOS pause: marker + live remove with in-window loading / result.
+        # Mark paused and remove the live theme with an in-window loading/result state.
         Set-DreamSkinPaused -Paused $true -StateRoot $StateRoot | Out-Null
         $removal = Invoke-DreamSkinLiveRemove -StateRoot $StateRoot
         $icon = if ($removal.Removed) {

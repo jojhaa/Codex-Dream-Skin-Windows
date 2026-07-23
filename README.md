@@ -1,46 +1,31 @@
-# Codex Dream Skin
+# Codex Dream Skin Windows
 
-<p align="center">
-  <strong>中文</strong> · <a href="./README.en.md">English</a>
-</p>
+[English](./README.en.md) · [v0.3.2 发布说明](./docs/releases/v0.3.2.md) · [更新日志](./CHANGELOG.md)
 
-<p align="center">
-  <strong>jojhaa 个人维护版 · v0.3.2</strong><br>
-  Windows 原生主题管理器 · 分区域构图 · 实时热重载 · 浅色/深色玻璃材质
-</p>
+面向 Windows 版 Codex Desktop 的非官方可视化主题管理器。它通过本机回环 CDP 将图片、玻璃材质和区域构图应用到 Codex，不修改 `WindowsApps`、Codex 二进制文件或 `app.asar`。
 
-<p align="center">
-  <strong>给 Codex 桌面端换一张会呼吸的脸。</strong><br>
-  外部主题 / 换肤工具 · 本机 CDP 注入 · 不改官方安装包
-</p>
+> 当前公开版本：`v0.3.2`
+>
+> 支持平台：Windows 10 1809 及以上、Windows 11
+>
+> 项目仓库：[`jojhaa/Codex-Dream-Skin-Windows`](https://github.com/jojhaa/Codex-Dream-Skin-Windows)
 
-<p align="center">
-  一张图，一种心情 · 写代码，也要有氛围感
-</p>
+## 主要功能
 
-<p align="center">
-  非 OpenAI 官方产品。不修改 <code>.app</code> / <code>app.asar</code> / WindowsApps。
-</p>
+- 原生 WinUI 3 主题管理器，包含概览、主题、诊断和设置页面。
+- 主背景、左侧栏、任务输入框、首页照片框、首页输入框、拍立得六个独立图片区域。
+- 焦点 X/Y、缩放、填充方式、水平/垂直偏移和真实 Codex 比例取景。
+- 浅色/深色即时预览、自动配色、肤色规避、对比度提醒和可视化颜色选择。
+- 消息、摘要、任务预览、菜单、工作区、代码/差异、首页建议等组件的独立玻璃材质。
+- 主题库、导入/导出、历史记录、回滚和推荐构图恢复。
+- 热重载，以及可选的“普通启动 Codex 后自动应用主题”接管模式。
+- 自动发现 Microsoft Store 更新后的 Codex 安装路径，不绑定单一版本目录。
+- 本机 CDP 端口诊断、占用进程识别和受保护的关闭操作。
+- Kanna Blue 作为内置示例主题，覆盖首页、任务、设置、插件、站点、拉取请求、聊天、终端、审查面板、菜单和悬停抽屉。
 
-## v0.3.2 个人维护版
+## 快速开始
 
-这是一个发布在 [`jojhaa/Codex-Dream-Skin-Windows`](https://github.com/jojhaa/Codex-Dream-Skin-Windows) 下的独立个人仓库，不会向 `Fei-Away/Codex-Dream-Skin` 推送。当前版本以 Windows 为主要开发和验收平台，在原有外部主题方案上加入可视化管理器和完整的 Kanna Blue 玻璃主题。
-
-核心能力：
-
-- **Windows 原生管理器**：WinUI 3 工作区，支持主题库、导入导出、历史恢复、诊断和安全接管。
-- **六区域独立图片与构图**：主背景、侧边栏、任务输入框、首页照片框、首页输入框和 Polaroid 分别设置图片、焦点、缩放、填充与偏移。
-- **所见即所得编辑**：按 Codex 实际区域比例取景，不生成破坏原图的裁剪副本；支持真实尺寸刷新和推荐构图恢复。
-- **实时主题预览**：浅色/深色即时切换、自动配色、肤色规避、对比度警告、组件级颜色与透明度编辑。
-- **热重载与普通启动接管**：保存前可连续预览；可选后台接管普通 Codex 启动，并动态适配更新后的 Store 版本。
-- **完整界面玻璃化**：任务页、设置页、插件/站点/拉取请求、聊天、终端、审查侧栏、菜单、悬停抽屉和消息组件均有浅色/深色适配。
-- **安全边界明确**：仅使用本机回环 CDP，不修改 Codex 安装目录，不替换官方二进制，不创建隐藏托盘快捷方式。
-
-详细更新内容见 [`CHANGELOG.md`](./CHANGELOG.md)。
-
-### Windows 快速启动
-
-脚本模式：
+### 1. 安装并启动主题引擎
 
 ```powershell
 git clone https://github.com/jojhaa/Codex-Dream-Skin-Windows.git
@@ -49,120 +34,78 @@ powershell -ExecutionPolicy RemoteSigned -File .\scripts\install-dream-skin.ps1
 powershell -ExecutionPolicy RemoteSigned -File .\scripts\start-dream-skin.ps1
 ```
 
-原生主题管理器开发启动（需要 .NET 10 SDK）：
+### 2. 从源码运行主题管理器
+
+需要安装 [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)。
 
 ```powershell
+cd Codex-Dream-Skin-Windows\windows
 dotnet run --project .\app\CodexDreamSkin\CodexDreamSkin.csproj -c Release -p:Platform=x64
 ```
 
-## 赞助商
+管理器启动后可以导入图片、调整每个区域的取景参数、实时预览明暗模式并应用主题。
 
-<p align="center">
-  <a href="https://passion8.cc/register?aff=TuPe">
-    <img src="docs/images/sponsor-passion8.png" alt="Passion8" height="72">
-  </a>
-</p>
+## 常用命令
 
-<p align="center">
-  <strong>更智能的连接 · 更热爱的创造</strong><br>
-  <sub>热爱驱动 · 无限可能 · Connect AI · Power Creation</sub>
-</p>
+```powershell
+# 验证安装、运行环境和当前主题
+powershell -ExecutionPolicy RemoteSigned -File .\scripts\verify-dream-skin.ps1
 
-<p align="center">
-  感谢 <a href="https://passion8.cc/register?aff=TuPe"><strong>passion8.cc</strong></a> 赞助本项目。<br>
-  满血 AI 中转：官方模型直连，无降智、无套壳；一行配置接入 Codex / Claude Code / Grok。
-</p>
+# 恢复 Codex 原始外观
+powershell -ExecutionPolicy RemoteSigned -File .\scripts\restore-dream-skin.ps1
 
-<p align="center">
-  <sub>
-    换肤与 API 配置互相独立，本项目不会自动改写你的模型供应商设置。
-  </sub>
-</p>
+# 运行完整 Windows 回归测试
+powershell -ExecutionPolicy Bypass -File .\tests\run-tests.ps1
+```
 
-## 效果预览
+## 工作原理与安全边界
 
-一张图，一种心情。下面都是可落地的主题示意效果：
+1. 启动脚本动态查找当前 Microsoft Store Codex 包与真实进程路径。
+2. Codex 通过仅绑定 `127.0.0.1` 的 Chromium 调试端口启动。
+3. 注入器通过 CDP 向现有渲染页面加载主题 CSS、图片配置和运行时适配。
+4. 热重载监听本地主题文件；修改后不需要重装 Codex。
+5. 恢复脚本停止主题运行时并移除用户级状态，不改动官方应用文件。
 
-<p align="center">
-  <img src="docs/images/gallery/skin-01.jpg" alt="粉系定制" width="900"><br>
-  <sub>粉系定制</sub>
-</p>
+本项目不会：
 
-<p align="center">
-  <img src="docs/images/gallery/skin-02.jpg" alt="财神打工" width="900"><br>
-  <sub>财神打工版</sub>
-</p>
+- 修改、替换或重新签名 Codex 安装包。
+- 写入 `WindowsApps` 或解包 `app.asar`。
+- 更改 API Base URL、API Key 或账户数据。
+- 安装隐藏的 PowerShell 托盘快捷方式。
+- 将 CDP 端口暴露到局域网。
 
-<p align="center">
-  <img src="docs/images/gallery/skin-03.jpg" alt="红白科幻" width="900"><br>
-  <sub>红白科幻</sub>
-</p>
+启用 CDP 期间，请不要运行不受信任的本地程序。
 
-<p align="center">
-  <img src="docs/images/gallery/skin-04.jpg" alt="清透定制" width="900"><br>
-  <sub>清透定制</sub>
-</p>
+## 项目结构
 
-<p align="center">
-  <img src="docs/images/gallery/skin-05.jpg" alt="灵感小宇宙" width="900"><br>
-  <sub>灵感小宇宙</sub>
-</p>
+```text
+windows/
+├── app/CodexDreamSkin/    # WinUI 3 主题管理器
+├── assets/                # 默认主题、CSS、注入载荷与示例图片
+├── presets/               # 内置主题预设
+├── scripts/               # 安装、启动、应用、验证与恢复脚本
+├── tests/                 # PowerShell、Node.js 与实时界面回归测试
+├── references/            # Windows 运行时与 QA 说明
+└── SKILL.md               # Codex 自动化工作流
+```
 
-<p align="center">
-  <img src="docs/images/gallery/skin-06.jpg" alt="紫夜限定" width="900"><br>
-  <sub>紫夜限定</sub>
-</p>
+## 开发验证
 
-<p align="center">
-  <img src="docs/images/gallery/skin-07.jpg" alt="初音未来" width="900"><br>
-  <sub>初音未来</sub>
-</p>
+```powershell
+cd windows
+powershell -ExecutionPolicy Bypass -File .\tests\run-tests.ps1
+dotnet build .\app\CodexDreamSkin\CodexDreamSkin.csproj -c Release -p:Platform=x64 -nologo
+```
 
-<p align="center">
-  <img src="docs/images/gallery/skin-08.jpg" alt="舞台黑金" width="900"><br>
-  <sub>舞台黑金</sub>
-</p>
+提交变更时请同步更新根目录的 [`DEVELOPMENT_PROGRESS.md`](./DEVELOPMENT_PROGRESS.md) 和 [`DEVELOPMENT_LOG.md`](./DEVELOPMENT_LOG.md)。
 
-## 它能做什么
+## 已知限制
 
-- **真·可交互**：侧栏、建议卡、项目选择、输入框都是原生控件，不是整窗假截图贴上去
-- **可换图**：换一张喜欢的图，就能变成你的主题
-- **可恢复**：一键还原官方外观
-- **相对安全**：本机回环 CDP 注入，不改官方二进制与签名
+- 主题依赖 Codex 当前的 Electron/Chromium DOM；Codex 大版本更新后可能需要更新选择器。
+- “普通启动自动应用”属于可选用户级接管功能，关闭后普通 Codex 不会自动带主题。
+- 实时界面测试要求本机 Codex 正在运行并已开启受管理的 CDP 会话。
+- 本项目是非官方工具，与 OpenAI 无隶属或认可关系。
 
-## 快速开始
+## 感谢与来源
 
-仓库内按平台放了现成脚本（实现细节不同，效果都是「主题化 Codex」）：
-
-| 平台 | 目录 | 入口 |
-|------|------|------|
-| Apple Silicon / Intel Mac | [`macos/`](./macos/) | 双击 `Install Codex Dream Skin.command` |
-| Windows | [`windows/`](./windows/) | `scripts/install-dream-skin.ps1` → `start-dream-skin.ps1` |
-
-更细的说明：
-
-- Mac：[`macos/README.md`](./macos/README.md)
-- Windows：[`windows/SKILL.md`](./windows/SKILL.md)
-- 路径对照：[`docs/platforms.md`](./docs/platforms.md)
-- 项目记录：[`docs/PROJECT.md`](./docs/PROJECT.md)
-
-## 反馈与贡献
-
-- **Issue：** 请用 [Issue 模板](./.github/ISSUE_TEMPLATE/)（Bug / 功能）；已关闭空白 Issue。提交前建议先跑 Verify / Restore 自检。
-- **PR：** 请按 [PR 模板](./.github/pull_request_template.md) 写清改动，并勾选对应自测（如 `macos/tests/run-tests.sh`、verify / restore）。
-
-## 安全边界
-
-- CDP 只绑 `127.0.0.1`，主题运行期间勿跑来路不明的本机程序
-- 不修改官方安装目录与代码签名
-- **不会**自动改写 API Key / Base URL；中转与换肤分开
-
-## 许可与声明
-
-- 见 [`macos/LICENSE`](./macos/LICENSE)（MIT）与 [`macos/NOTICE.md`](./macos/NOTICE.md)
-- 非 OpenAI 官方产品；Codex 及相关权利归其权利人
-- 效果图中的人物 / IP 形象仅作主题示意；商用或公开再分发请自行确认肖像权与商标授权
-
----
-
-Star 一下，然后挑一张图，把你的 Codex 变成今天想要的样子。
+感谢 [`Fei-Away/Codex-Dream-Skin`](https://github.com/Fei-Away/Codex-Dream-Skin) 提供最初的 Codex 外部主题思路与基础实现。本仓库在此基础上面向 Windows 进行了独立重构与持续维护。

@@ -1,30 +1,33 @@
-# Agent notes — Codex Dream Skin
+# Codex Dream Skin Windows maintainer notes
 
-Instructions for AI / human maintainers working in this repo.
+Instructions for AI and human maintainers working in this repository.
 
-## Changelog (required)
+## Required project records
 
-- Keep **`macos/CHANGELOG.md`** as the user-facing release notes (Chinese is fine; match existing tone).
-- On any user-visible macOS change (features, UX, safety, install paths, visual shell), **update the changelog in the same PR/commit** when possible.
-- Bump **`macos/VERSION`** when shipping a release-worthy set of changes:
-  - **patch** `x.y.Z` — fixes, small hardening, copy
-  - **minor** `x.Y.0` — new capabilities (menu bar, hot switch, auto light/dark, etc.)
-  - **major** `X.0.0` — breaking install paths / security model / remove public APIs
-- Prefer a new `## x.y.z — YYYY-MM-DD` section; use `## Unreleased` only if you intentionally batch before tagging.
-- Write for **users**, not as a dump of commit hashes:
-  - **新增 / 改进 / 修复 / 说明** (or English Added / Changed / Fixed)
-  - Short bullets; link to docs paths if needed
-  - Call out security-relevant behavior (CDP loopback, no asar edits, no silent API hijack)
-- Do **not** replace a detailed git commit message with only “update changelog”; keep commits descriptive **and** keep CHANGELOG in sync for releases.
+- Update `DEVELOPMENT_PROGRESS.md` after every completed development task.
+- Update `DEVELOPMENT_LOG.md` with the implementation summary and validation evidence.
+- Update `CHANGELOG.md` for user-visible release changes.
+- Keep release notes user-focused: Added, Improved, Fixed, Safety, and Validation.
 
-## Scope reminders
+## Windows scope
 
-- External theme via **loopback CDP**; never modify official `.app` / `app.asar` / signatures.
-- `docs/images/gallery/*` are **preview composites**, not pure banner assets for `theme/`.
-- Pure backgrounds go through customize / `images/` / `themes/`; inject reads active `theme.json` + image.
-- CSS: dark portal base + optional light shell via `data-dream-shell`; do not force `appearanceTheme=dark` on install.
-- Prefer hot reapply when CDP is already up; full restart only when required.
+- This repository supports Windows only.
+- Keep runtime code, documentation, issue templates, tests, and release artifacts under the Windows scope.
+- The supported application is the official Microsoft Store Codex Desktop app.
+- Discover Store package paths dynamically; never bind runtime behavior to one Codex version directory.
 
-## Windows
+## Safety boundary
 
-- When Windows gains parity features, add or extend a changelog under `windows/` (or a root CHANGELOG section) using the same user-facing style; keep platform labels clear.
+- Apply themes through loopback CDP only.
+- Never modify Codex binaries, `WindowsApps`, `app.asar`, or application signatures.
+- Never silently change API Base URLs, API keys, authentication files, or account data.
+- Validate package and process identity before guarded takeover or process-close operations.
+- Do not commit screenshots containing private chats, account names, project names, or local paths.
+
+## Development
+
+- Preserve hot reload and restore behavior when changing the theme engine.
+- Keep the native manager and injected renderer schema compatible.
+- Prefer existing scripts and tests over one-off replacements.
+- Run `windows/tests/run-tests.ps1` for functional changes.
+- Build `windows/app/CodexDreamSkin/CodexDreamSkin.csproj` in Release mode for manager changes.
