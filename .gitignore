@@ -66,6 +66,7 @@ runtime/
 
 # Local development records. Agents keep these files updated in the workspace,
 # but they are intentionally excluded from the public GitHub repository.
+/AGENTS.md
 /DEVELOPMENT_LOG.md
 /DEVELOPMENT_PROGRESS.md
 
