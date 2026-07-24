@@ -64,6 +64,11 @@ docs/readme-preview.html
 release/
 runtime/
 
+# Local development records. Agents keep these files updated in the workspace,
+# but they are intentionally excluded from the public GitHub repository.
+/DEVELOPMENT_LOG.md
+/DEVELOPMENT_PROGRESS.md
+
 # Local visual QA captures. Curated public images belong under docs/images/
 # or a product Assets directory instead of the Windows workspace root.
 /windows/*.png

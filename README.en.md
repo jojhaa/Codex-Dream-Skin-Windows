@@ -206,8 +206,6 @@ powershell -ExecutionPolicy Bypass -File .\tests\run-tests.ps1
 dotnet build .\app\CodexDreamSkin\CodexDreamSkin.csproj -c Release -p:Platform=x64 -nologo
 ```
 
-Update [`DEVELOPMENT_PROGRESS.md`](./DEVELOPMENT_PROGRESS.md) and [`DEVELOPMENT_LOG.md`](./DEVELOPMENT_LOG.md) with every development change.
-
 ## Repository layout
 
 ```text

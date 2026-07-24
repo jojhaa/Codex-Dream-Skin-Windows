@@ -206,8 +206,6 @@ powershell -ExecutionPolicy Bypass -File .\tests\run-tests.ps1
 dotnet build .\app\CodexDreamSkin\CodexDreamSkin.csproj -c Release -p:Platform=x64 -nologo
 ```
 
-提交变更时请同步更新 [`DEVELOPMENT_PROGRESS.md`](./DEVELOPMENT_PROGRESS.md) 和 [`DEVELOPMENT_LOG.md`](./DEVELOPMENT_LOG.md)。
-
 ## 项目结构
 
 ```text
