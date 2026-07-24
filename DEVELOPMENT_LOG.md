@@ -1,5 +1,14 @@
 # Development Log
 
+## 2026-07-24 - Publish personal GitHub release v0.3.4
+
+- Committed the complete validated Windows release as `a9de2cc` (`Release v0.3.4 Windows theme studio`) and pushed `main` to `jojhaa/Codex-Dream-Skin-Windows`.
+- Created and pushed the annotated `v0.3.4` tag.
+- Published `Codex Dream Skin Windows v0.3.4` as the non-draft, non-prerelease latest Release at `https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases/tag/v0.3.4`.
+- Uploaded the unsigned self-contained green package `CodexDreamSkin-Windows-x64-v0.3.4.zip`.
+- GitHub reports the asset in `uploaded` state at 143,438,116 bytes with digest `sha256:aa43f6bf0a9f857c50534294afbac57d5bcc7b559f188ba6aec98b5a175d17b9`, exactly matching the locally computed SHA-256.
+- Kept local root-level QA captures untracked and outside the public commit while retaining the user-approved README gallery and bundled public theme artwork.
+
 ## 2026-07-24 - Prepare v0.3.4 and its unsigned Windows x64 green package
 
 - Updated the WinUI package identity, assembly, file version, GitHub API client identity, Chinese/English README current-version links, changelog, and dedicated release notes to `v0.3.4`.
