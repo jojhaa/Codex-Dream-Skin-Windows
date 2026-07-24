@@ -1,5 +1,13 @@
 # Development Log
 
+## 2026-07-24 - Make the v0.3.4 version log bilingual with Chinese primary
+
+- Reorganized `docs/releases/v0.3.4.md` so a complete Chinese version log appears first and serves as the canonical narrative.
+- Added Chinese sections for major changes, fixes, green-package usage, SHA-256 verification, safety boundaries, deferred signing, retained public artwork, and the free/open-source refund warning.
+- Added a concise English summary after a clear separator, preserving equivalent feature, installation, safety, distribution, and authenticity information without competing with the Chinese primary section.
+- Reworked the `CHANGELOG.md` v0.3.4 entry using the same Chinese-first structure and an English summary.
+- Updated the public GitHub Release body from the tracked Markdown source so the online release and repository documentation use the same bilingual content.
+
 ## 2026-07-24 - Publish personal GitHub release v0.3.4
 
 - Committed the complete validated Windows release as `a9de2cc` (`Release v0.3.4 Windows theme studio`) and pushed `main` to `jojhaa/Codex-Dream-Skin-Windows`.

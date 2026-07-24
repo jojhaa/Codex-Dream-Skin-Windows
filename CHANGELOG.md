@@ -2,37 +2,49 @@
 
 ## v0.3.4 — 2026-07-24
 
-This release turns the Windows theme studio into a self-contained green application with stronger lifecycle management, release safety, and visual coverage.
+### 中文版本日志（主要）
 
-### Added
+本次更新将 Windows 主题工作室完善为自包含绿色应用，并加强托盘生命周期、发布安全与 Codex 全界面主题覆盖。
 
-- Native in-process Windows notification-area support for packaged and portable builds, including close-to-tray, double-click restore, Explorer-restart recovery, keyboard-accessible localized commands, and full exit.
-- Start with Windows support for both packaged startup tasks and portable current-user startup entries.
-- Manual latest-release checks against the official GitHub Releases API.
-- A persistent free/open-source, refund, anti-resale, and canonical-project notice.
-- Dynamic managed-port inspection and guarded closing of verified official Codex processes.
-- A dedicated transparent application icon across the EXE, manager window, notification area, Store, Start, tiles, and splash assets.
+#### 新增
 
-### Improved
+- 新增适用于应用包和绿色版的原生 Windows 托盘，支持关闭转后台、双击恢复、Explorer 重启后恢复、键盘助记键、页面导航、隐藏和彻底退出。
+- 新增开机自启动，分别使用应用包启动任务和绿色版当前用户启动项。
+- 新增基于官方 GitHub Releases API 的手动版本检测。
+- 新增永久免费、开源、退款、防二次售卖和唯一官方项目地址声明。
+- 新增受管端口检测，以及仅针对已验证官方 Codex 进程的安全关闭操作。
+- 新增透明背景应用图标，并同步到 EXE、管理器窗口、托盘、Store、开始菜单、磁贴和启动画面。
 
-- Rebuilt the public introduction as a Windows-only project with an organized product gallery and Chinese/English documentation.
-- Extended Kanna Blue coverage across Codex Settings, hover drawers, utility pages, terminal, review sidebar, summaries, queued messages, and light/dark modes.
-- Added responsive theme-manager composition, preview, color, and material layouts with a 770×680 minimum window contract.
-- Made portable storage, bundled theme assets, localization resources, diagnostics, and Settings independent of package identity.
-- Automatically discovers the current Microsoft Store Codex package instead of binding to one installed version.
+#### 改进
 
-### Fixed
+- 将公开项目介绍重构为 Windows 专用版本，增加产品截图布局和中英文文档。
+- 扩展 Kanna Blue 对设置页、悬停抽屉、工具页、终端、审查侧栏、摘要、待发送消息及浅色/深色模式的覆盖。
+- 优化主题管理器构图、预览、配色和材质编辑的响应式布局，并设置 770×680 最小窗口尺寸。
+- 让绿色版存储、内置主题资源、本地化、诊断和设置页不再依赖应用包身份。
+- 自动发现当前 Microsoft Store Codex 应用包，不再绑定单一安装版本。
 
-- Prevented Diagnostics and Settings navigation from terminating the unpackaged portable manager.
-- Restored the bundled theme image in clean portable publishes.
-- Prevented close-to-tray from activating unless Windows successfully registers the notification icon.
-- Kept the tray menu, page navigation, normal second launch, hide, restore, and full-exit lifecycle synchronized.
+#### 修复
 
-### Distribution
+- 修复绿色版进入诊断页和设置页时可能闪退的问题。
+- 修复干净发布后内置主题图片丢失的问题。
+- 托盘注册成功后才启用关闭转后台，避免产生无法访问的隐藏进程。
+- 修复托盘菜单、页面导航、普通二次启动、隐藏、恢复和彻底退出之间的生命周期不同步。
 
-- The primary downloadable artifact is the unsigned, self-contained Windows x64 green ZIP.
-- Public theme artwork remains included.
-- Code signing is intentionally deferred.
+#### 发布说明
+
+- 主要下载文件为未签名、自包含的 Windows x64 绿色 ZIP。
+- 绿色包继续保留公开主题人物素材。
+- 代码签名流程暂缓。
+
+### English Summary
+
+`v0.3.4` turns the Windows theme studio into a self-contained green application with stronger lifecycle management, release safety, and visual coverage.
+
+- Added native in-process notification-area support with close-to-background, double-click restore, Explorer recovery, localized navigation, hide, and full exit.
+- Added packaged and portable Start with Windows support, manual release checks, authenticity information, managed-port diagnostics, and a transparent application icon.
+- Improved responsive theme editing, portable storage, current Store-package discovery, bilingual documentation, and Kanna Blue coverage across Codex surfaces.
+- Fixed portable Diagnostics/Settings crashes, missing bundled artwork, unsafe close-to-tray fallback, and tray/navigation lifecycle synchronization.
+- The primary artifact is an unsigned, self-contained Windows x64 green ZIP with public theme artwork included; code signing remains deferred.
 
 ## v0.3.2 — 2026-07-23
 
