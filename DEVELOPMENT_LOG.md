@@ -1,5 +1,15 @@
 # Development Log
 
+## 2026-07-24 - Promote the v0.3.4 green EXE package to the README primary path
+
+- Added a prominent Chinese `下载绿色版 EXE（推荐）` section near the top of `README.md`, before the feature gallery and all source instructions.
+- Added the direct official GitHub asset link, Release link, verified SHA-256, complete-extraction requirement, `CodexDreamSkin.exe` launch step, theme-application flow, and optional automatic-takeover guidance.
+- Clearly states that the portable archive is self-contained, does not require the .NET SDK, and must remain beside its DLL, PRI, runtime, resource, and theme files.
+- Added a restrained unsigned-build warning that tells users to verify the official source and SHA-256 without advising them to disable Windows security protections.
+- Moved clone, PowerShell script, .NET source-run, and publish commands under `从源码运行与高级用法`.
+- Synchronized the same information and hierarchy in `README.en.md`, while keeping the Chinese README as the primary project entry.
+- Verified the linked GitHub asset remains in `uploaded` state at 143,438,116 bytes with digest `sha256:aa43f6bf0a9f857c50534294afbac57d5bcc7b559f188ba6aec98b5a175d17b9`.
+
 ## 2026-07-24 - Make the v0.3.4 version log bilingual with Chinese primary
 
 - Reorganized `docs/releases/v0.3.4.md` so a complete Chinese version log appears first and serves as the canonical narrative.

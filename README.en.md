@@ -10,6 +10,30 @@ An unofficial visual theme manager for Codex Desktop on Windows. It applies artw
 >
 > Repository: [`jojhaa/Codex-Dream-Skin-Windows`](https://github.com/jojhaa/Codex-Dream-Skin-Windows)
 
+## Download the portable EXE package (recommended)
+
+No .NET SDK or repository clone is required.
+
+**[Download CodexDreamSkin-Windows-x64-v0.3.4.zip](https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases/download/v0.3.4/CodexDreamSkin-Windows-x64-v0.3.4.zip)**
+
+[View the v0.3.4 Release and bilingual release notes](https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases/tag/v0.3.4)
+
+SHA-256:
+
+```text
+AA43F6BF0A9F857C50534294AFBAC57D5BCC7B559F188BA6AEC98B5A175D17B9
+```
+
+Steps:
+
+1. Download the ZIP and extract the complete archive to a normal folder.
+2. Keep the included directory structure; do not copy only the EXE.
+3. Run `CodexDreamSkin.exe`.
+4. Select or edit a theme in the manager, then choose the final apply action.
+5. To reapply the theme after an ordinary Codex launch, enable live synchronization and automatic takeover in the manager.
+
+> The current portable build is unsigned. Windows may show a security prompt on first launch. Confirm that the download came from this repository and verify the SHA-256 above. Until signing is available, do not use paid, bundled, or third-party redistribution channels.
+
 ## Highlights
 
 - Native WinUI 3 manager with Overview, Themes, Diagnostics, and Settings pages.
@@ -87,9 +111,9 @@ An unofficial visual theme manager for Codex Desktop on Windows. It applies artw
   <sub>Chinese File, Edit, View, and Help menus with theme-aware materials</sub>
 </p>
 
-## Quick start
+## Source and advanced usage
 
-### 1. Install and start the theme engine
+### 1. Install and start the theme engine with scripts
 
 ```powershell
 git clone https://github.com/jojhaa/Codex-Dream-Skin-Windows.git
@@ -98,7 +122,7 @@ powershell -ExecutionPolicy RemoteSigned -File .\scripts\install-dream-skin.ps1
 powershell -ExecutionPolicy RemoteSigned -File .\scripts\start-dream-skin.ps1
 ```
 
-### 2. Run the native manager from source
+### 2. Run the WinUI manager from source
 
 Install the [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) first.
 
@@ -109,7 +133,7 @@ dotnet run --project .\app\CodexDreamSkin\CodexDreamSkin.csproj -c Release -p:Pl
 
 Use the manager to import artwork, compose each region, preview light and dark modes, and apply the theme.
 
-### 3. Build a directly runnable x64 EXE
+### 3. Build your own x64 portable package
 
 ```powershell
 cd Codex-Dream-Skin-Windows\windows

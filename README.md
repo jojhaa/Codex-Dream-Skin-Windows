@@ -10,6 +10,30 @@
 >
 > 项目仓库：[`jojhaa/Codex-Dream-Skin-Windows`](https://github.com/jojhaa/Codex-Dream-Skin-Windows)
 
+## 下载绿色版 EXE（推荐）
+
+无需安装 .NET SDK，也不需要先克隆仓库。
+
+**[下载 CodexDreamSkin-Windows-x64-v0.3.4.zip](https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases/download/v0.3.4/CodexDreamSkin-Windows-x64-v0.3.4.zip)**
+
+[查看 v0.3.4 发布页面与中英文版本日志](https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases/tag/v0.3.4)
+
+SHA-256：
+
+```text
+AA43F6BF0A9F857C50534294AFBAC57D5BCC7B559F188BA6AEC98B5A175D17B9
+```
+
+使用步骤：
+
+1. 下载 ZIP 并完整解压到普通文件夹。
+2. 保留压缩包内的目录结构，不要只复制单个 EXE。
+3. 双击 `CodexDreamSkin.exe`。
+4. 在主题管理器中选择或编辑主题，然后点击“正式应用”。
+5. 如需普通启动 Codex 后自动套用主题，可在管理器中启用实时同步与自动接管。
+
+> 当前绿色版尚未进行代码签名。首次运行可能出现 Windows 安全提示，请先确认下载地址来自本仓库，并核对上方 SHA-256。签名完成前请勿从第三方收费、捆绑或转载渠道下载。
+
 ## 主要功能
 
 - 原生 WinUI 3 主题管理器，包含概览、主题、诊断和设置页面。
@@ -87,9 +111,9 @@
   <sub>文件、编辑、视图、帮助菜单中文化并保持主题材质</sub>
 </p>
 
-## 快速开始
+## 从源码运行与高级用法
 
-### 1. 安装并启动主题引擎
+### 1. 使用脚本安装并启动主题引擎
 
 ```powershell
 git clone https://github.com/jojhaa/Codex-Dream-Skin-Windows.git
@@ -98,7 +122,7 @@ powershell -ExecutionPolicy RemoteSigned -File .\scripts\install-dream-skin.ps1
 powershell -ExecutionPolicy RemoteSigned -File .\scripts\start-dream-skin.ps1
 ```
 
-### 2. 从源码运行主题管理器
+### 2. 从源码运行 WinUI 主题管理器
 
 需要安装 [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)。
 
@@ -109,7 +133,7 @@ dotnet run --project .\app\CodexDreamSkin\CodexDreamSkin.csproj -c Release -p:Pl
 
 管理器启动后可以导入图片、调整每个区域的取景参数、实时预览明暗模式并应用主题。
 
-### 3. 生成可直接运行的 x64 EXE
+### 3. 自行生成 x64 绿色版
 
 ```powershell
 cd Codex-Dream-Skin-Windows\windows
