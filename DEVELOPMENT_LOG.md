@@ -1,5 +1,14 @@
 # Development Log
 
+## 2026-07-24 - Expand GitHub exclusions for local QA, secrets, and generated output
+
+- Reorganized the root `.gitignore` into documented groups for temporary files, operating-system metadata, editor state, local environments/secrets, build/test output, README previews, delivery/runtime directories, and local visual QA captures.
+- Added nested `.cache`, `temp`, and `tmp` directories; backup/reject files; Windows/macOS metadata; additional Visual Studio state; coverage and test-report folders; Playwright artifacts; crash dumps; trace files; and test result formats.
+- Added `.env` and `.env.*` exclusions while explicitly preserving `.env.example` and `.env.*.example`.
+- Added private signing-container and key exclusions (`.pfx`, `.p12`, `.snk`, and `.key`) in preparation for future signing work without excluding public application resources.
+- Added anchored image exclusions only for the `windows` workspace root. Formal screenshots remain under `docs/images`, while product icons and bundled theme artwork remain under their tracked asset directories.
+- Verified all 11 existing root QA captures now resolve to the visual-QA ignore rule. Verified representative README screenshots, `AppIconMaster.png`, and `dream-reference.png` remain unignored and trackable.
+
 ## 2026-07-24 - Rebuild the README information architecture and visual hierarchy
 
 - Replaced the former linear Chinese and English READMEs with matching GitHub project-home layouts rather than incrementally adding another section.

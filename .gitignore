@@ -1,13 +1,73 @@
+# Logs, temporary files, and patch leftovers
 *.log
 *.tmp
+*.bak
+*.backup
+*.orig
+*.rej
+**/.cache/
+**/temp/
+**/tmp/
+
+# Operating-system metadata
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editors and local IDE state
 .idea/
 .vscode/
 .vs/
+*.suo
+*.user
+
+# Local environments, secrets, and signing keys
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.pfx
+*.p12
+*.snk
+*.key
+*.pem
+*.ppk
+*.jks
+*.keystore
+
+# Build, package, test, and coverage outputs
 **/bin/
 **/obj/
 **/AppPackages/
-*.user
+**/BundleArtifacts/
+**/TestResults/
+**/coverage/
+**/.nyc_output/
+**/playwright-report/
+**/test-results/
+*.trx
+*.coverage
+*.dmp
+*.etl
+*.appx
+*.appxbundle
+*.appxupload
+*.msix
+*.msixbundle
+*.msi
+
+# Local README previews
 README.preview.html
 docs/readme-preview.html
+
+# Generated delivery and runtime directories
 release/
 runtime/
+
+# Local visual QA captures. Curated public images belong under docs/images/
+# or a product Assets directory instead of the Windows workspace root.
+/windows/*.png
+/windows/*.jpg
+/windows/*.jpeg
+/windows/*.webp
+/windows/*.gif
