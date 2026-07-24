@@ -109,19 +109,34 @@
                 </Grid>
             </StackPanel>
 
-            <Border Style="{StaticResource StatusCardStyle}">
-                <StackPanel Spacing="12">
-                    <Grid ColumnSpacing="12">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock x:Uid="MigrationTitle" Style="{StaticResource BodyStrongTextBlockStyle}" />
-                        <TextBlock Grid.Column="1" Text="70%" Foreground="{ThemeResource KannaAccentBrush}" FontWeight="SemiBold" />
-                    </Grid>
-                    <ProgressBar Value="70" Maximum="100" />
-                    <TextBlock x:Uid="MigrationBody" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
-                </StackPanel>
+            <Border x:Name="FreeSoftwareNoticeCard" Style="{StaticResource StatusCardStyle}">
+                <Grid ColumnSpacing="14">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <SymbolIcon
+                        Symbol="Important"
+                        Foreground="{ThemeResource KannaAccentBrush}"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top" />
+                    <StackPanel Grid.Column="1" Spacing="6">
+                        <TextBlock
+                            x:Uid="FreeSoftwareNoticeTitle"
+                            Style="{StaticResource BodyStrongTextBlockStyle}" />
+                        <TextBlock
+                            x:Name="FreeSoftwareNoticeBodyText"
+                            x:Uid="FreeSoftwareNoticeBody"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            TextWrapping="Wrap" />
+                        <HyperlinkButton
+                            x:Name="OfficialProjectLink"
+                            x:Uid="OfficialProjectLink"
+                            Margin="-8,0,0,0"
+                            HorizontalAlignment="Left"
+                            NavigateUri="https://github.com/jojhaa/Codex-Dream-Skin-Windows" />
+                    </StackPanel>
+                </Grid>
             </Border>
 
             <InfoBar

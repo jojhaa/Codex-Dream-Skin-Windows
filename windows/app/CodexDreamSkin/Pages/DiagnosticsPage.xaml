@@ -13,6 +13,7 @@
             </StackPanel>
 
             <InfoBar
+                x:Name="DiagnosticsInfoBar"
                 x:Uid="DiagnosticsInfo"
                 IsOpen="True"
                 IsClosable="False"

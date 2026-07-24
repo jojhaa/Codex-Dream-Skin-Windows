@@ -2,7 +2,7 @@ using CodexDreamSkin.Models;
 using CodexDreamSkin.Services;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Windows.ApplicationModel.Resources;
+using Microsoft.Windows.ApplicationModel.Resources;
 
 namespace CodexDreamSkin.Pages;
 
@@ -11,7 +11,7 @@ public sealed partial class DiagnosticsPage : Page
     private readonly CodexThemeEngine _engine;
     private readonly CodexPackageLocator _packageLocator = new();
     private readonly TcpListenerVerifier _listenerVerifier = new();
-    private readonly ResourceLoader _resources = ResourceLoader.GetForViewIndependentUse();
+    private readonly ResourceLoader _resources = new();
     private CodexInstallation? _installation;
 
     public DiagnosticsPage()
@@ -20,11 +20,29 @@ public sealed partial class DiagnosticsPage : Page
         _engine = ((App)Application.Current).ThemeEngine;
     }
 
-    private async void DiagnosticsPage_Loaded(object sender, RoutedEventArgs e) => await RefreshAsync();
+    private async void DiagnosticsPage_Loaded(object sender, RoutedEventArgs e) =>
+        await RunGuardedAsync(RefreshAsync);
 
-    private async void RefreshButton_Click(object sender, RoutedEventArgs e) => await RefreshAsync();
+    private async void RefreshButton_Click(object sender, RoutedEventArgs e) =>
+        await RunGuardedAsync(RefreshAsync);
 
-    private async void RefreshPortsButton_Click(object sender, RoutedEventArgs e) => await RefreshPortsAsync();
+    private async void RefreshPortsButton_Click(object sender, RoutedEventArgs e) =>
+        await RunGuardedAsync(RefreshPortsAsync);
+
+    private async Task RunGuardedAsync(Func<Task> operation)
+    {
+        try
+        {
+            await operation();
+        }
+        catch (Exception error)
+        {
+            DiagnosticsInfoBar.Severity = InfoBarSeverity.Error;
+            DiagnosticsInfoBar.Title = Resource("DiagnosticsRefreshFailed");
+            DiagnosticsInfoBar.Message = error.Message;
+            DiagnosticsInfoBar.IsOpen = true;
+        }
+    }
 
     private async Task RefreshAsync()
     {

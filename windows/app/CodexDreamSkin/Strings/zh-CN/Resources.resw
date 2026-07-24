@@ -22,8 +22,10 @@
   <data name="ThemeStatusBody.Text" xml:space="preserve"><value>Kanna Blue 3.8.0 已支持任务悬浮预览独立材质，并修复深色文字对比度。</value></data>
   <data name="EngineStatusTitle.Text" xml:space="preserve"><value>注入引擎</value></data>
   <data name="EngineStatusBody.Text" xml:space="preserve"><value>原生 CDP 迁移是下一阶段。</value></data>
-  <data name="MigrationTitle.Text" xml:space="preserve"><value>Windows 应用迁移</value></data>
-  <data name="MigrationBody.Text" xml:space="preserve"><value>工具链、应用外壳、安全包发现、CDP 注入和重载监控已经迁入原生应用。</value></data>
+  <data name="FreeSoftwareNoticeTitle.Text" xml:space="preserve"><value>免费软件声明</value></data>
+  <data name="FreeSoftwareNoticeBody.Text" xml:space="preserve"><value>本软件永久免费、开源。若您通过付费渠道获得，请立即申请退款。请勿相信任何收费销售、捆绑下载或二次售卖。</value></data>
+  <data name="OfficialProjectLink.Content" xml:space="preserve"><value>唯一官方项目地址：jojhaa/Codex-Dream-Skin-Windows</value></data>
+  <data name="OfficialProjectLink.AutomationProperties.Name" xml:space="preserve"><value>打开唯一官方项目地址 jojhaa/Codex-Dream-Skin-Windows</value></data>
   <data name="DashboardInfo.Title" xml:space="preserve"><value>安全启动说明</value></data>
   <data name="DashboardInfo.Message" xml:space="preserve"><value>若 Codex 已在无主题端口的状态下运行，请先自行关闭；管理器不会强制结束会话。</value></data>
   <data name="ApplyTheme.Text" xml:space="preserve"><value>应用主题</value></data>
@@ -51,6 +53,7 @@
   <data name="DiagnosticsAssetsBody.Text" xml:space="preserve"><value>参考图片以及浅色、深色和高对比度画刷均从应用包加载。</value></data>
   <data name="DiagnosticsEngineTitle.Text" xml:space="preserve"><value>Codex 连接</value></data>
   <data name="DiagnosticsEngineBody.Text" xml:space="preserve"><value>进程发现、端口归属和 CDP 会话尚未迁移到 C#。</value></data>
+  <data name="DiagnosticsRefreshFailed" xml:space="preserve"><value>诊断刷新失败</value></data>
   <data name="ReadyStatus.Text" xml:space="preserve"><value>已就绪</value></data>
   <data name="PendingStatus.Text" xml:space="preserve"><value>待迁移</value></data>
   <data name="SettingsTitle.Text" xml:space="preserve"><value>设置</value></data>
@@ -68,11 +71,23 @@
   <data name="AutoTakeoverToggle.OnContent" xml:space="preserve"><value>已托管</value></data>
   <data name="AutoTakeoverToggle.OffContent" xml:space="preserve"><value>关闭</value></data>
   <data name="TakeoverStatusText.Text" xml:space="preserve"><value>正在读取托管状态…</value></data>
-  <data name="StartupTaskTitle.Text" xml:space="preserve"><value>登录 Windows 后启动监控</value></data>
-  <data name="StartupTaskBody.Text" xml:space="preserve"><value>使用 Windows 原生启动任务在登录后静默保持监控；不创建脚本、启动目录快捷方式或修改 Codex 文件。</value></data>
+  <data name="StartupTaskTitle.Text" xml:space="preserve"><value>开机自启动</value></data>
+  <data name="StartupTaskBody.Text" xml:space="preserve"><value>登录 Windows 后自动启动主题管理器。应用包使用原生启动任务，便携版使用当前用户启动项；不创建脚本、快捷方式或修改 Codex 文件。启用自动套用主题时会静默进入后台。</value></data>
   <data name="StartupTaskToggle.OnContent" xml:space="preserve"><value>已启用</value></data>
   <data name="StartupTaskToggle.OffContent" xml:space="preserve"><value>关闭</value></data>
   <data name="StartupTaskStatusText.Text" xml:space="preserve"><value>正在读取 Windows 启动状态…</value></data>
+  <data name="VersionSectionTitle.Text" xml:space="preserve"><value>版本与正版信息</value></data>
+  <data name="VersionSectionBody.Text" xml:space="preserve"><value>手动检查唯一官方 GitHub 仓库的最新正式版本；不会自动下载或执行文件。</value></data>
+  <data name="CurrentVersionLabel.Text" xml:space="preserve"><value>当前版本</value></data>
+  <data name="VersionStatusText.Text" xml:space="preserve"><value>尚未检查更新。</value></data>
+  <data name="CheckUpdatesButton.Content" xml:space="preserve"><value>检查更新</value></data>
+  <data name="CheckUpdatesButton.AutomationProperties.Name" xml:space="preserve"><value>检查 Codex Dream Skin 最新正式版本</value></data>
+  <data name="LatestReleaseLink.Content" xml:space="preserve"><value>查看唯一官方发布页</value></data>
+  <data name="LatestReleaseLink.AutomationProperties.Name" xml:space="preserve"><value>打开唯一官方 GitHub 发布页</value></data>
+  <data name="VersionCheckRunning" xml:space="preserve"><value>正在连接唯一官方 GitHub 仓库…</value></data>
+  <data name="VersionAlreadyCurrent" xml:space="preserve"><value>当前已是最新正式版本（{0}）。</value></data>
+  <data name="VersionUpdateAvailable" xml:space="preserve"><value>发现新版本 {0}，请前往唯一官方发布页查看。</value></data>
+  <data name="VersionCheckFailed" xml:space="preserve"><value>版本检查失败，请确认网络连接后重试。</value></data>
   <data name="ExitManagerButton.Content" xml:space="preserve"><value>完全退出管理器</value></data>
   <data name="ExitManagerButton.AutomationProperties.Name" xml:space="preserve"><value>完全退出主题管理器和后台监控</value></data>
   <data name="SettingsInfo.Title" xml:space="preserve"><value>原生普通启动托管</value></data>
@@ -85,7 +100,7 @@
   <data name="StartupTaskDisabled" xml:space="preserve"><value>Windows 登录启动已关闭；管理器退出后将无法自动接管。</value></data>
   <data name="StartupTaskDisabledByUser" xml:space="preserve"><value>已被用户在“启动应用”中禁用，请在 Windows 设置中重新启用。</value></data>
   <data name="StartupTaskDisabledByPolicy" xml:space="preserve"><value>此设备策略禁止登录启动。</value></data>
-  <data name="StartupTaskUnavailable" xml:space="preserve"><value>当前安装未注册原生启动任务；请重新部署应用包。</value></data>
+  <data name="StartupTaskUnavailable" xml:space="preserve"><value>无法读取或修改 Windows 自启动状态，请检查当前用户权限。</value></data>
   <data name="ImportThemeButton.Label" xml:space="preserve"><value>导入图片</value></data>
   <data name="ImportThemeButton.AutomationProperties.Name" xml:space="preserve"><value>导入主题图片</value></data>
   <data name="ImportThemePackageButton.Label" xml:space="preserve"><value>导入主题包</value></data>
@@ -268,4 +283,11 @@
   <data name="ClosePortPending" xml:space="preserve"><value>进程已处理，端口仍在释放</value></data>
   <data name="ClosePortFailed" xml:space="preserve"><value>无法关闭端口进程</value></data>
   <data name="ClosePortResultFormat" xml:space="preserve"><value>端口 {0}，PID {1}。</value></data>
+  <data name="TrayTooltip" xml:space="preserve"><value>Codex 梦幻皮肤</value></data>
+  <data name="TrayOpenManager" xml:space="preserve"><value>打开管理器(&amp;O)</value></data>
+  <data name="TrayOpenThemes" xml:space="preserve"><value>主题(&amp;T)</value></data>
+  <data name="TrayOpenDiagnostics" xml:space="preserve"><value>诊断(&amp;D)</value></data>
+  <data name="TrayOpenSettings" xml:space="preserve"><value>设置(&amp;S)</value></data>
+  <data name="TrayHide" xml:space="preserve"><value>隐藏窗口(&amp;H)</value></data>
+  <data name="TrayExit" xml:space="preserve"><value>退出(&amp;X)</value></data>
 </root>

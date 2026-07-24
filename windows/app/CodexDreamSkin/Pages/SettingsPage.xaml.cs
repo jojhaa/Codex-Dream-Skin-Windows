@@ -1,15 +1,17 @@
 using CodexDreamSkin.Models;
+using CodexDreamSkin.Services;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.Windows.ApplicationModel.Resources;
 using Windows.ApplicationModel;
-using Windows.ApplicationModel.Resources;
 
 namespace CodexDreamSkin.Pages;
 
 public sealed partial class SettingsPage : Page
 {
-    private readonly ResourceLoader _resources = ResourceLoader.GetForViewIndependentUse();
+    private readonly ResourceLoader _resources = new();
     private bool _initializing;
+    private CancellationTokenSource? _versionCheckCancellation;
 
     public SettingsPage()
     {
@@ -41,6 +43,9 @@ public sealed partial class SettingsPage : Page
             var startupState = await app.StartupTasks.GetStateAsync();
             StartupTaskToggle.IsOn = startupState == StartupTaskState.Enabled;
             UpdateStartupStatus(startupState);
+
+            CurrentVersionText.Text = $"v{ReleaseCheckService.CurrentVersionLabel}";
+            EnsureFreeSoftwareNotice();
         }
         finally
         {
@@ -50,6 +55,10 @@ public sealed partial class SettingsPage : Page
 
     private void SettingsPage_Unloaded(object sender, RoutedEventArgs e)
     {
+        _versionCheckCancellation?.Cancel();
+        _versionCheckCancellation?.Dispose();
+        _versionCheckCancellation = null;
+
         if (App.Current is App app)
         {
             app.TakeoverService.SnapshotChanged -= TakeoverService_SnapshotChanged;
@@ -139,6 +148,49 @@ public sealed partial class SettingsPage : Page
         }
     }
 
+    private async void CheckUpdatesButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (App.Current is not App app)
+        {
+            return;
+        }
+
+        _versionCheckCancellation?.Cancel();
+        _versionCheckCancellation?.Dispose();
+        var cancellation = new CancellationTokenSource();
+        _versionCheckCancellation = cancellation;
+        SetVersionCheckBusy(true);
+        VersionStatusText.Text = _resources.GetString("VersionCheckRunning");
+
+        try
+        {
+            var result = await app.ReleaseChecks.CheckLatestAsync(cancellation.Token);
+            LatestReleaseLink.NavigateUri = result.ReleaseUri;
+            VersionStatusText.Text = string.Format(
+                _resources.GetString(
+                    result.IsUpdateAvailable
+                        ? "VersionUpdateAvailable"
+                        : "VersionAlreadyCurrent"),
+                result.LatestTag);
+        }
+        catch (OperationCanceledException)
+        {
+        }
+        catch
+        {
+            VersionStatusText.Text = _resources.GetString("VersionCheckFailed");
+        }
+        finally
+        {
+            if (ReferenceEquals(_versionCheckCancellation, cancellation))
+            {
+                _versionCheckCancellation.Dispose();
+                _versionCheckCancellation = null;
+                SetVersionCheckBusy(false);
+            }
+        }
+    }
+
     private void TakeoverService_SnapshotChanged(object? sender, TakeoverSnapshot snapshot)
     {
         DispatcherQueue.TryEnqueue(() => ApplyTakeoverSnapshot(snapshot));
@@ -159,5 +211,23 @@ public sealed partial class SettingsPage : Page
             StartupTaskState.Disabled => _resources.GetString("StartupTaskDisabled"),
             _ => _resources.GetString("StartupTaskUnavailable"),
         };
+    }
+
+    private void EnsureFreeSoftwareNotice()
+    {
+        if (!FreeSoftwareNotice.IsCanonical(FreeSoftwareNoticeBodyText.Text))
+        {
+            FreeSoftwareNoticeBodyText.Text = FreeSoftwareNotice.ForCurrentLanguage();
+        }
+
+        OfficialProjectLink.NavigateUri = new Uri(FreeSoftwareNotice.ProjectUrl);
+        LatestReleaseLink.NavigateUri = new Uri(ReleaseCheckService.ReleasesPage);
+    }
+
+    private void SetVersionCheckBusy(bool busy)
+    {
+        VersionCheckProgressRing.IsActive = busy;
+        VersionCheckProgressRing.Visibility = busy ? Visibility.Visible : Visibility.Collapsed;
+        CheckUpdatesButton.IsEnabled = !busy;
     }
 }

@@ -20,13 +20,79 @@ const diagnosticsXaml = read("app", "CodexDreamSkin", "Pages", "DiagnosticsPage.
 const takeover = read("app", "CodexDreamSkin", "Services", "CodexTakeoverService.cs");
 const processController = read("app", "CodexDreamSkin", "Services", "CodexProcessController.cs");
 const managerSettings = read("app", "CodexDreamSkin", "Services", "ManagerSettingsService.cs");
+const appStoragePaths = read("app", "CodexDreamSkin", "Services", "AppStoragePaths.cs");
 const startupTasks = read("app", "CodexDreamSkin", "Services", "StartupTaskService.cs");
+const releaseChecks = read("app", "CodexDreamSkin", "Services", "ReleaseCheckService.cs");
+const dashboardPage = read("app", "CodexDreamSkin", "Pages", "DashboardPage.xaml.cs");
+const dashboardXaml = read("app", "CodexDreamSkin", "Pages", "DashboardPage.xaml");
+const freeSoftwareNotice = read("app", "CodexDreamSkin", "Models", "FreeSoftwareNotice.cs");
+const zhResources = read("app", "CodexDreamSkin", "Strings", "zh-CN", "Resources.resw");
+const enResources = read("app", "CodexDreamSkin", "Strings", "en-US", "Resources.resw");
 const settingsPage = read("app", "CodexDreamSkin", "Pages", "SettingsPage.xaml.cs");
 const settingsXaml = read("app", "CodexDreamSkin", "Pages", "SettingsPage.xaml");
 const appLifecycle = read("app", "CodexDreamSkin", "App.xaml.cs");
+const mainPage = read("app", "CodexDreamSkin", "MainPage.xaml.cs");
+const trayIcon = read("app", "CodexDreamSkin", "Services", "TrayIconService.cs");
 const program = read("app", "CodexDreamSkin", "Program.cs");
 const manifest = read("app", "CodexDreamSkin", "Package.appxmanifest");
 const project = read("app", "CodexDreamSkin", "CodexDreamSkin.csproj");
+const iconBuilder = read("scripts", "build-app-icon.py");
+
+for (const token of [
+  "<Version>0.3.4</Version>",
+  "<AssemblyVersion>0.3.4.0</AssemblyVersion>",
+  "<FileVersion>0.3.4.0</FileVersion>",
+])
+  assert.ok(project.includes(token), `missing v0.3.4 assembly contract: ${token}`);
+assert.ok(manifest.includes('Version="0.3.4.0"'),
+  "the packaged identity must use v0.3.4");
+assert.ok(releaseChecks.includes('UserAgent.ParseAdd("CodexDreamSkin/0.3.4")'),
+  "release checks must identify the v0.3.4 client");
+
+for (const token of [
+  "Shell_NotifyIcon",
+  "NimAdd",
+  "NimDelete",
+  'RegisterWindowMessage("TaskbarCreated")',
+  "TrackPopupMenuEx",
+  "WmLButtonDoubleClick",
+  '"Assets", "AppIcon.ico"',
+  "_dispatcherQueue.TryEnqueue",
+  "CommandOpenThemes",
+  "CommandOpenDiagnostics",
+  "CommandOpenSettings",
+  "CommandHide",
+  "CommandExit",
+])
+  assert.ok(trayIcon.includes(token),
+    `missing native notification-area contract: ${token}`);
+for (const token of [
+  "new TrayIconService(",
+  "managerWindow.EnableCloseToTray()",
+  "_trayIcon?.Dispose()",
+  "managerWindow.ShowDestination",
+])
+  assert.ok(appLifecycle.includes(token),
+    `missing notification-area lifecycle integration: ${token}`);
+for (const token of [
+  "public void NavigateTo(string tag)",
+  '"themes" => typeof(ThemesPage)',
+  '"diagnostics" => typeof(DiagnosticsPage)',
+  '"settings" => typeof(SettingsPage)',
+])
+  assert.ok(mainPage.includes(token),
+    `missing tray navigation contract: ${token}`);
+for (const token of [
+  "TrayTooltip",
+  "TrayOpenManager",
+  "TrayOpenThemes",
+  "TrayOpenDiagnostics",
+  "TrayOpenSettings",
+  "TrayHide",
+  "TrayExit",
+])
+  assert.ok(zhResources.includes(token) && enResources.includes(token),
+    `missing localized notification-area resource: ${token}`);
 
 assert.match(
   project,
@@ -38,6 +104,47 @@ assert.doesNotMatch(
   /<PublishTrimmed[^>]*>True<\/PublishTrimmed>/,
   "No configuration may re-enable trimming while reflection-based theme serialization remains in use.",
 );
+for (const token of [
+  "<ApplicationIcon>Assets\\AppIcon.ico</ApplicationIcon>",
+  'Include="Assets\\AppIcon.ico"',
+  'CopyToOutputDirectory="PreserveNewest"',
+  'CopyToPublishDirectory="PreserveNewest"',
+  'AppWindow.SetIcon("Assets/AppIcon.ico")',
+])
+  assert.ok(`${project}\n${mainWindow}`.includes(token),
+    `missing Windows application icon contract: ${token}`);
+for (const token of [
+  "ICON_SIZES = (16, 24, 32, 48, 64, 128, 256)",
+  '"AppIconMaster.png"',
+  '"AppIcon.ico"',
+  '"Square150x150Logo.scale-200.png"',
+  '"Square44x44Logo.scale-200.png"',
+  '"StoreLogo.png"',
+  '"Wide310x150Logo.scale-200.png"',
+  '"SplashScreen.scale-200.png"',
+  'alpha.getextrema()[0] < 255',
+  'Image.new("RGBA", (1024, 1024), (0, 0, 0, 0))',
+])
+  assert.ok(iconBuilder.includes(token),
+    `missing reproducible Windows icon asset contract: ${token}`);
+for (const token of [
+  "<WindowsPackageType>None</WindowsPackageType>",
+  "<WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>",
+  'Include="Assets\\Theme\\dream-reference.png"',
+  'CopyToPublishDirectory="PreserveNewest"',
+  "Environment.SpecialFolder.LocalApplicationData",
+])
+  assert.ok(`${project}\n${appStoragePaths}`.includes(token),
+    `missing portable EXE runtime contract: ${token}`);
+for (const source of [diagnosticsPage, settingsPage]) {
+  assert.ok(source.includes("Microsoft.Windows.ApplicationModel.Resources"),
+    "unpackaged pages must use the Windows App SDK MRT Core ResourceLoader");
+  assert.ok(!source.includes("using Windows.ApplicationModel.Resources;"),
+    "unpackaged pages must not use the package-identity-only legacy ResourceLoader");
+}
+for (const token of ["RunGuardedAsync", "DiagnosticsInfoBar.Severity = InfoBarSeverity.Error", "DiagnosticsRefreshFailed"])
+  assert.ok(`${diagnosticsPage}\n${diagnosticsXaml}`.includes(token),
+    `missing crash-safe diagnostics refresh contract: ${token}`);
 assert.match(
   engine,
   /const content=!!document\.querySelector\('\.composer-surface-chrome, \[role=\\"main\\"\]'\)/,
@@ -65,6 +172,18 @@ for (const token of [
   "AppWindow.Changed += AppWindow_Changed",
 ])
   assert.ok(mainWindow.includes(token), `missing native minimum-window contract: ${token}`);
+
+for (const token of [
+  "FreeSoftwareNoticeCard", "FreeSoftwareNoticeBodyText", "OfficialProjectLink",
+  "EnsureFreeSoftwareNotice", "FreeSoftwareNotice.IsCanonical",
+  "本软件永久免费、开源", "若您通过付费渠道获得，请立即申请退款",
+  "This software is permanently free and open source",
+  "https://github.com/jojhaa/Codex-Dream-Skin-Windows",
+])
+  assert.ok(`${dashboardPage}\n${dashboardXaml}\n${freeSoftwareNotice}\n${zhResources}\n${enResources}`.includes(token),
+    `missing protected free-software notice contract: ${token}`);
+assert.ok(!dashboardXaml.includes('Text="70%"'), "obsolete migration percentage must not remain on the dashboard");
+assert.ok(!dashboardXaml.includes("<ProgressBar"), "obsolete migration progress bar must not remain on the dashboard");
 
 for (const token of [
   "MaximumPackageBytes = 32 * 1024 * 1024",
@@ -150,13 +269,15 @@ for (const token of [
     `missing managed port inspection and close-process contract: ${token}`);
 for (const token of [
   "AutoTakeoverStockCodex", "ApplicationData.Current.LocalSettings",
-  "CodexDreamSkinMonitor", "StartupTask.GetAsync", "RequestEnableAsync", "task.Disable()"
+  "CodexDreamSkinMonitor", "StartupTask.GetAsync", "RequestEnableAsync", "task.Disable()",
+  "Microsoft.Win32", "CurrentVersion\\Run", "CodexDreamSkin", "--startup",
+  "Registry.CurrentUser", "Environment.ProcessPath", "RegistryValueKind.String"
 ])
   assert.ok(`${managerSettings}\n${startupTasks}`.includes(token),
     `missing persisted native startup contract: ${token}`);
 for (const token of [
   "FindOrRegisterForKey", "RedirectActivationToAsync", "DISABLE_XAML_GENERATED_MAIN",
-  "ExtendedActivationKind.StartupTask", "HideToBackground", "ShowAndActivate",
+  "ExtendedActivationKind.StartupTask", "PortableStartupArgument", "HideToBackground", "ShowAndActivate",
   "TakeoverService.Start", "TakeoverService.DisposeAsync"
 ])
   assert.ok(`${program}\n${project}\n${appLifecycle}\n${mainWindow}`.includes(token),
@@ -176,6 +297,22 @@ for (const token of [
 ])
   assert.ok(`${settingsXaml}\n${settingsPage}`.includes(token),
     `missing takeover settings UX contract: ${token}`);
+for (const token of [
+  "VersionAndAuthenticityCard", "CurrentVersionText", "CheckUpdatesButton",
+  "LatestReleaseLink", "VersionCheckProgressRing", "CheckUpdatesButton_Click",
+  "ReleaseChecks.CheckLatestAsync", "VersionAlreadyCurrent", "VersionUpdateAvailable",
+  "api.github.com/repos/jojhaa/Codex-Dream-Skin-Windows/releases/latest",
+  "application/vnd.github+json", "X-GitHub-Api-Version", "2022-11-28",
+  "UserAgent.ParseAdd", "TryGetTrustedReleaseUri", "CompareTo",
+])
+  assert.ok(`${settingsXaml}\n${settingsPage}\n${releaseChecks}`.includes(token),
+    `missing safe release-check contract: ${token}`);
+for (const token of [
+  "FreeSoftwareNoticeTitle", "FreeSoftwareNoticeBodyText", "OfficialProjectLink",
+  "FreeSoftwareNotice.IsCanonical", "FreeSoftwareNotice.ProjectUrl",
+])
+  assert.ok(`${settingsXaml}\n${settingsPage}`.includes(token),
+    `missing Settings authenticity notice contract: ${token}`);
 for (const token of [
   'xmlns:uap5="http://schemas.microsoft.com/appx/manifest/uap/windows10/5"',
   'Category="windows.startupTask"', 'TaskId="CodexDreamSkinMonitor"',

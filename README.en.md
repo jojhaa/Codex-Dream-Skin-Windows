@@ -1,10 +1,10 @@
 # Codex Dream Skin Windows
 
-[中文](./README.md) · [v0.3.2 release notes](./docs/releases/v0.3.2.md) · [Changelog](./CHANGELOG.md)
+[中文](./README.md) · [v0.3.4 release notes](./docs/releases/v0.3.4.md) · [Changelog](./CHANGELOG.md)
 
 An unofficial visual theme manager for Codex Desktop on Windows. It applies artwork, glass materials, and per-region composition through loopback CDP without modifying `WindowsApps`, Codex binaries, or `app.asar`.
 
-> Current public release: `v0.3.2`
+> Current public release: `v0.3.4`
 >
 > Supported platform: Windows 10 version 1809 or later, and Windows 11
 >
@@ -17,11 +17,75 @@ An unofficial visual theme manager for Codex Desktop on Windows. It applies artw
 - Focus X/Y, zoom, fit mode, horizontal/vertical offsets, and viewports based on real Codex proportions.
 - Instant light/dark preview, automatic palette extraction, skin-tone avoidance, contrast warnings, and visual color controls.
 - Independent glass materials for messages, summaries, task previews, menus, workspace panels, code/diffs, and home suggestions.
+- Chinese localization for the Codex File, Edit, View, and Help application menus, with theme-aware light and dark popup styling.
 - Theme library, import/export, history, rollback, and recommended-composition recovery.
 - Hot reload and an optional takeover mode that reapplies the theme after a normal Codex launch.
+- Native Windows notification-area support: close to background, double-click to restore, or right-click to open the manager, Themes, Diagnostics, Settings, hide the window, or exit.
+- A Start with Windows setting backed by a native startup task for packaged installs and a current-user startup entry for the portable EXE.
+- Manual latest-release checks against the only official GitHub repository, alongside a persistent free-software, refund, and canonical-project notice in Settings.
 - Dynamic Microsoft Store package discovery instead of a hard-coded Codex version path.
 - Loopback CDP diagnostics, owning-process inspection, and guarded process controls.
 - The bundled Kanna Blue example covers Home, tasks, Settings, plugins, sites, pull requests, chat, terminal, review panels, menus, and hover drawers.
+
+## Gallery
+
+### Theme manager
+
+<table>
+  <tr>
+    <td width="50%" align="center">
+      <img src="./docs/images/readme/theme-manager-preview.png" alt="True-ratio instant preview in the theme manager" width="100%">
+      <br>
+      <sub>True-ratio instant preview</sub>
+    </td>
+    <td width="50%" align="center">
+      <img src="./docs/images/readme/theme-manager-materials.png" alt="Light and dark glass material editing" width="100%">
+      <br>
+      <sub>Light and dark glass materials</sub>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" align="center">
+      <img src="./docs/images/readme/theme-manager-components.png" alt="Per-component advanced material editing" width="100%">
+      <br>
+      <sub>Per-component advanced materials</sub>
+    </td>
+    <td width="50%" align="center">
+      <img src="./docs/images/readme/theme-manager-composition.png" alt="Independent region composition editing" width="100%">
+      <br>
+      <sub>Independent region composition</sub>
+    </td>
+  </tr>
+</table>
+
+### Codex light and dark modes
+
+<table>
+  <tr>
+    <td width="50%" align="center">
+      <img src="./docs/images/readme/codex-light.png" alt="Kanna Blue Codex light mode" width="100%">
+      <br>
+      <sub>Light mode</sub>
+    </td>
+    <td width="50%" align="center">
+      <img src="./docs/images/readme/codex-dark.png" alt="Kanna Blue Codex dark mode" width="100%">
+      <br>
+      <sub>Dark mode</sub>
+    </td>
+  </tr>
+</table>
+
+### Settings
+
+![Kanna Blue themed Codex Settings page](./docs/images/readme/codex-settings.png)
+
+### Translated application menus
+
+<p align="center">
+  <img src="./docs/images/readme/codex-menu-translation.png" alt="Chinese translation of the Codex View menu" width="420">
+  <br>
+  <sub>Chinese File, Edit, View, and Help menus with theme-aware materials</sub>
+</p>
 
 ## Quick start
 
@@ -44,6 +108,20 @@ dotnet run --project .\app\CodexDreamSkin\CodexDreamSkin.csproj -c Release -p:Pl
 ```
 
 Use the manager to import artwork, compose each region, preview light and dark modes, and apply the theme.
+
+### 3. Build a directly runnable x64 EXE
+
+```powershell
+cd Codex-Dream-Skin-Windows\windows
+dotnet publish .\app\CodexDreamSkin\CodexDreamSkin.csproj `
+  -c Release `
+  -p:Platform=x64 `
+  -r win-x64 `
+  -p:PortableExe=true `
+  -o ..\release\CodexDreamSkin-win-x64
+```
+
+Launch `release\CodexDreamSkin-win-x64\CodexDreamSkin.exe`. This is a self-contained WinUI 3 deployment directory; keep the DLL, PRI, resource, and theme files beside the EXE instead of copying the EXE alone.
 
 ## Common commands
 

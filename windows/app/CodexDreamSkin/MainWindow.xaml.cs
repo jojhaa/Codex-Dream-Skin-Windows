@@ -24,6 +24,7 @@ public sealed partial class MainWindow : Window
     private nint _windowHandle;
     private bool _isCorrectingWindowSize;
     private bool _allowClose;
+    private bool _closeToTrayEnabled;
 
     public MainWindow()
     {
@@ -46,9 +47,7 @@ public sealed partial class MainWindow : Window
 
     private void AppWindow_Closing(AppWindow sender, AppWindowClosingEventArgs args)
     {
-        if (!_allowClose &&
-            App.Current is App app &&
-            app.ManagerSettings.AutoTakeoverEnabled)
+        if (!_allowClose && _closeToTrayEnabled)
         {
             args.Cancel = true;
             HideToBackground();
@@ -62,6 +61,17 @@ public sealed partial class MainWindow : Window
         AppWindow.Show();
         Activate();
     }
+
+    public void ShowDestination(string tag)
+    {
+        ShowAndActivate();
+        if (RootFrame.Content is MainPage mainPage)
+        {
+            mainPage.NavigateTo(tag);
+        }
+    }
+
+    public void EnableCloseToTray() => _closeToTrayEnabled = true;
 
     public void AllowClose() => _allowClose = true;
 

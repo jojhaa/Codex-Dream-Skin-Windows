@@ -22,8 +22,10 @@
   <data name="ThemeStatusBody.Text" xml:space="preserve"><value>Kanna Blue 3.8.0 adds independent task-hover material and repairs dark-mode text contrast.</value></data>
   <data name="EngineStatusTitle.Text" xml:space="preserve"><value>Injection engine</value></data>
   <data name="EngineStatusBody.Text" xml:space="preserve"><value>Native CDP migration is the next stage.</value></data>
-  <data name="MigrationTitle.Text" xml:space="preserve"><value>Windows app migration</value></data>
-  <data name="MigrationBody.Text" xml:space="preserve"><value>Toolchain, shell, trusted package discovery, CDP injection, and reload monitoring now run in the native app.</value></data>
+  <data name="FreeSoftwareNoticeTitle.Text" xml:space="preserve"><value>Free software notice</value></data>
+  <data name="FreeSoftwareNoticeBody.Text" xml:space="preserve"><value>This software is permanently free and open source. If you paid to obtain it, request a refund immediately. Do not trust paid sales, bundled downloads, or resellers.</value></data>
+  <data name="OfficialProjectLink.Content" xml:space="preserve"><value>Official project: jojhaa/Codex-Dream-Skin-Windows</value></data>
+  <data name="OfficialProjectLink.AutomationProperties.Name" xml:space="preserve"><value>Open the official jojhaa Codex Dream Skin Windows project</value></data>
   <data name="DashboardInfo.Title" xml:space="preserve"><value>Safe startup</value></data>
   <data name="DashboardInfo.Message" xml:space="preserve"><value>If Codex is already running without the theme port, close it yourself first. The manager will not force-close your session.</value></data>
   <data name="ApplyTheme.Text" xml:space="preserve"><value>Apply theme</value></data>
@@ -51,6 +53,7 @@
   <data name="DiagnosticsAssetsBody.Text" xml:space="preserve"><value>The reference image and shared light, dark, and high-contrast brushes load from the package.</value></data>
   <data name="DiagnosticsEngineTitle.Text" xml:space="preserve"><value>Codex connection</value></data>
   <data name="DiagnosticsEngineBody.Text" xml:space="preserve"><value>Process discovery, port ownership, and CDP sessions have not moved to C# yet.</value></data>
+  <data name="DiagnosticsRefreshFailed" xml:space="preserve"><value>Diagnostics refresh failed</value></data>
   <data name="ReadyStatus.Text" xml:space="preserve"><value>Ready</value></data>
   <data name="PendingStatus.Text" xml:space="preserve"><value>Pending</value></data>
   <data name="SettingsTitle.Text" xml:space="preserve"><value>Settings</value></data>
@@ -68,11 +71,23 @@
   <data name="AutoTakeoverToggle.OnContent" xml:space="preserve"><value>Managed</value></data>
   <data name="AutoTakeoverToggle.OffContent" xml:space="preserve"><value>Off</value></data>
   <data name="TakeoverStatusText.Text" xml:space="preserve"><value>Reading takeover status…</value></data>
-  <data name="StartupTaskTitle.Text" xml:space="preserve"><value>Start monitoring after Windows sign-in</value></data>
-  <data name="StartupTaskBody.Text" xml:space="preserve"><value>Use the native Windows startup task to keep monitoring after sign-in. No scripts, Startup-folder shortcuts, or Codex file modifications are created.</value></data>
+  <data name="StartupTaskTitle.Text" xml:space="preserve"><value>Start with Windows</value></data>
+  <data name="StartupTaskBody.Text" xml:space="preserve"><value>Start the theme manager automatically after Windows sign-in. Packaged installs use the native startup task and portable builds use the current-user startup entry. No scripts, shortcuts, or Codex file changes are created. Automatic takeover starts silently in the background.</value></data>
   <data name="StartupTaskToggle.OnContent" xml:space="preserve"><value>Enabled</value></data>
   <data name="StartupTaskToggle.OffContent" xml:space="preserve"><value>Off</value></data>
   <data name="StartupTaskStatusText.Text" xml:space="preserve"><value>Reading Windows startup state…</value></data>
+  <data name="VersionSectionTitle.Text" xml:space="preserve"><value>Version and authenticity</value></data>
+  <data name="VersionSectionBody.Text" xml:space="preserve"><value>Manually check the only official GitHub repository for the latest full release. The app never downloads or runs files automatically.</value></data>
+  <data name="CurrentVersionLabel.Text" xml:space="preserve"><value>Current version</value></data>
+  <data name="VersionStatusText.Text" xml:space="preserve"><value>Updates have not been checked yet.</value></data>
+  <data name="CheckUpdatesButton.Content" xml:space="preserve"><value>Check for updates</value></data>
+  <data name="CheckUpdatesButton.AutomationProperties.Name" xml:space="preserve"><value>Check the latest Codex Dream Skin full release</value></data>
+  <data name="LatestReleaseLink.Content" xml:space="preserve"><value>Open the official releases page</value></data>
+  <data name="LatestReleaseLink.AutomationProperties.Name" xml:space="preserve"><value>Open the only official GitHub releases page</value></data>
+  <data name="VersionCheckRunning" xml:space="preserve"><value>Connecting to the only official GitHub repository…</value></data>
+  <data name="VersionAlreadyCurrent" xml:space="preserve"><value>You already have the latest full release ({0}).</value></data>
+  <data name="VersionUpdateAvailable" xml:space="preserve"><value>Version {0} is available. Open the only official releases page for details.</value></data>
+  <data name="VersionCheckFailed" xml:space="preserve"><value>The version check failed. Verify the network connection and try again.</value></data>
   <data name="ExitManagerButton.Content" xml:space="preserve"><value>Exit manager completely</value></data>
   <data name="ExitManagerButton.AutomationProperties.Name" xml:space="preserve"><value>Exit the theme manager and background monitor completely</value></data>
   <data name="SettingsInfo.Title" xml:space="preserve"><value>Native ordinary-launch takeover</value></data>
@@ -85,7 +100,7 @@
   <data name="StartupTaskDisabled" xml:space="preserve"><value>Windows sign-in startup is off; automatic takeover stops after the manager exits.</value></data>
   <data name="StartupTaskDisabledByUser" xml:space="preserve"><value>You disabled this app in Startup Apps. Re-enable it in Windows Settings.</value></data>
   <data name="StartupTaskDisabledByPolicy" xml:space="preserve"><value>Sign-in startup is blocked by device policy.</value></data>
-  <data name="StartupTaskUnavailable" xml:space="preserve"><value>The native startup task is not registered for this installation. Redeploy the app package.</value></data>
+  <data name="StartupTaskUnavailable" xml:space="preserve"><value>Windows startup state could not be read or changed. Check the current-user permissions.</value></data>
   <data name="ImportThemeButton.Label" xml:space="preserve"><value>Import image</value></data>
   <data name="ImportThemeButton.AutomationProperties.Name" xml:space="preserve"><value>Import a theme image</value></data>
   <data name="ImportThemePackageButton.Label" xml:space="preserve"><value>Import package</value></data>
@@ -268,4 +283,11 @@
   <data name="ClosePortPending" xml:space="preserve"><value>Process handled; the port is still being released</value></data>
   <data name="ClosePortFailed" xml:space="preserve"><value>Could not close port process</value></data>
   <data name="ClosePortResultFormat" xml:space="preserve"><value>Port {0}, PID {1}.</value></data>
+  <data name="TrayTooltip" xml:space="preserve"><value>Codex Dream Skin</value></data>
+  <data name="TrayOpenManager" xml:space="preserve"><value>&amp;Open manager</value></data>
+  <data name="TrayOpenThemes" xml:space="preserve"><value>&amp;Themes</value></data>
+  <data name="TrayOpenDiagnostics" xml:space="preserve"><value>&amp;Diagnostics</value></data>
+  <data name="TrayOpenSettings" xml:space="preserve"><value>&amp;Settings</value></data>
+  <data name="TrayHide" xml:space="preserve"><value>&amp;Hide window</value></data>
+  <data name="TrayExit" xml:space="preserve"><value>E&amp;xit</value></data>
 </root>

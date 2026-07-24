@@ -1,10 +1,10 @@
 # Codex Dream Skin Windows
 
-[English](./README.en.md) · [v0.3.2 发布说明](./docs/releases/v0.3.2.md) · [更新日志](./CHANGELOG.md)
+[English](./README.en.md) · [v0.3.4 发布说明](./docs/releases/v0.3.4.md) · [更新日志](./CHANGELOG.md)
 
 面向 Windows 版 Codex Desktop 的非官方可视化主题管理器。它通过本机回环 CDP 将图片、玻璃材质和区域构图应用到 Codex，不修改 `WindowsApps`、Codex 二进制文件或 `app.asar`。
 
-> 当前公开版本：`v0.3.2`
+> 当前公开版本：`v0.3.4`
 >
 > 支持平台：Windows 10 1809 及以上、Windows 11
 >
@@ -17,11 +17,75 @@
 - 焦点 X/Y、缩放、填充方式、水平/垂直偏移和真实 Codex 比例取景。
 - 浅色/深色即时预览、自动配色、肤色规避、对比度提醒和可视化颜色选择。
 - 消息、摘要、任务预览、菜单、工作区、代码/差异、首页建议等组件的独立玻璃材质。
+- 文件、编辑、视图、帮助四组 Codex 应用菜单中文翻译，并为菜单弹窗提供与主题一致的明暗模式样式。
 - 主题库、导入/导出、历史记录、回滚和推荐构图恢复。
 - 热重载，以及可选的“普通启动 Codex 后自动应用主题”接管模式。
+- 原生 Windows 托盘常驻：关闭窗口转入后台，双击恢复；右键可打开管理器、主题、诊断、设置，也可隐藏或彻底退出。
+- 设置页提供“开机自启动”，应用包使用 Windows 原生启动任务，便携 EXE 使用当前用户启动项。
+- 设置页可手动检查唯一官方 GitHub 仓库的最新正式版本，并持续展示永久免费、退款提醒和官方项目地址。
 - 自动发现 Microsoft Store 更新后的 Codex 安装路径，不绑定单一版本目录。
 - 本机 CDP 端口诊断、占用进程识别和受保护的关闭操作。
 - Kanna Blue 作为内置示例主题，覆盖首页、任务、设置、插件、站点、拉取请求、聊天、终端、审查面板、菜单和悬停抽屉。
+
+## 界面展示
+
+### 主题管理器
+
+<table>
+  <tr>
+    <td width="50%" align="center">
+      <img src="./docs/images/readme/theme-manager-preview.png" alt="主题管理器真实比例即时预览" width="100%">
+      <br>
+      <sub>真实比例即时预览</sub>
+    </td>
+    <td width="50%" align="center">
+      <img src="./docs/images/readme/theme-manager-materials.png" alt="主题管理器明暗玻璃材质编辑" width="100%">
+      <br>
+      <sub>浅色与深色玻璃材质</sub>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" align="center">
+      <img src="./docs/images/readme/theme-manager-components.png" alt="主题管理器组件级高级材质编辑" width="100%">
+      <br>
+      <sub>组件级高级材质</sub>
+    </td>
+    <td width="50%" align="center">
+      <img src="./docs/images/readme/theme-manager-composition.png" alt="主题管理器独立区域构图编辑" width="100%">
+      <br>
+      <sub>独立区域构图与取景</sub>
+    </td>
+  </tr>
+</table>
+
+### Codex 明暗模式
+
+<table>
+  <tr>
+    <td width="50%" align="center">
+      <img src="./docs/images/readme/codex-light.png" alt="Kanna Blue Codex 浅色模式" width="100%">
+      <br>
+      <sub>浅色模式</sub>
+    </td>
+    <td width="50%" align="center">
+      <img src="./docs/images/readme/codex-dark.png" alt="Kanna Blue Codex 深色模式" width="100%">
+      <br>
+      <sub>深色模式</sub>
+    </td>
+  </tr>
+</table>
+
+### 设置页面
+
+![Kanna Blue 主题化 Codex 设置页面](./docs/images/readme/codex-settings.png)
+
+### 应用菜单翻译
+
+<p align="center">
+  <img src="./docs/images/readme/codex-menu-translation.png" alt="Codex 视图菜单中文翻译" width="420">
+  <br>
+  <sub>文件、编辑、视图、帮助菜单中文化并保持主题材质</sub>
+</p>
 
 ## 快速开始
 
@@ -44,6 +108,20 @@ dotnet run --project .\app\CodexDreamSkin\CodexDreamSkin.csproj -c Release -p:Pl
 ```
 
 管理器启动后可以导入图片、调整每个区域的取景参数、实时预览明暗模式并应用主题。
+
+### 3. 生成可直接运行的 x64 EXE
+
+```powershell
+cd Codex-Dream-Skin-Windows\windows
+dotnet publish .\app\CodexDreamSkin\CodexDreamSkin.csproj `
+  -c Release `
+  -p:Platform=x64 `
+  -r win-x64 `
+  -p:PortableExe=true `
+  -o ..\release\CodexDreamSkin-win-x64
+```
+
+启动文件为 `release\CodexDreamSkin-win-x64\CodexDreamSkin.exe`。这是自包含 WinUI 3 发布目录；请保留 EXE 旁边的 DLL、PRI、资源和主题文件，不能只复制单个 EXE。
 
 ## 常用命令
 

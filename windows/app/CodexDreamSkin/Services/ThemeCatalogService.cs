@@ -25,9 +25,9 @@ public sealed class ThemeCatalogService
     private string? _previewSourceSignature;
 
     public string BundledThemeDirectory => Path.Combine(AppContext.BaseDirectory, "Assets", "Theme");
-    public string UserThemesDirectory => Path.Combine(ApplicationData.Current.LocalFolder.Path, "Themes");
-    public string PreviewThemeDirectory => Path.Combine(ApplicationData.Current.TemporaryFolder.Path, "ThemePreview");
-    private string StatePath => Path.Combine(ApplicationData.Current.LocalFolder.Path, "theme-state.json");
+    public string UserThemesDirectory => Path.Combine(AppStoragePaths.LocalRoot, "Themes");
+    public string PreviewThemeDirectory => Path.Combine(AppStoragePaths.TemporaryRoot, "ThemePreview");
+    private string StatePath => Path.Combine(AppStoragePaths.LocalRoot, "theme-state.json");
 
     public async Task<IReadOnlyList<ThemeDefinition>> GetThemesAsync(CancellationToken cancellationToken = default)
     {

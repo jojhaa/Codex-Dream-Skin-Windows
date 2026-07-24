@@ -15,7 +15,9 @@ public partial class App : Application
     public CodexThemeEngine ThemeEngine { get; }
     public ManagerSettingsService ManagerSettings { get; } = new();
     public StartupTaskService StartupTasks { get; } = new();
+    public ReleaseCheckService ReleaseChecks { get; } = new();
     public CodexTakeoverService TakeoverService { get; }
+    private TrayIconService? _trayIcon;
     private bool _servicesDisposed;
 
     public App()
@@ -42,14 +44,42 @@ public partial class App : Application
         }
 
         MainWindow.Activate();
+        if (MainWindow is MainWindow managerWindow)
+        {
+            try
+            {
+                _trayIcon = new TrayIconService(
+                    managerWindow,
+                    managerWindow.ShowAndActivate,
+                    managerWindow.ShowDestination,
+                    managerWindow.HideToBackground,
+                    ExitManagerAsync);
+                if (_trayIcon.IsRegistered)
+                {
+                    managerWindow.EnableCloseToTray();
+                }
+            }
+            catch
+            {
+                _trayIcon?.Dispose();
+                _trayIcon = null;
+            }
+        }
+
         TakeoverService.Start();
 
         var activation = AppInstance.GetCurrent().GetActivatedEventArgs();
-        if (activation.Kind == ExtendedActivationKind.StartupTask &&
+        var isStartupLaunch =
+            activation.Kind == ExtendedActivationKind.StartupTask ||
+            string.Equals(
+                args.Arguments?.Trim(),
+                StartupTaskService.PortableStartupArgument,
+                StringComparison.OrdinalIgnoreCase);
+        if (isStartupLaunch &&
             ManagerSettings.AutoTakeoverEnabled &&
-            MainWindow is MainWindow managerWindow)
+            MainWindow is MainWindow startupWindow)
         {
-            managerWindow.HideToBackground();
+            startupWindow.HideToBackground();
         }
     }
 
@@ -84,6 +114,8 @@ public partial class App : Application
 
         _servicesDisposed = true;
         AppInstance.GetCurrent().Activated -= CurrentInstance_Activated;
+        _trayIcon?.Dispose();
+        _trayIcon = null;
         await TakeoverService.DisposeAsync();
         await ThemeEngine.DisposeAsync();
     }

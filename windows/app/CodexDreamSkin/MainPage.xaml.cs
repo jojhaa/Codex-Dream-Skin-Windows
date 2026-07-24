@@ -34,7 +34,7 @@ public sealed partial class MainPage : Page
         }
     }
 
-    private void NavigateTo(string tag)
+    public void NavigateTo(string tag)
     {
         var pageType = tag switch
         {
@@ -47,6 +47,17 @@ public sealed partial class MainPage : Page
         if (ContentFrame.CurrentSourcePageType != pageType)
         {
             ContentFrame.Navigate(pageType);
+        }
+
+        foreach (var item in ShellNavigationView.MenuItems
+            .Concat(ShellNavigationView.FooterMenuItems)
+            .OfType<NavigationViewItem>())
+        {
+            if (string.Equals(item.Tag as string, tag, StringComparison.OrdinalIgnoreCase))
+            {
+                ShellNavigationView.SelectedItem = item;
+                break;
+            }
         }
     }
 }

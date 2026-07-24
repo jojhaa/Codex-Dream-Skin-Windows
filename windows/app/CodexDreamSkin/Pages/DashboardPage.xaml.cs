@@ -20,6 +20,7 @@ public sealed partial class DashboardPage : Page
     private async void DashboardPage_Loaded(object sender, RoutedEventArgs e)
     {
         RootScrollViewer.ChangeView(null, 0, null, true);
+        EnsureFreeSoftwareNotice();
         await RunEngineOperationAsync(() => _engine.InspectAsync());
     }
 
@@ -64,6 +65,16 @@ public sealed partial class DashboardPage : Page
         EngineProgressRing.Visibility = busy ? Visibility.Visible : Visibility.Collapsed;
         RefreshStatusButton.IsEnabled = !busy;
         if (busy) ApplyThemeButton.IsEnabled = false;
+    }
+
+    private void EnsureFreeSoftwareNotice()
+    {
+        if (!FreeSoftwareNotice.IsCanonical(FreeSoftwareNoticeBodyText.Text))
+        {
+            FreeSoftwareNoticeBodyText.Text = FreeSoftwareNotice.ForCurrentLanguage();
+        }
+
+        OfficialProjectLink.NavigateUri = new Uri(FreeSoftwareNotice.ProjectUrl);
     }
 
     private void DashboardPage_SizeChanged(object sender, SizeChangedEventArgs e)

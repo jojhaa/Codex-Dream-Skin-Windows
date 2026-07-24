@@ -1,5 +1,116 @@
 # Development Log
 
+## 2026-07-24 - Prepare v0.3.4 and its unsigned Windows x64 green package
+
+- Updated the WinUI package identity, assembly, file version, GitHub API client identity, Chinese/English README current-version links, changelog, and dedicated release notes to `v0.3.4`.
+- Kept historical `v0.3.2` publication evidence intact instead of rewriting previous release records.
+- Documented the native notification area, portable startup, version/authenticity information, managed-port controls, current Store-package discovery, transparent application icon, responsive editor work, and expanded Kanna Blue coverage.
+- Explicitly documented that code signing remains deferred and that the bundled public theme artwork stays in the downloadable green package.
+- Added source regression checks for the `0.3.4` application, assembly, file, manifest, and release-client version contract.
+- The focused source suite, complete regression suite, `git diff --check`, and x64 Release build pass with zero warnings and zero errors.
+- Clean portable PID 8432 was responsive with the `Codex 梦幻皮肤` window and reported actual file version `0.3.4.0`.
+- Built the 799-entry `release/CodexDreamSkin-Windows-x64-v0.3.4.zip` (143,438,116 bytes). It contains the EXE, transparent icon, and bundled public theme artwork; SHA-256 is `AA43F6BF0A9F857C50534294AFBAC57D5BCC7B559F188BA6AEC98B5A175D17B9`.
+
+## 2026-07-24 - Add native notification-area lifecycle and right-click controls
+
+- Added `TrayIconService`, an in-process Win32 `Shell_NotifyIcon` implementation that works with both packaged and self-contained portable builds and uses the shipped transparent application ICO.
+- The service installs a dedicated window subclass, keeps callback delegates rooted, opts into `NOTIFYICON_VERSION_4`, removes the icon and subclass deterministically, and re-registers after Explorer broadcasts `TaskbarCreated`.
+- Closing the manager now becomes close-to-tray only after `NIM_ADD` succeeds. If native registration or icon loading fails, normal close remains available so the application cannot become an unreachable background process.
+- Double-clicking the notification icon restores and activates the existing manager. The localized, keyboard-accessible right-click menu opens the manager, Themes, Diagnostics, or Settings, hides the window, and exits the full manager process.
+- Added public shell navigation routing so notification-area commands select both the requested page and its matching `NavigationViewItem`.
+- Added Chinese and English tray resources, README highlights, changelog coverage, and source regression assertions for native lifecycle, navigation, localization, and cleanup contracts.
+- The focused source suite, complete regression suite, and x64 Release build pass with zero warnings and zero errors.
+- Live validation on portable PID 39116 confirmed that posting a real close request hid the window while the process remained responsive, a second ordinary EXE launch redirected to and restored the existing window, the context menu navigated to Settings, its Hide command hid the window, and tray double-click restored it. A clean republish then confirmed the `X` menu mnemonic performed a complete exit for PID 14364.
+- Rebuilt `release/CodexDreamSkin-Windows-x64-v0.3.2.zip` from the clean portable publish. The green package is 143,438,172 bytes with SHA-256 `B94B88842616E42820A8168F00390C23E19BB6692FE085DA4F4EC261C2001233`.
+
+## 2026-07-24 - Design and embed an application-specific Windows icon
+
+- Replaced the generic crossed-circle placeholder with a purpose-built Kanna Blue mark. Layered blue-glass windows communicate desktop theming, the foreground image frame represents independent region composition, and the small coral sparkle communicates visual customization.
+- Removed the outer cobalt rounded-square plate at the user's request. The final artwork retains only the centered overlapping-window symbol with an 8–10% safe margin on a true transparent alpha canvas.
+- Kept the silhouette bold enough for 16–24px rendering, avoided portrait-photo detail that would collapse at taskbar size, and added true transparent rounded corners.
+- Added `scripts/build-app-icon.py` so the 1024px master deterministically produces the multi-resolution ICO and the packaged Store, Start, tile, lock-screen, and splash PNG assets. The builder now detects and preserves a transparent source instead of imposing a full-canvas rounded mask.
+- Promoted `Assets/AppIcon.ico` to the WinExe `ApplicationIcon`, preserved `AppWindow.SetIcon("Assets/AppIcon.ico")`, and retained explicit output/publish copying.
+- The ICO contains 16, 24, 32, 48, 64, 128, and 256px frames and has SHA-256 `156EE6C834936F1B31EC78519A3C4A01584EADA7F3221DA1596EA68B029627D3`. The transparent master has SHA-256 `35185BEB6C69B61F3EFCBDDD683F2BCE9732C0C016E00C09B614135F450EBF7C`.
+- A clean build was required after the artwork replacement to invalidate the PE resource cache. Pillow then compared the real 32px icon extracted from the published EXE with the ICO's 32px frame: mean and maximum per-channel difference are both zero.
+- Focused/full regression suites and the clean x64 Release build/publish pass with zero warnings/errors.
+- Final clean-publish extraction confirms the EXE's 32px icon is pixel-identical to the ICO frame and preserves alpha 0 at the corner. Replaced `release/CodexDreamSkin-Windows-x64-v0.3.2.zip` (143,429,066 bytes), SHA-256 `EAAA5E9789A8CB5F94CCC1BCF50E17D347C0E6462DBEA1AAF729A13B82175BCA`.
+
+## 2026-07-24 - Add an organized product gallery to the public introduction
+
+- Copied the eight user-approved screenshots from temporary clipboard storage into stable, descriptive files under `docs/images/readme`.
+- Reorganized both Chinese and English README introductions around four visual groups: a 2×2 theme-manager feature grid, side-by-side Codex light/dark modes, a full-width themed Settings page, and a centered narrow application-menu translation detail.
+- Added concise localized captions and meaningful alt text for every screenshot. Relative repository paths keep the gallery self-contained on GitHub instead of depending on temporary local files or external image hosting.
+- The gallery deliberately uses a small amount of GitHub-supported HTML for the two-column comparisons; the full-width image remains ordinary Markdown. All eight referenced files exist and repository diff checks pass.
+
+## 2026-07-24 - Add version detection and authenticity information to Settings
+
+- Added a localized “版本与正版信息 / Version and authenticity” Settings card with current assembly version, an explicit manual check button, progress state, result copy, and an official releases-page hyperlink.
+- Added `ReleaseCheckService`, which reads only the latest full Release metadata from `api.github.com/repos/jojhaa/Codex-Dream-Skin-Windows/releases/latest`. Requests include GitHub's required `User-Agent`, the vendor JSON media type, and REST version `2022-11-28`.
+- Version comparison normalizes leading `v` and missing build/revision components, so GitHub `v0.3.2` and the assembly's `0.3.2.0` are equal. Only HTTPS `github.com/jojhaa/Codex-Dream-Skin-Windows/releases/...` links are trusted; invalid response links fall back to the canonical releases page.
+- The feature never downloads or executes release assets. Network/JSON failures remain contained in a localized status message and do not crash the Settings page.
+- Reused the canonical compiled `FreeSoftwareNotice` fallback in Settings, adding the full free/open-source, refund, anti-resale warning and an accessible hyperlink to the only official project.
+- Updated Chinese/English resources, public feature lists, changelog, and source regression contracts.
+- Focused and complete regression suites pass. After adding the missing service namespace found by the first compile attempt, the final x64 Release build and clean portable publish complete with zero warnings and zero errors.
+- Live UI Automation selected Settings in portable PID 15656, invoked the real check button, and received `当前已是最新正式版本（v0.3.2）。` from the official endpoint. The page exposed installed `v0.3.2`, the exact Chinese refund notice, and invokable project/releases hyperlinks while remaining responsive with a non-zero window handle.
+- Replaced `release/CodexDreamSkin-Windows-x64-v0.3.2.zip` (143,166,901 bytes), SHA-256 `726AF1453388D5C1A5FDAEE2BE2DC288EB080E1A15055BF66FC37452D2A7F4C0`.
+
+## 2026-07-24 - Replace the migration card with a protected free-software notice
+
+- Removed the obsolete Windows migration percentage and progress bar from the Overview page.
+- Replaced them with a Fluent, theme-aware free-software notice stating that the app is permanently free and open source, advising purchasers to request a refund, and warning against paid sales, bundled downloads, and resellers.
+- Added a directly clickable canonical project link to `https://github.com/jojhaa/Codex-Dream-Skin-Windows` with localized accessible naming.
+- Kept the visible copy in Chinese/English MRT resources and added the same canonical wording to a compiled fallback model. The page validates its localized body at load time and restores the compiled copy when a resource is missing or accidentally changed.
+- Added source regression assertions for the card, both language copies, fallback check, canonical URL, and complete removal of the old 70% progress UI. This reduces accidental drift but does not claim that open source can be made impossible to modify.
+- Focused and complete regression suites pass, and the x64 Release build plus clean portable publish complete with zero build warnings/errors.
+- Live UI Automation on portable PID 40116 found the exact Chinese title and refund warning, exposed the repository control as an invokable hyperlink with the localized accessible name, and confirmed no `70%` element remained. The responsive Overview window was left open with a non-zero handle.
+- Replaced `release/CodexDreamSkin-Windows-x64-v0.3.2.zip` (143,154,364 bytes), SHA-256 `018A262D2C6E11A7FD923E4393C6DCB054C861A052FCF7EAAC4297C26D887D7F`.
+
+## 2026-07-24 - Add portable-compatible Start with Windows settings
+
+- Promoted the existing packaged-only login-monitor control into a clear localized “开机自启动 / Start with Windows” setting.
+- Preserved the manifest-backed Windows `StartupTask` path for packaged deployments. Unpackaged portable builds now use the current user's `HKCU\Software\Microsoft\Windows\CurrentVersion\Run` entry with the exact quoted executable path and a fixed `--startup` activation argument.
+- Portable state reads compare the registered command with the running executable, so moving the self-contained folder reports the old entry as disabled instead of silently launching a stale location. Disabling deletes only the manager-owned `CodexDreamSkin` value.
+- Portable startup activation now shares the existing background behavior: when ordinary-Codex automatic takeover is enabled, the manager starts hidden and keeps monitoring without creating scripts or Startup-folder shortcuts.
+- Updated Chinese/English settings guidance, public feature lists, changelog text, and source regression assertions.
+- The focused manager-source test and complete PowerShell regression suite pass. The x64 Release build and clean portable publish complete with zero build warnings and zero errors.
+- Live UI Automation opened Settings in portable PID 39440 and toggled the control on. The current-user Run value became the exact quoted portable EXE path followed by `--startup`, while the UI reported `On`. Toggling it off removed the value and restored `Off`, preserving the test's original disabled state. The window remained responsive with a non-zero handle.
+- Replaced the portable delivery archive with `release/CodexDreamSkin-Windows-x64-v0.3.2.zip` (143,154,845 bytes), SHA-256 `C2A76D728B1901CC20629FD18125B735003AF7AFEB7DF0578CCDA7C0F51BF797`.
+
+## 2026-07-24 - Add application-menu translation to the public introduction
+
+- Expanded the Chinese README highlights with an explicit entry for the translated Codex 文件、编辑、视图、帮助 menus and their theme-aware light/dark popup styling.
+- Added the matching English description so both public introductions advertise the same Windows feature set.
+- This is a documentation-only clarification of the existing menu translation and theming capability; no runtime, theme payload, or release artifact was changed.
+
+## 2026-07-24 - Restore the bundled theme image in portable builds
+
+- Reproduced the Themes-page failure and inspected the clean portable output. `Assets/Theme/theme.json`, `dream-skin.css`, and `renderer-inject.js` were present, but the referenced `dream-reference.png` was absent.
+- Updated the tracked project content item with `CopyToOutputDirectory="PreserveNewest"` and `CopyToPublishDirectory="PreserveNewest"`. Added regression coverage so portable publishing cannot silently drop the bundled theme image again.
+- The published image now exists at `release/CodexDreamSkin-win-x64/Assets/Theme/dream-reference.png`; its SHA-256 matches the source exactly: `FDB7F85ED404FFFDD2FA7ACE605D2A0BF5DF62678ADBAFCA350427CDC90212FA`.
+- Live UI Automation opened the rebuilt Themes page. No `主题库加载失败` or `主题图片路径无效` element was present; the library exposed `桥本环奈 · 蓝色瞬间`, `区域独立构图`, and the built-in read-only guidance.
+- The complete PowerShell regression suite passes and the x64 Release build succeeds with zero warnings/errors. Final PID 29988 was left running on Themes with a responsive top-level window.
+- Replaced the delivery archive with `release/CodexDreamSkin-Windows-x64-v0.3.2.zip` (143,152,841 bytes), SHA-256 `59959BA773A801373E7D26C795ACC0D098170AD626546D046000BDE6B609FD5F`.
+
+## 2026-07-24 - Prevent portable Diagnostics and Settings navigation crashes
+
+- Reproduced the report against the correct self-contained release by selecting the native `诊断` navigation item through Windows UI Automation. The process exited during page construction, and the UIA selection call returned `E_UNEXPECTED`, confirming a real navigation crash rather than a stale shortcut alone.
+- Identified the package-identity leak: `DiagnosticsPage` and `SettingsPage` used `Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse()`. That legacy loader is unsuitable for the unpackaged portable EXE.
+- Replaced both page loaders with Windows App SDK MRT Core `Microsoft.Windows.ApplicationModel.Resources.ResourceLoader`. Added a guarded diagnostics refresh path that renders unexpected engine/port errors in `DiagnosticsInfoBar` instead of allowing an `async void` exception to terminate the process.
+- Added source regression coverage for the MRT Core namespace, the absence of the legacy loader, the tracked portable runtime contract, and the guarded diagnostics error surface.
+- Live verification on the rebuilt portable EXE completed `诊断 → 设置 → 诊断`; all three navigation operations remained responsive. After repackaging, final PID 34296 was left running on Diagnostics with window title `Codex 梦幻皮肤` and a non-zero top-level handle.
+- The complete PowerShell regression suite passes; expected forced-cleanup warnings remain test fixtures. The x64 Release build and portable publish succeed with zero build warnings/errors.
+- Replaced `release/CodexDreamSkin-Windows-x64-v0.3.2.zip` with the repaired 141,243,953-byte archive, SHA-256 `18B929628DBB9C6697F7A5F4F641FAE93455902830BC7385D8137371D5CB6A72`.
+
+## 2026-07-24 - Publish a directly runnable Windows x64 EXE
+
+- Confirmed the previous file-system `dotnet publish` output still required MSIX package identity: direct launch terminated before showing a window, and Windows recorded an unregistered Windows App Runtime activation factory.
+- Added a tracked `PortableExe` project mode using `WindowsPackageType=None` and `WindowsAppSDKSelfContained=true`, while retaining self-contained, non-single-file, non-trimmed publishing required by the WinUI application and its reflection-based theme serialization. This avoids relying on ignored machine-local `*.pubxml` files.
+- Added `AppStoragePaths` so unpackaged builds use `%LOCALAPPDATA%\CodexDreamSkin\Manager` and a bounded temporary folder when `ApplicationData.Current` is unavailable. Packaged builds keep their existing package-backed locations.
+- Added an atomic JSON fallback to `ManagerSettingsService`; appearance and automatic-takeover preferences now persist without package identity.
+- Rebuilt the clean `release/CodexDreamSkin-win-x64` directory from the tracked `PortableExe` mode. Directly launching its `CodexDreamSkin.exe` produced responsive PID 1700, a non-zero top-level window handle, and the expected `Codex 梦幻皮肤` title; the verified instance was left running for the user.
+- Packaged the complete 797-file self-contained directory as `release/CodexDreamSkin-Windows-x64-v0.3.2.zip` (141,242,898 bytes), SHA-256 `3377811DEE628D1E78C85D07BA106CADAC74D1C95C55D361A7C4627EBCCCC48C`. The EXE must remain beside its WinUI/.NET runtime files and theme assets.
+- Validation: the complete PowerShell regression suite passes; its forced-cleanup warnings remain expected fixtures. The x64 Release build and self-contained publish both succeed with zero build warnings/errors.
+
 ## 2026-07-23 - Convert the public repository to Windows-only
 
 - Replaced `README.md` and `README.en.md` from scratch with Windows-only product positioning, features, setup, commands, runtime architecture, safety boundaries, repository structure, development checks, limitations, and links to the personal repository. No sponsor block, inherited gallery, macOS table, or original README copy remains.
