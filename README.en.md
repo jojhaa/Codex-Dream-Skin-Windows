@@ -214,9 +214,7 @@ windows/
 ├── assets/                # Default theme, CSS, injector payload, and sample artwork
 ├── presets/               # Bundled theme presets
 ├── scripts/               # Install, launch, apply, verify, and restore scripts
-├── tests/                 # PowerShell, Node.js, and live UI regression tests
-├── references/            # Windows runtime and QA notes
-└── SKILL.md               # Codex automation workflow
+└── tests/                 # PowerShell, Node.js, and live UI regression tests
 ```
 
 ## Known limitations

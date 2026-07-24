@@ -214,9 +214,7 @@ windows/
 ├── assets/                # 默认主题、CSS、注入载荷与示例图片
 ├── presets/               # 内置主题预设
 ├── scripts/               # 安装、启动、应用、验证与恢复脚本
-├── tests/                 # PowerShell、Node.js 与实时界面回归测试
-├── references/            # Windows 运行时与 QA 说明
-└── SKILL.md               # Codex 自动化工作流
+└── tests/                 # PowerShell、Node.js 与实时界面回归测试
 ```
 
 ## 已知限制

@@ -7,9 +7,9 @@ contact_links:
   - name: English README
     url: https://github.com/jojhaa/Codex-Dream-Skin-Windows/blob/main/README.en.md
     about: Windows installation, usage, safety boundary, and validation
-  - name: Windows automation guide
-    url: https://github.com/jojhaa/Codex-Dream-Skin-Windows/blob/main/windows/SKILL.md
-    about: Install, start, verify, repair, and restore workflows
+  - name: 源码与开发
+    url: https://github.com/jojhaa/Codex-Dream-Skin-Windows/blob/main/README.md#源码与开发
+    about: 源码运行、绿色版构建、脚本工作流与开发验证
   - name: Changelog
     url: https://github.com/jojhaa/Codex-Dream-Skin-Windows/blob/main/CHANGELOG.md
     about: Public release changes and validation notes

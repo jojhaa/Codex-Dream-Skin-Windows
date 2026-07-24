@@ -18,7 +18,6 @@ Describe what changed and why.
 - [ ] Ran `windows/tests/run-tests.ps1`
 - [ ] Built the WinUI manager in Release mode when applicable
 - [ ] Recorded the Windows and Codex versions used for live validation
-- [ ] Updated `DEVELOPMENT_PROGRESS.md` and `DEVELOPMENT_LOG.md`
 - [ ] Updated `CHANGELOG.md` for a user-visible release change
 
 ## Safety / 安全

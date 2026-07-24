@@ -70,6 +70,11 @@ runtime/
 /DEVELOPMENT_LOG.md
 /DEVELOPMENT_PROGRESS.md
 
+# Local Codex automation skill and internal QA/runtime references.
+/windows/SKILL.md
+/windows/agents/
+/windows/references/
+
 # Local visual QA captures. Curated public images belong under docs/images/
 # or a product Assets directory instead of the Windows workspace root.
 /windows/*.png
