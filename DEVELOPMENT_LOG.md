@@ -1,5 +1,18 @@
 # Development Log
 
+## 2026-07-24 - Rebuild the README information architecture and visual hierarchy
+
+- Replaced the former linear Chinese and English READMEs with matching GitHub project-home layouts rather than incrementally adding another section.
+- Added a centered transparent application mark, concise product statement, primary download/release/changelog/language actions, and a compact platform/distribution line.
+- Kept the Chinese README primary and placed the free/open-source, refund, anti-resale, and canonical-project notice directly below the opening identity.
+- Converted setup into a three-step user path: download, extract everything, and run/apply. The verified checksum and unsigned-build guidance remain adjacent to the download.
+- Reorganized the feature inventory as a compact workspace/capability matrix covering composition, framing, preview, palette, materials, theme management, runtime, diagnostics, and localization.
+- Reordered visual evidence around final Codex light/dark outcomes first, followed by the four theme-manager workspaces and the Settings/menu translation pair.
+- Added a compact runtime-flow diagram and a two-column “does / does not” safety table.
+- Moved .NET, publish, PowerShell, regression, and repository-layout content into a clearly separated source/development area so it no longer interrupts the ordinary-user path.
+- Mirrored the same hierarchy and evidence in `README.en.md`; all images retain meaningful localized alt text.
+- Verified every local icon, screenshot, release-note, changelog, and development-log path, plus the uploaded v0.3.4 green-package URL and checksum.
+
 ## 2026-07-24 - Promote the v0.3.4 green EXE package to the README primary path
 
 - Added a prominent Chinese `下载绿色版 EXE（推荐）` section near the top of `README.md`, before the feature gallery and all source instructions.

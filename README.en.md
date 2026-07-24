@@ -1,86 +1,73 @@
-# Codex Dream Skin Windows
+<p align="center">
+  <img src="./windows/app/CodexDreamSkin/Assets/AppIconMaster.png" width="112" alt="Codex Dream Skin Windows application icon">
+</p>
 
-[中文](./README.md) · [v0.3.4 release notes](./docs/releases/v0.3.4.md) · [Changelog](./CHANGELOG.md)
+<h1 align="center">Codex Dream Skin Windows</h1>
 
-An unofficial visual theme manager for Codex Desktop on Windows. It applies artwork, glass materials, and per-region composition through loopback CDP without modifying `WindowsApps`, Codex binaries, or `app.asar`.
+<p align="center">
+  A visual theme studio for Codex Desktop on Windows
+</p>
 
-> Current public release: `v0.3.4`
->
-> Supported platform: Windows 10 version 1809 or later, and Windows 11
->
-> Repository: [`jojhaa/Codex-Dream-Skin-Windows`](https://github.com/jojhaa/Codex-Dream-Skin-Windows)
+<p align="center">
+  <a href="https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases/download/v0.3.4/CodexDreamSkin-Windows-x64-v0.3.4.zip">Download portable package</a>
+  ·
+  <a href="https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases/tag/v0.3.4">v0.3.4 release notes</a>
+  ·
+  <a href="./CHANGELOG.md">Changelog</a>
+  ·
+  <a href="./README.md">中文</a>
+</p>
 
-## Download the portable EXE package (recommended)
+<p align="center">
+  Windows 10 1809+ / Windows 11 · x64 · Self-contained portable package · Currently unsigned
+</p>
 
-No .NET SDK or repository clone is required.
+> [!IMPORTANT]
+> This software is permanently free and open source. If you paid for it, request a refund immediately. Do not trust paid sales, bundled downloads, or resale copies. The only official project is [`jojhaa/Codex-Dream-Skin-Windows`](https://github.com/jojhaa/Codex-Dream-Skin-Windows).
+
+## Get started
+
+### 1. Download
 
 **[Download CodexDreamSkin-Windows-x64-v0.3.4.zip](https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases/download/v0.3.4/CodexDreamSkin-Windows-x64-v0.3.4.zip)**
 
-[View the v0.3.4 Release and bilingual release notes](https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases/tag/v0.3.4)
+No .NET SDK or repository clone is required.
 
-SHA-256:
+### 2. Extract everything
+
+Extract the complete ZIP to a normal folder. Keep its DLL, PRI, runtime, resource, and theme files together; do not copy only the EXE.
+
+### 3. Run and apply
+
+Run `CodexDreamSkin.exe`, select or edit a theme in the manager, and choose the final apply action.
+
+To reapply the theme after an ordinary Codex launch, enable live synchronization, automatic takeover, and Start with Windows in Settings.
+
+### Verify the download
 
 ```text
+SHA-256
 AA43F6BF0A9F857C50534294AFBAC57D5BCC7B559F188BA6AEC98B5A175D17B9
 ```
 
-Steps:
+> [!NOTE]
+> The current portable build is unsigned, so Windows may show a security prompt on first launch. Confirm that the download came from this repository and verify its SHA-256. Until signing is available, do not use third-party distribution channels.
 
-1. Download the ZIP and extract the complete archive to a normal folder.
-2. Keep the included directory structure; do not copy only the EXE.
-3. Run `CodexDreamSkin.exe`.
-4. Select or edit a theme in the manager, then choose the final apply action.
-5. To reapply the theme after an ordinary Codex launch, enable live synchronization and automatic takeover in the manager.
+## What it can do
 
-> The current portable build is unsigned. Windows may show a security prompt on first launch. Confirm that the download came from this repository and verify the SHA-256 above. Until signing is available, do not use paid, bundled, or third-party redistribution channels.
+| Workspace | Capabilities |
+| --- | --- |
+| Artwork composition | Six independent regions: main background, sidebar, task composer, home hero, home composer, and Polaroid |
+| Precise framing | Focus X/Y, zoom, fit mode, horizontal/vertical offsets, and non-destructive viewports based on real Codex proportions |
+| Appearance preview | Instant light/dark switching across the sidebar, messages, composers, and Home |
+| Automatic palette | Main/accent color extraction, skin-tone avoidance, contrast checks, and visual color controls |
+| Glass materials | Separate controls for messages, summaries, task previews, menus, workspace panels, code/diffs, and Home suggestions |
+| Theme management | Library, import/export, duplicate, history, rollback, and recommended-composition recovery |
+| Runtime experience | Hot reload, normal-launch auto-apply, Start with Windows, native tray, double-click restore, and right-click navigation |
+| Guarded diagnostics | Current Store-package discovery, local port inspection, process-identity verification, and protected close controls |
+| Localization | Chinese File, Edit, View, and Help menus with theme-aware light/dark popup materials |
 
-## Highlights
-
-- Native WinUI 3 manager with Overview, Themes, Diagnostics, and Settings pages.
-- Six independent artwork regions: page, sidebar, task composer, home hero, home composer, and Polaroid.
-- Focus X/Y, zoom, fit mode, horizontal/vertical offsets, and viewports based on real Codex proportions.
-- Instant light/dark preview, automatic palette extraction, skin-tone avoidance, contrast warnings, and visual color controls.
-- Independent glass materials for messages, summaries, task previews, menus, workspace panels, code/diffs, and home suggestions.
-- Chinese localization for the Codex File, Edit, View, and Help application menus, with theme-aware light and dark popup styling.
-- Theme library, import/export, history, rollback, and recommended-composition recovery.
-- Hot reload and an optional takeover mode that reapplies the theme after a normal Codex launch.
-- Native Windows notification-area support: close to background, double-click to restore, or right-click to open the manager, Themes, Diagnostics, Settings, hide the window, or exit.
-- A Start with Windows setting backed by a native startup task for packaged installs and a current-user startup entry for the portable EXE.
-- Manual latest-release checks against the only official GitHub repository, alongside a persistent free-software, refund, and canonical-project notice in Settings.
-- Dynamic Microsoft Store package discovery instead of a hard-coded Codex version path.
-- Loopback CDP diagnostics, owning-process inspection, and guarded process controls.
-- The bundled Kanna Blue example covers Home, tasks, Settings, plugins, sites, pull requests, chat, terminal, review panels, menus, and hover drawers.
-
-## Gallery
-
-### Theme manager
-
-<table>
-  <tr>
-    <td width="50%" align="center">
-      <img src="./docs/images/readme/theme-manager-preview.png" alt="True-ratio instant preview in the theme manager" width="100%">
-      <br>
-      <sub>True-ratio instant preview</sub>
-    </td>
-    <td width="50%" align="center">
-      <img src="./docs/images/readme/theme-manager-materials.png" alt="Light and dark glass material editing" width="100%">
-      <br>
-      <sub>Light and dark glass materials</sub>
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" align="center">
-      <img src="./docs/images/readme/theme-manager-components.png" alt="Per-component advanced material editing" width="100%">
-      <br>
-      <sub>Per-component advanced materials</sub>
-    </td>
-    <td width="50%" align="center">
-      <img src="./docs/images/readme/theme-manager-composition.png" alt="Independent region composition editing" width="100%">
-      <br>
-      <sub>Independent region composition</sub>
-    </td>
-  </tr>
-</table>
+## Results
 
 ### Codex light and dark modes
 
@@ -99,41 +86,93 @@ Steps:
   </tr>
 </table>
 
-### Settings
+### Theme manager
 
-![Kanna Blue themed Codex Settings page](./docs/images/readme/codex-settings.png)
+<table>
+  <tr>
+    <td width="50%" align="center">
+      <img src="./docs/images/readme/theme-manager-preview.png" alt="True-ratio instant preview in the theme manager" width="100%">
+      <br>
+      <sub>True-ratio instant preview</sub>
+    </td>
+    <td width="50%" align="center">
+      <img src="./docs/images/readme/theme-manager-composition.png" alt="Independent artwork composition editor" width="100%">
+      <br>
+      <sub>Independent composition and framing</sub>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" align="center">
+      <img src="./docs/images/readme/theme-manager-materials.png" alt="Light and dark glass material editing" width="100%">
+      <br>
+      <sub>Light and dark glass materials</sub>
+    </td>
+    <td width="50%" align="center">
+      <img src="./docs/images/readme/theme-manager-components.png" alt="Per-component advanced material editing" width="100%">
+      <br>
+      <sub>Per-component advanced materials</sub>
+    </td>
+  </tr>
+</table>
 
-### Translated application menus
+### Settings and translated menus
 
-<p align="center">
-  <img src="./docs/images/readme/codex-menu-translation.png" alt="Chinese translation of the Codex View menu" width="420">
-  <br>
-  <sub>Chinese File, Edit, View, and Help menus with theme-aware materials</sub>
-</p>
+<table>
+  <tr>
+    <td width="68%" align="center">
+      <img src="./docs/images/readme/codex-settings.png" alt="Kanna Blue themed Codex Settings page" width="100%">
+      <br>
+      <sub>Themed Settings page</sub>
+    </td>
+    <td width="32%" align="center">
+      <img src="./docs/images/readme/codex-menu-translation.png" alt="Chinese translation of the Codex View menu" width="100%">
+      <br>
+      <sub>Chinese File, Edit, View, and Help menus</sub>
+    </td>
+  </tr>
+</table>
 
-## Source and advanced usage
+## How it works
 
-### 1. Install and start the theme engine with scripts
+```text
+Codex Dream Skin manager
+        │
+        ├─ Manages artwork, palette, materials, and composition
+        ├─ Applies the theme through loopback CDP on 127.0.0.1
+        └─ Hot-reloads the current Codex renderer
+
+Official Codex files remain unchanged
+```
+
+The launcher dynamically discovers the current Microsoft Store Codex package and real process path, so updates do not depend on a stale version-specific directory.
+
+## Safety boundary
+
+| It does | It does not |
+| --- | --- |
+| Uses a local CDP session bound only to `127.0.0.1` | Patch or re-sign the Codex installation |
+| Revalidates package and process identity before takeover or close actions | Write to `WindowsApps` or unpack `app.asar` |
+| Stores themes, backups, and settings in the user profile | Change API Base URLs, API keys, or account data |
+| Runs the native Windows tray inside the manager process | Install a hidden PowerShell tray shortcut |
+| Provides explicit restore and diagnostics paths | Expose the debugging endpoint to the local network |
+
+Do not run untrusted local software while CDP is enabled.
+
+## Source and development
+
+Ordinary users only need the portable package above. The following instructions are for developers and script-based workflows.
+
+### Run the manager from source
+
+Install the [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0).
 
 ```powershell
 git clone https://github.com/jojhaa/Codex-Dream-Skin-Windows.git
 cd Codex-Dream-Skin-Windows\windows
-powershell -ExecutionPolicy RemoteSigned -File .\scripts\install-dream-skin.ps1
-powershell -ExecutionPolicy RemoteSigned -File .\scripts\start-dream-skin.ps1
-```
-
-### 2. Run the WinUI manager from source
-
-Install the [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) first.
-
-```powershell
-cd Codex-Dream-Skin-Windows\windows
 dotnet run --project .\app\CodexDreamSkin\CodexDreamSkin.csproj -c Release -p:Platform=x64
 ```
 
-Use the manager to import artwork, compose each region, preview light and dark modes, and apply the theme.
-
-### 3. Build your own x64 portable package
+### Build an x64 portable package
 
 ```powershell
 cd Codex-Dream-Skin-Windows\windows
@@ -145,38 +184,29 @@ dotnet publish .\app\CodexDreamSkin\CodexDreamSkin.csproj `
   -o ..\release\CodexDreamSkin-win-x64
 ```
 
-Launch `release\CodexDreamSkin-win-x64\CodexDreamSkin.exe`. This is a self-contained WinUI 3 deployment directory; keep the DLL, PRI, resource, and theme files beside the EXE instead of copying the EXE alone.
-
-## Common commands
+### Script workflow
 
 ```powershell
-# Verify installation, runtime state, and the active theme
+# Install and start the theme engine
+powershell -ExecutionPolicy RemoteSigned -File .\scripts\install-dream-skin.ps1
+powershell -ExecutionPolicy RemoteSigned -File .\scripts\start-dream-skin.ps1
+
+# Verify the environment and active theme
 powershell -ExecutionPolicy RemoteSigned -File .\scripts\verify-dream-skin.ps1
 
 # Restore the original Codex appearance
 powershell -ExecutionPolicy RemoteSigned -File .\scripts\restore-dream-skin.ps1
-
-# Run the complete Windows regression suite
-powershell -ExecutionPolicy Bypass -File .\tests\run-tests.ps1
 ```
 
-## How it works and safety boundary
+### Development checks
 
-1. The launcher dynamically discovers the current Microsoft Store Codex package and real process path.
-2. Codex starts with a Chromium debugging endpoint bound only to `127.0.0.1`.
-3. The injector uses CDP to load theme CSS, artwork configuration, and runtime adapters into existing renderer pages.
-4. Hot reload watches local theme files, so changing a draft does not require reinstalling Codex.
-5. The restore script stops the theme runtime and removes user-level state without changing official application files.
+```powershell
+cd windows
+powershell -ExecutionPolicy Bypass -File .\tests\run-tests.ps1
+dotnet build .\app\CodexDreamSkin\CodexDreamSkin.csproj -c Release -p:Platform=x64 -nologo
+```
 
-This project does not:
-
-- Patch, replace, or re-sign the Codex installation.
-- Write to `WindowsApps` or unpack `app.asar`.
-- Change API Base URLs, API keys, or account data.
-- Install a hidden PowerShell tray shortcut.
-- Expose the CDP endpoint to the local network.
-
-Do not run untrusted local software while CDP is enabled.
+Update [`DEVELOPMENT_PROGRESS.md`](./DEVELOPMENT_PROGRESS.md) and [`DEVELOPMENT_LOG.md`](./DEVELOPMENT_LOG.md) with every development change.
 
 ## Repository layout
 
@@ -191,20 +221,10 @@ windows/
 └── SKILL.md               # Codex automation workflow
 ```
 
-## Development checks
-
-```powershell
-cd windows
-powershell -ExecutionPolicy Bypass -File .\tests\run-tests.ps1
-dotnet build .\app\CodexDreamSkin\CodexDreamSkin.csproj -c Release -p:Platform=x64 -nologo
-```
-
-Every development change should also update [`DEVELOPMENT_PROGRESS.md`](./DEVELOPMENT_PROGRESS.md) and [`DEVELOPMENT_LOG.md`](./DEVELOPMENT_LOG.md).
-
 ## Known limitations
 
 - The theme follows Codex's current Electron/Chromium DOM; a major Codex update may require selector updates.
-- Normal-launch auto-apply is an optional user-level takeover feature. When disabled, a normal Codex launch does not automatically include the theme.
+- Normal-launch auto-apply is an optional user-level takeover feature. When disabled, an ordinary Codex launch does not automatically include the theme.
 - Live UI tests require a locally running Codex instance with a managed CDP session.
 - This is an unofficial project and is not affiliated with or endorsed by OpenAI.
 
