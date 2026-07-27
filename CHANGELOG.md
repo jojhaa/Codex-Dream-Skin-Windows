@@ -2,25 +2,61 @@
 
 ## Unreleased
 
-### 中文
+暂无。
+
+## v0.3.5 — 2026-07-27
+
+### 中文版本日志（主要）
+
+本次更新重构了整个 Windows 主题管理器，并将隔离预览、真实 Codex 画面回传、主题材质和 CDP 生命周期测试整合为一套完整工作流。
+
+#### 新增
+
+- 新增完整 Codex Desktop 隔离预览，覆盖窗口菜单、侧栏、主页、任务页、输入区和设置页。
+- 预览器支持本地场景切换、模拟输入、模拟回复、设置交互和状态重置，不执行网络、文件或系统操作。
+- 新增真实 Codex 画面回传；主题临时应用后通过受信任的本机 CDP 捕获完整画面，并按原始比例缩放到中间预览区。
+- 新增“银河夜幕 · 星河玻璃”内置主题，包含星河背景、深色玻璃材质、连续背景和透明组件。
+- 新增左栏连续主背景模式，以及“统一侧栏与工作区透明度”选项。
+- 主题格式升级至 schema 11，支持装饰配置、侧栏背景来源和大区域透明度匹配。
 
 #### 改进
 
-- 将整个 Windows 管理器重构为单一扁平工作台：移除传统 `NavigationView`、重复页面大标题和卡片式页面结构，改用顶部操作栏和四种连续工作模式。
-- 根据沉浸式 Theme Studio 参考，将全局导航进一步改为顶部品牌操作栏；默认进入主题工作台，并新增“主题库 / 编辑工具”双态侧轨。
-- 将中间隔离预览扩展为完整 Codex Desktop 页面，覆盖窗口菜单、侧栏、主页、任务、输入区和设置，并支持无副作用的场景切换、模拟发送与互动重置。
-- 主题模式改为单行命令带与满高主题/工具、预览、属性三轨结构；诊断和设置同步改为满高平面分栏。
-- 新增统一的浅色、深色和高对比度工作区资源，以及概览、诊断和设置的响应式布局。
+- 将整个 Windows 管理器重构为单一扁平工作台，使用顶部品牌操作栏和连续工作区替代传统页面框架。
+- 主题工作区采用主题库/编辑工具、Codex 预览和属性操作台三轨布局。
+- 诊断、设置和概览同步改为满高平面分栏，并统一浅色、深色和高对比度资源。
+- 真实预览使用固定画布与单一等比缩放层，避免背景和 Codex 界面产生比例漂移。
+- 银河主题移除继承自人物主题的标题条、丝带和拍立得等装饰，只保留星河背景与功能玻璃层。
+- 连续背景模式使用一个全窗口背景平面，左栏不再重复裁切区域图片。
 
-### English
+#### 修复
 
-#### Improvements
+- 修复 `CdpSession.SendAsync` 在序列化、发送、取消和断线路径中的 pending 请求残留。
+- 新增真实 WebSocket 取消和断线行为测试，验证请求立即结束且 pending 字典归零。
+- 修复完整隔离预览启动时的 MRT 本地化资源冲突闪退。
+- 修复实时预览画面没有回传，以及预览比例缩放不准确的问题。
+- 修复透明左栏仍残留材质、伪元素、边框或模糊的问题。
 
-- Rebuilt the complete Windows manager as one flat workspace, removing the traditional `NavigationView`, repeated page headings, and card-oriented page structure in favor of a top action bar and four continuous operating modes.
-- Aligned the shell with the immersive Theme Studio reference by moving global navigation into a top brand/action header, opening directly into Themes, and adding a real Theme Library / Editing Tools dual-state rail.
-- Expanded the center isolation preview into a complete Codex Desktop page with window menus, sidebar, Home, Task, composer, and Settings plus side-effect-free scene switching, simulated sending, and interaction reset.
-- Converted Themes into a single command strip with full-height library/tool, preview, and property rails, while Diagnostics and Settings now use full-height flat splits.
-- Added shared light, dark, and high-contrast workspace resources plus responsive Overview, Diagnostics, and Settings layouts.
+#### 绿色包
+
+- 文件：`CodexDreamSkin-Windows-x64-v0.3.5.zip`
+- 大小：146,359,317 字节
+- SHA-256：`33C68A3892A3D1EB54955511DB3B19622EE1958EB981D56B3325C69B53AEAADB`
+
+### English Summary
+
+`v0.3.5` rebuilds the Windows manager and unifies isolated interaction preview, real Codex frame capture, theme materials, and CDP lifecycle validation.
+
+#### Highlights
+
+- Flat Theme Studio workspace with theme/tool rail, complete Codex preview, and contextual inspector.
+- Full local Codex Desktop fixture with Home, Task, Settings, composer interaction, deterministic replies, and no external side effects.
+- Trusted loopback CDP frame capture with proportional whole-canvas scaling.
+- New Milky Way Glass theme with a continuous full-window background and translucent functional surfaces.
+- Continuous-sidebar mode plus an option to match sidebar, workspace, and header transparency.
+- Schema 11 theme metadata and renderer 3.10.0.
+- Correct pending-request cleanup across CDP serialization, send, cancellation, and disconnect paths, backed by executable WebSocket behavior tests.
+
+The portable build remains self-contained and unsigned. It does not patch Codex binaries, `WindowsApps`, or `app.asar`; CDP remains restricted to the verified local loopback listener.
 
 ## v0.3.4 — 2026-07-24
 

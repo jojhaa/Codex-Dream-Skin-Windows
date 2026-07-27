@@ -112,7 +112,7 @@ public sealed class ReleaseCheckService
         {
             Timeout = TimeSpan.FromSeconds(15),
         };
-        client.DefaultRequestHeaders.UserAgent.ParseAdd("CodexDreamSkin/0.3.4");
+        client.DefaultRequestHeaders.UserAgent.ParseAdd("CodexDreamSkin/0.3.5");
         return client;
     }
 }

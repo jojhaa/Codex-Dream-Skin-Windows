@@ -97,15 +97,15 @@ for (const token of ["Nocturne / 星河", "STELLAR HORIZON", "MILKY WAY · 02"])
   assert.ok(!previewFixtureCode.includes(token), `Milky Way decoration residue remains in the isolated preview: ${token}`);
 
 for (const token of [
-  "<Version>0.3.4</Version>",
-  "<AssemblyVersion>0.3.4.0</AssemblyVersion>",
-  "<FileVersion>0.3.4.0</FileVersion>",
+  "<Version>0.3.5</Version>",
+  "<AssemblyVersion>0.3.5.0</AssemblyVersion>",
+  "<FileVersion>0.3.5.0</FileVersion>",
 ])
-  assert.ok(project.includes(token), `missing v0.3.4 assembly contract: ${token}`);
-assert.ok(manifest.includes('Version="0.3.4.0"'),
-  "the packaged identity must use v0.3.4");
-assert.ok(releaseChecks.includes('UserAgent.ParseAdd("CodexDreamSkin/0.3.4")'),
-  "release checks must identify the v0.3.4 client");
+  assert.ok(project.includes(token), `missing v0.3.5 assembly contract: ${token}`);
+assert.ok(manifest.includes('Version="0.3.5.0"'),
+  "the packaged identity must use v0.3.5");
+assert.ok(releaseChecks.includes('UserAgent.ParseAdd("CodexDreamSkin/0.3.5")'),
+  "release checks must identify the v0.3.5 client");
 
 for (const token of [
   "Shell_NotifyIcon",

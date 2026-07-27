@@ -9,9 +9,9 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases/download/v0.3.4/CodexDreamSkin-Windows-x64-v0.3.4.zip">下载绿色版</a>
+  <a href="https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases/download/v0.3.5/CodexDreamSkin-Windows-x64-v0.3.5.zip">下载绿色版</a>
   ·
-  <a href="https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases/tag/v0.3.4">v0.3.4 版本日志</a>
+  <a href="https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases/tag/v0.3.5">v0.3.5 版本日志</a>
   ·
   <a href="./CHANGELOG.md">更新日志</a>
   ·
@@ -29,7 +29,7 @@
 
 ### 1. 下载
 
-**[下载 CodexDreamSkin-Windows-x64-v0.3.4.zip](https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases/download/v0.3.4/CodexDreamSkin-Windows-x64-v0.3.4.zip)**
+**[下载 CodexDreamSkin-Windows-x64-v0.3.5.zip](https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases/download/v0.3.5/CodexDreamSkin-Windows-x64-v0.3.5.zip)**
 
 无需安装 .NET SDK，也不需要克隆仓库。
 
@@ -47,7 +47,7 @@
 
 ```text
 SHA-256
-AA43F6BF0A9F857C50534294AFBAC57D5BCC7B559F188BA6AEC98B5A175D17B9
+33C68A3892A3D1EB54955511DB3B19622EE1958EB981D56B3325C69B53AEAADB
 ```
 
 > [!NOTE]
