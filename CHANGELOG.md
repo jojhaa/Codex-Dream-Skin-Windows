@@ -36,11 +36,17 @@
 - 修复实时预览画面没有回传，以及预览比例缩放不准确的问题。
 - 修复透明左栏仍残留材质、伪元素、边框或模糊的问题。
 
-#### 绿色包
+#### 双版本发布
 
-- 文件：`CodexDreamSkin-Windows-x64-v0.3.5.zip`
-- 大小：146,359,317 字节
-- SHA-256：`33C68A3892A3D1EB54955511DB3B19622EE1958EB981D56B3325C69B53AEAADB`
+- Portable 绿色版：`CodexDreamSkin-Windows-x64-v0.3.5-Portable.zip`
+  - 无需预装 .NET 或 Windows App SDK Runtime。
+  - 大小：110,987,055 字节
+  - SHA-256：`3A018B7F8BE1E2938A430A3CDBAAD4338ECB291A861E3A615A071575FC07131D`
+- Lite 轻量版：`CodexDreamSkin-Windows-x64-v0.3.5-Lite.zip`
+  - 需要 .NET 10 Desktop Runtime x64 和 Windows App SDK Runtime 2.3 x64。
+  - 大小：15,516,862 字节
+  - SHA-256：`64FF47C04A43571B56E5C5D0073DECBE078C6C84E342C7E12251372BA498413A`
+- Release 关闭 ReadyToRun，并将 Windows App SDK 改为按需组件引用；不再打包未使用的 AI/ML、ONNX、DirectML 和 Widgets。
 
 ### English Summary
 
@@ -55,8 +61,9 @@
 - Continuous-sidebar mode plus an option to match sidebar, workspace, and header transparency.
 - Schema 11 theme metadata and renderer 3.10.0.
 - Correct pending-request cleanup across CDP serialization, send, cancellation, and disconnect paths, backed by executable WebSocket behavior tests.
+- Added reproducible Portable and Lite release builds. Unused Windows App SDK AI/ML, ONNX, DirectML, and Widgets payloads are no longer distributed.
 
-The portable build remains self-contained and unsigned. It does not patch Codex binaries, `WindowsApps`, or `app.asar`; CDP remains restricted to the verified local loopback listener.
+The Portable build remains self-contained; the Lite build requires the matching .NET 10 Desktop and Windows App SDK 2.3 x64 runtimes. Both builds are unsigned. They do not patch Codex binaries, `WindowsApps`, or `app.asar`; CDP remains restricted to the verified local loopback listener.
 
 ## v0.3.4 — 2026-07-24
 

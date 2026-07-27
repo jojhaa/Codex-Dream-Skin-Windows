@@ -9,7 +9,9 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases/download/v0.3.5/CodexDreamSkin-Windows-x64-v0.3.5.zip">Download portable package</a>
+  <a href="https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases/download/v0.3.5/CodexDreamSkin-Windows-x64-v0.3.5-Portable.zip">Download Portable</a>
+  ·
+  <a href="https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases/download/v0.3.5/CodexDreamSkin-Windows-x64-v0.3.5-Lite.zip">Download Lite</a>
   ·
   <a href="https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases/tag/v0.3.5">v0.3.5 release notes</a>
   ·
@@ -19,7 +21,7 @@
 </p>
 
 <p align="center">
-  Windows 10 1809+ / Windows 11 · x64 · Self-contained portable package · Currently unsigned
+  Windows 10 1809+ / Windows 11 · x64 · Portable / Lite editions · Currently unsigned
 </p>
 
 > [!IMPORTANT]
@@ -27,11 +29,15 @@
 
 ## Get started
 
-### 1. Download
+### 1. Choose an edition
 
-**[Download CodexDreamSkin-Windows-x64-v0.3.5.zip](https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases/download/v0.3.5/CodexDreamSkin-Windows-x64-v0.3.5.zip)**
+**[Portable](https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases/download/v0.3.5/CodexDreamSkin-Windows-x64-v0.3.5-Portable.zip)**
+Self-contained. Extract the complete archive and run it without installing a runtime.
 
-No .NET SDK or repository clone is required.
+**[Lite](https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases/download/v0.3.5/CodexDreamSkin-Windows-x64-v0.3.5-Lite.zip)**
+Smaller download. Install the [.NET 10 Desktop Runtime x64](https://dotnet.microsoft.com/download/dotnet/10.0) and [Windows App SDK Runtime 2.3 x64](https://learn.microsoft.com/windows/apps/windows-app-sdk/downloads) first.
+
+Neither edition requires the .NET SDK or a repository clone.
 
 ### 2. Extract everything
 
@@ -46,12 +52,15 @@ To reapply the theme after an ordinary Codex launch, enable live synchronization
 ### Verify the download
 
 ```text
-SHA-256
-33C68A3892A3D1EB54955511DB3B19622EE1958EB981D56B3325C69B53AEAADB
+Portable
+3A018B7F8BE1E2938A430A3CDBAAD4338ECB291A861E3A615A071575FC07131D
+
+Lite
+64FF47C04A43571B56E5C5D0073DECBE078C6C84E342C7E12251372BA498413A
 ```
 
 > [!NOTE]
-> The current portable build is unsigned, so Windows may show a security prompt on first launch. Confirm that the download came from this repository and verify its SHA-256. Until signing is available, do not use third-party distribution channels.
+> Both editions are unsigned, so Windows may show a security prompt on first launch. Confirm that the download came from this repository and verify its SHA-256. Until signing is available, do not use third-party distribution channels.
 
 ## What it can do
 
