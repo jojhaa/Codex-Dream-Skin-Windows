@@ -6,7 +6,7 @@
   const CHROME_ID = "codex-dream-skin-chrome";
   const APP_MENU_ID = "codex-dream-skin-app-menu";
   const DIFF_SHADOW_STYLE_ID = "codex-dream-skin-diff-shadow-style";
-  const STYLE_SCHEMA = "63";
+  const STYLE_SCHEMA = "69";
   const diffShadowCss = `
     :host {
       --vscode-editor-background: transparent !important;
@@ -99,6 +99,65 @@
     polaroid: objectUrlFor(polaroidArtDataUrl || homeArtDataUrl || artDataUrl)
   };
   const artUrl = artUrls.background;
+  const decorationProfiles = Object.freeze({
+    "kanna-blue": {
+      id: "kanna-blue",
+      enabled: true,
+      note: "01",
+      brand: "桥本环奈 · 蓝色瞬间",
+      subtitle: "KANNA HASHIMOTO / CODEX EDITION",
+      signature: "Kanna / 環奈",
+      task: "03 / KANNA BLUE",
+      taskEdition: "TASK EDITION",
+      ribbonIndex: "01",
+      ribbon: "BLUE MOMENT",
+      ribbonMark: "●",
+      polaroid: "BLUE MOMENT · 01",
+      homeCaption: "HASHIMOTO KANNA · BLUE MOMENT",
+      modeBadge: "KANNA  01",
+      profileBadge: "KANNA BLUE"
+    },
+    "milky-way": {
+      id: "milky-way",
+      enabled: false,
+      note: "",
+      brand: "",
+      subtitle: "",
+      signature: "",
+      task: "",
+      taskEdition: "",
+      ribbonIndex: "",
+      ribbon: "",
+      ribbonMark: "",
+      polaroid: "",
+      homeCaption: "",
+      modeBadge: "",
+      profileBadge: ""
+    },
+    minimal: {
+      id: "minimal",
+      enabled: false,
+      note: "",
+      brand: "",
+      subtitle: "",
+      signature: "",
+      task: "",
+      taskEdition: "",
+      ribbonIndex: "",
+      ribbon: "",
+      ribbonMark: "",
+      polaroid: "",
+      homeCaption: "",
+      modeBadge: "",
+      profileBadge: ""
+    }
+  });
+  const requestedDecorationProfile = theme?.decorations?.profile;
+  const decorationProfile = decorationProfiles[requestedDecorationProfile] || decorationProfiles["kanna-blue"];
+  const sidebarBackgroundMode = theme?.surfaces?.sidebarBackground === "continuous"
+    ? "continuous"
+    : "independent";
+  const matchWorkspaceTransparency = theme?.surfaces?.matchWorkspaceTransparency === true;
   const previousUrls = previous?.artUrls ? Object.values(previous.artUrls) : previous?.artUrl ? [previous.artUrl] : [];
   for (const url of new Set(previousUrls)) URL.revokeObjectURL(url);
   const existingStyle = document.getElementById(STYLE_ID);
@@ -329,12 +388,17 @@
     const shellMain = document.querySelector("main.main-surface") || document.querySelector("main");
     if (!shellMain || !document.body) {
       root.classList.remove("codex-dream-skin");
+      delete root.dataset.dreamSidebarBackground;
+      delete root.dataset.dreamTransparencyMatch;
       root.style.removeProperty("--dream-art");
       root.style.removeProperty("--dream-sidebar-art");
       root.style.removeProperty("--dream-composer-art");
       root.style.removeProperty("--dream-home-art");
       root.style.removeProperty("--dream-home-composer-art");
       root.style.removeProperty("--dream-polaroid-art");
+      root.style.removeProperty("--dream-home-caption");
+      root.style.removeProperty("--dream-mode-badge");
+      root.style.removeProperty("--dream-profile-badge");
       for (const slot of ["background", "sidebar", "composer", "home", "homeComposer", "polaroid"]) {
         const propertySlot = compositionPropertySlot(slot);
         root.style.removeProperty(`--dream-${propertySlot}-position`);
@@ -353,6 +417,9 @@
     root.style.setProperty("--dream-home-art", `url("${artUrls.home}")`);
     root.style.setProperty("--dream-home-composer-art", `url("${artUrls.homeComposer}")`);
     root.style.setProperty("--dream-polaroid-art", `url("${artUrls.polaroid}")`);
+    root.style.setProperty("--dream-home-caption", JSON.stringify(decorationProfile.homeCaption));
+    root.style.setProperty("--dream-mode-badge", JSON.stringify(decorationProfile.modeBadge));
+    root.style.setProperty("--dream-profile-badge", JSON.stringify(decorationProfile.profileBadge));
     const focusX = Number.isFinite(theme?.art?.focusX) ? Math.max(0, Math.min(1, theme.art.focusX)) : .64;
     const focusY = Number.isFinite(theme?.art?.focusY) ? Math.max(0, Math.min(1, theme.art.focusY)) : .44;
     root.style.setProperty("--dream-focus-x", `${(focusX * 100).toFixed(2)}%`);
@@ -408,6 +475,9 @@
     root.dataset.dreamAppearance = theme?.appearance || "auto";
     root.dataset.dreamSafeArea = theme?.art?.safeArea || "auto";
     root.dataset.dreamTaskMode = theme?.art?.taskMode || "auto";
+    root.dataset.dreamDecoration = decorationProfile.id;
+    root.dataset.dreamSidebarBackground = sidebarBackgroundMode;
+    root.dataset.dreamTransparencyMatch = matchWorkspaceTransparency ? "on" : "off";
 
     let style = document.getElementById(STYLE_ID);
     if (!style) {
@@ -461,7 +531,7 @@
       ? home.querySelector(":scope > div:first-child > div:first-child > div:first-child") : null;
     const polaroidFrame = home ? document.querySelector(`#${CHROME_ID} .dream-polaroid`) : null;
     const regionTargets = {
-      background: shellMain,
+      background: sidebarBackgroundMode === "continuous" ? root : shellMain,
       sidebar: settingsSidebar,
       composer: home ? null : taskComposer,
       home: homeArtworkFrame || home,
@@ -605,13 +675,13 @@
     shellMain.classList.toggle("dream-settings-shell", settings);
     shellMain.classList.toggle("dream-utility-shell", utility);
     shellMain.classList.toggle("dream-task-shell", task);
-    const chromeMarkup = `
-      <div class="dream-brand"><span class="dream-note">01</span><span><b>桥本环奈 · 蓝色瞬间</b><small>KANNA HASHIMOTO / CODEX EDITION</small></span></div>
-      <div class="dream-signature">Kanna / 環奈</div>
-      <div class="dream-task-edition"><i></i><span>03 / KANNA BLUE</span><small>TASK EDITION</small></div>
+    const chromeMarkup = decorationProfile.enabled ? `
+      <div class="dream-brand"><span class="dream-note">${decorationProfile.note}</span><span><b>${decorationProfile.brand}</b><small>${decorationProfile.subtitle}</small></span></div>
+      <div class="dream-signature">${decorationProfile.signature}</div>
+      <div class="dream-task-edition"><i></i><span>${decorationProfile.task}</span><small>${decorationProfile.taskEdition}</small></div>
       <div class="dream-sparkles"><i></i><i></i><i></i><i></i><i></i><i></i></div>
-      <div class="dream-ribbon"><span>01</span><b>BLUE MOMENT</b><span>●</span></div>
-      <div class="dream-polaroid"></div>`;
+      <div class="dream-ribbon"><span>${decorationProfile.ribbonIndex}</span><b>${decorationProfile.ribbon}</b><span>${decorationProfile.ribbonMark}</span></div>
+      <div class="dream-polaroid" data-caption="${decorationProfile.polaroid}"></div>` : "";
     let chrome = document.getElementById(CHROME_ID);
     if (!chrome || chrome.parentElement !== document.body) {
       chrome?.remove();
@@ -620,9 +690,11 @@
       chrome.setAttribute("aria-hidden", "true");
       document.body.appendChild(chrome);
     }
-    if (chrome.dataset.dreamVersion !== STYLE_SCHEMA) {
+    if (chrome.dataset.dreamVersion !== STYLE_SCHEMA
+        || chrome.dataset.dreamDecoration !== decorationProfile.id) {
       chrome.innerHTML = chromeMarkup;
       chrome.dataset.dreamVersion = STYLE_SCHEMA;
+      chrome.dataset.dreamDecoration = decorationProfile.id;
     }
     const shellBox = shellMain.getBoundingClientRect();
     chrome.style.left = `${Math.round(shellBox.left)}px`;
@@ -654,6 +726,9 @@
     document.documentElement?.style.removeProperty("--dream-home-art");
     document.documentElement?.style.removeProperty("--dream-home-composer-art");
     document.documentElement?.style.removeProperty("--dream-polaroid-art");
+    document.documentElement?.style.removeProperty("--dream-home-caption");
+    document.documentElement?.style.removeProperty("--dream-mode-badge");
+    document.documentElement?.style.removeProperty("--dream-profile-badge");
     document.documentElement?.style.removeProperty("--dream-focus-x");
     document.documentElement?.style.removeProperty("--dream-focus-y");
     document.documentElement?.style.removeProperty("--dream-accent");
@@ -672,6 +747,9 @@
       delete document.documentElement.dataset.dreamAppearance;
       delete document.documentElement.dataset.dreamSafeArea;
       delete document.documentElement.dataset.dreamTaskMode;
+      delete document.documentElement.dataset.dreamDecoration;
+      delete document.documentElement.dataset.dreamSidebarBackground;
+      delete document.documentElement.dataset.dreamTransparencyMatch;
     }
     document.querySelectorAll(".dream-home").forEach((node) => node.classList.remove("dream-home"));
     document.querySelectorAll(".dream-home-shell").forEach((node) => node.classList.remove("dream-home-shell"));
@@ -722,14 +800,18 @@
   const timer = setInterval(ensure, 5000);
   window[STATE_KEY] = {
     ensure, cleanup, observer, regionResizeObserver, timer, scheduler, menuAbortController,
-    artUrl, artUrls, unlockedTaskItems, sidebarLifecycle, settingsSidebarRecovery, version: "3.9.4"
+    artUrl, artUrls, unlockedTaskItems, sidebarLifecycle, settingsSidebarRecovery,
+    decorationProfile: decorationProfile.id,
+    sidebarBackgroundMode,
+    matchWorkspaceTransparency,
+    version: "3.10.0"
   };
   try {
     ensure();
   } catch (error) {
     throw new Error(`Dream skin ensure failed: ${error?.message || error}`);
   }
-  return { installed: true, version: "3.9.4" };
+  return { installed: true, version: "3.10.0" };
     })(__DREAM_CSS_JSON__, __DREAM_ART_JSON__, __DREAM_SIDEBAR_ART_JSON__, __DREAM_COMPOSER_ART_JSON__, __DREAM_HOME_ART_JSON__, __DREAM_HOME_COMPOSER_ART_JSON__, __DREAM_POLAROID_ART_JSON__, __DREAM_THEME_JSON__);
   } catch (error) {
     throw new Error(`Dream skin bootstrap failed: ${error?.message || error}\n${error?.stack || ''}`);

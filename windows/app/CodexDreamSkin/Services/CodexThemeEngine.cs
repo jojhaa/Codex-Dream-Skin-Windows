@@ -75,6 +75,64 @@ public sealed class CodexThemeEngine : IAsyncDisposable
         finally { _operationGate.Release(); }
     }
 
+    public async Task<CodexPreviewFrame?> CapturePreviewFrameAsync(CancellationToken cancellationToken = default)
+    {
+        await _operationGate.WaitAsync(cancellationToken);
+        try
+        {
+            if (!_isPreviewPayload)
+            {
+                return null;
+            }
+
+            foreach (var session in _sessions.Values.Where(value => !value.IsClosed))
+            {
+                try
+                {
+                    var rendered = await session.EvaluateAsync(
+                        """
+                        new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(() => {
+                          resolve({
+                            codex: location.protocol === 'app:' &&
+                              !!document.querySelector('main.main-surface') &&
+                              !!document.getElementById('codex-dream-skin-style'),
+                            width: Math.max(1, Math.round(innerWidth)),
+                            height: Math.max(1, Math.round(innerHeight))
+                          });
+                        })))
+                        """,
+                        cancellationToken);
+                    if (rendered.ValueKind != JsonValueKind.Object ||
+                        !rendered.TryGetProperty("codex", out var codexNode) ||
+                        !codexNode.GetBoolean())
+                    {
+                        continue;
+                    }
+
+                    var width = rendered.TryGetProperty("width", out var widthNode) ? widthNode.GetInt32() : 1;
+                    var height = rendered.TryGetProperty("height", out var heightNode) ? heightNode.GetInt32() : 1;
+                    var pngBytes = await session.CaptureScreenshotAsync(cancellationToken);
+                    return new CodexPreviewFrame(
+                        pngBytes,
+                        Math.Clamp(width, 1, 16384),
+                        Math.Clamp(height, 1, 16384),
+                        DateTimeOffset.UtcNow);
+                }
+                catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+                {
+                    throw;
+                }
+                catch
+                {
+                    // A route-changing auxiliary target may disappear between render and capture.
+                }
+            }
+
+            return null;
+        }
+        finally { _operationGate.Release(); }
+    }
+
     public Task<EngineSnapshot> PreviewAsync(string themeDirectory, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(themeDirectory);

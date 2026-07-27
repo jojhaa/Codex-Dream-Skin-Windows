@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 8,
+  "schemaVersion": 11,
   "id": "preset-kanna-hashimoto",
   "name": "桥本环奈 · 蓝色瞬间",
   "image": "dream-reference.png",
@@ -24,6 +24,13 @@
     "home": { "focusX": 0.64, "focusY": 0.44, "zoom": 1.0, "fit": "auto", "offsetX": 0.0, "offsetY": 0.0 },
     "homeComposer": { "focusX": 0.64, "focusY": 0.44, "zoom": 1.0, "fit": "auto", "offsetX": 0.0, "offsetY": 0.0 },
     "polaroid": { "focusX": 0.64, "focusY": 0.44, "zoom": 1.0, "fit": "auto", "offsetX": 0.0, "offsetY": 0.0 }
+  },
+  "decorations": {
+    "profile": "kanna-blue"
+  },
+  "surfaces": {
+    "sidebarBackground": "independent",
+    "matchWorkspaceTransparency": false
   },
   "palette": {
     "accent": "#1557b0"

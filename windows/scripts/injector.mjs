@@ -7,7 +7,7 @@ import { readImageMetadata } from "./image-metadata.mjs";
 const scriptPath = fileURLToPath(import.meta.url);
 const here = path.dirname(scriptPath);
 const root = path.resolve(here, "..");
-const SKIN_VERSION = "3.9.4";
+const SKIN_VERSION = "3.10.0";
 const MAX_ART_BYTES = 16 * 1024 * 1024;
 const STRONG_THEME_AUDIT_MS = 30000;
 const LOOPBACK_HOSTS = new Set(["127.0.0.1", "localhost", "[::1]", "::1"]);
@@ -407,6 +407,8 @@ const THEME_CHOICES = {
   appearance: new Set(["auto", "light", "dark"]),
   safeArea: new Set(["auto", "left", "right", "center", "none"]),
   taskMode: new Set(["auto", "ambient", "banner", "off"]),
+  decorationProfile: new Set(["minimal", "kanna-blue", "milky-way"]),
+  sidebarBackgroundMode: new Set(["independent", "continuous"]),
   fit: new Set(["auto", "cover", "contain", "fill"]),
 };
 
@@ -426,6 +428,12 @@ function normalizedRange(value, name, minimum, maximum, fallback) {
     throw new Error(`${name} must be between ${minimum} and ${maximum}`);
   }
   return number;
+}
+
+function normalizedBoolean(value, name, fallback = false) {
+  if (value === undefined || value === null) return fallback;
+  if (typeof value !== "boolean") throw new Error(`${name} must be a boolean`);
+  return value;
 }
 
 function normalizedChoice(value, name, choices, fallback) {
@@ -451,7 +459,7 @@ async function loadTheme(themeDir) {
     throw new Error("Theme root must be an object");
   }
   const schemaVersion = raw.schemaVersion ?? 1;
-  if (![1, 2, 3, 4, 5, 6, 7, 8].includes(schemaVersion)) throw new Error(`Unsupported theme schema: ${schemaVersion}`);
+  if (![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].includes(schemaVersion)) throw new Error(`Unsupported theme schema: ${schemaVersion}`);
   const image = normalizedText(raw.image, "image", null, 240);
   if (!image) throw new Error("Theme image must be a relative path");
   const images = raw.images && typeof raw.images === "object" && !Array.isArray(raw.images) ? raw.images : {};
@@ -496,6 +504,10 @@ async function loadTheme(themeDir) {
   const art = raw.art && typeof raw.art === "object" && !Array.isArray(raw.art) ? raw.art : {};
   const compositions = raw.compositions && typeof raw.compositions === "object" && !Array.isArray(raw.compositions)
     ? raw.compositions : {};
+  const decorations = raw.decorations && typeof raw.decorations === "object" && !Array.isArray(raw.decorations)
+    ? raw.decorations : {};
+  const surfaces = raw.surfaces && typeof raw.surfaces === "object" && !Array.isArray(raw.surfaces)
+    ? raw.surfaces : {};
   const composition = (name) => {
     const value = compositions[name] && typeof compositions[name] === "object" && !Array.isArray(compositions[name])
       ? compositions[name] : {};
@@ -574,6 +586,23 @@ async function loadTheme(themeDir) {
       home: composition("home"),
       homeComposer: composition("homeComposer"),
       polaroid: composition("polaroid"),
+    },
+    decorations: {
+      profile: normalizedChoice(
+        decorations.profile,
+        "decorations.profile",
+        THEME_CHOICES.decorationProfile,
+        "kanna-blue"),
+    },
+    surfaces: {
+      sidebarBackground: normalizedChoice(
+        surfaces.sidebarBackground,
+        "surfaces.sidebarBackground",
+        THEME_CHOICES.sidebarBackgroundMode,
+        "independent"),
+      matchWorkspaceTransparency: normalizedBoolean(
+        surfaces.matchWorkspaceTransparency,
+        "surfaces.matchWorkspaceTransparency"),
     },
     palette: {},
     materials: {

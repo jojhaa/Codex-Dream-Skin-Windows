@@ -23,6 +23,26 @@ public sealed partial class DiagnosticsPage : Page
     private async void DiagnosticsPage_Loaded(object sender, RoutedEventArgs e) =>
         await RunGuardedAsync(RefreshAsync);
 
+    private void DiagnosticsPage_SizeChanged(object sender, SizeChangedEventArgs e)
+    {
+        var isWide = e.NewSize.Width >= 980;
+        HealthColumn.Width = isWide ? new GridLength(340) : new GridLength(1, GridUnitType.Star);
+
+        Grid.SetRow(HealthPanel, 0);
+        Grid.SetColumn(HealthPanel, 0);
+        Grid.SetColumnSpan(HealthPanel, isWide ? 1 : 2);
+
+        Grid.SetRow(PortsPanel, isWide ? 0 : 1);
+        Grid.SetColumn(PortsPanel, isWide ? 1 : 0);
+        Grid.SetColumnSpan(PortsPanel, isWide ? 1 : 2);
+        DiagnosticsWorkspace.RowDefinitions[0].Height = isWide
+            ? new GridLength(1, GridUnitType.Star)
+            : GridLength.Auto;
+        DiagnosticsWorkspace.RowDefinitions[1].Height = isWide
+            ? new GridLength(0)
+            : new GridLength(1, GridUnitType.Star);
+    }
+
     private async void RefreshButton_Click(object sender, RoutedEventArgs e) =>
         await RunGuardedAsync(RefreshAsync);
 

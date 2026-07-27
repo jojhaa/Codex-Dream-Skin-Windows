@@ -65,6 +65,13 @@ public sealed partial class SettingsPage : Page
         }
     }
 
+    private void SettingsPage_SizeChanged(object sender, SizeChangedEventArgs e)
+    {
+        var showRail = e.NewSize.Width >= 920;
+        SettingsRailColumn.Width = showRail ? new GridLength(190) : new GridLength(0);
+        SettingsRail.Visibility = showRail ? Visibility.Visible : Visibility.Collapsed;
+    }
+
     private void AppearanceSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (AppearanceSelector.SelectedItem is not ComboBoxItem item ||

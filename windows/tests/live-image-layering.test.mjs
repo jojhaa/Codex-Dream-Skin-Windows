@@ -60,7 +60,7 @@ const expectedComposerSize = process.env.EXPECT_COMPOSER_SIZE;
 const composerSizeMatches = expectedComposerSize
   ? result.composerAfter?.backgroundSize === expectedComposerSize
   : /^\d+(?:\.\d+)?px \d+(?:\.\d+)?px$/.test(result.composerAfter?.backgroundSize || "");
-const pass = result.version === "3.9.4" && (!isTask || (
+const pass = result.version === "3.10.0" && (!isTask || (
   blobCount(result.sidebar?.backgroundImage) === 1
   && onlyNoRepeat(result.sidebar?.backgroundRepeat)
   && blobCount(result.main?.backgroundImage) === 1

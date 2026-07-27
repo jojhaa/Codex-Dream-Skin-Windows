@@ -12,7 +12,7 @@ public sealed class ManagerSettingsService
     private readonly ApplicationDataContainer? _settings;
     private readonly string _fallbackPath = Path.Combine(AppStoragePaths.LocalRoot, "manager-settings.json");
     private bool _fallbackAutoTakeover;
-    private string _fallbackAppearance = "system";
+    private string _fallbackAppearance = "dark";
 
     public ManagerSettingsService()
     {
@@ -88,8 +88,8 @@ public sealed class ManagerSettingsService
                 && autoTakeover.ValueKind is JsonValueKind.True;
             _fallbackAppearance = root.TryGetProperty("appearance", out var appearance)
                 && appearance.ValueKind is JsonValueKind.String
-                ? appearance.GetString() ?? "system"
-                : "system";
+                ? appearance.GetString() ?? "dark"
+                : "dark";
         }
         catch (FileNotFoundException)
         {

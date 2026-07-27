@@ -32,6 +32,14 @@ assert.match(css, /\.dream-ribbon\s*\{[\s\S]*left:\s*var\(--dream-ribbon-left[\s
   "the home ribbon must use a measured hero position instead of the bottom composer lane");
 assert.match(css, /@media \(max-width: 1120px\)[\s\S]*\.dream-ribbon\s*\{\s*display:\s*none\s*!important;/,
   "the ribbon must disappear before a narrow home layout can squeeze the typing lane");
+assert.match(css, /#codex-dream-skin-chrome\[data-dream-decoration="milky-way"\]\s*:where\([\s\S]*\.dream-ribbon,[\s\S]*\.dream-polaroid[\s\S]*display:\s*none\s*!important/,
+  "the Milky Way profile must suppress inherited editorial chrome");
+assert.match(css, /data-dream-decoration="milky-way"[\s\S]*\.dream-home[\s\S]*::after\s*\{[\s\S]*content:\s*none\s*!important;[\s\S]*display:\s*none\s*!important;/,
+  "the Milky Way home scene must not leave an empty editorial caption rule");
+assert.match(css, /content:\s*var\(--dream-home-caption/,
+  "the home editorial caption must come from the selected decoration profile");
+assert.match(css, /\.dream-polaroid::after\s*\{[\s\S]*content:\s*attr\(data-caption\)/,
+  "the observation-card caption must come from the selected decoration profile");
 assert.match(template, /--dream-ribbon-top/, "the renderer must publish the measured hero-safe ribbon position");
 assert.match(template, /const APP_MENU_ID = "codex-dream-skin-app-menu"/,
   "the renderer must own a reversible translated application-menu surface");
@@ -89,6 +97,18 @@ assert.match(css, /--dream-task-mask-left:\s*var\(--dream-custom-dark-page,\s*\.
 assert.match(css, /var\(--dream-sidebar-art,\s*var\(--dream-art\)\)/);
 assert.match(css, /var\(--dream-composer-art,\s*var\(--dream-art\)\)/);
 assert.match(css, /var\(--dream-home-art,\s*var\(--dream-art\)\)/);
+assert.match(css, /data-dream-sidebar-background="continuous"\]\s+body::before\s*\{[\s\S]*background-image:\s*var\(--dream-art\)/,
+  "continuous sidebar mode must place the main artwork on one viewport-sized plane");
+assert.match(css, /data-dream-sidebar-background="continuous"\]\s+aside\.app-shell-left-panel\s*\{[^}]*background:\s*transparent\s*!important;[^}]*backdrop-filter:\s*none\s*!important;/,
+  "continuous sidebar mode must make the sidebar fill and backdrop fully transparent");
+assert.match(css, /data-dream-sidebar-background="continuous"\]\s+aside\.app-shell-left-panel::before,[\s\S]*aside\.app-shell-left-panel::after\s*\{[^}]*content:\s*none\s*!important;[^}]*display:\s*none\s*!important;/,
+  "continuous sidebar mode must remove inherited sidebar pseudo overlays");
+assert.match(css, /data-dream-sidebar-background="continuous"\]\s+main\.main-surface\.dream-task-shell\s*\{[\s\S]*background-image:[\s\S]*radial-gradient/,
+  "continuous dark task mode must retain the workspace veil without repainting regional artwork");
+assert.match(css, /Match the large surfaces at one opacity[\s\S]*data-dream-sidebar-background="continuous"\]\[data-dream-transparency-match="on"\]\s+main\.main-surface,[\s\S]*main\.main-surface\s*>\s*header\.app-header-tint,[\s\S]*background:\s*transparent\s*!important;[\s\S]*backdrop-filter:\s*none\s*!important;/,
+  "the match option must give the sidebar and large workspace surfaces the same transparent base");
+assert.match(css, /electron-dark\[data-dream-sidebar-background="continuous"\]\[data-dream-transparency-match="on"\]\s+main\.main-surface,[\s\S]*electron-dark\[data-dream-sidebar-background="continuous"\]\[data-dream-transparency-match="on"\]\s+main\.main-surface\s*>\s*header\.app-header-tint,[\s\S]*background:\s*transparent\s*!important;/,
+  "the match option must override route-specific dark workspace and header veils");
 for (const slot of ["messages", "summaries", "previews", "menus", "workspace", "code", "suggestions"]) {
   assert.match(css, new RegExp(`--dream-component-${slot}-light-(?:rgb|opacity)`), `missing light ${slot} material mapping`);
   assert.match(css, new RegExp(`--dream-component-${slot}-dark-(?:rgb|opacity)`), `missing dark ${slot} material mapping`);
@@ -209,6 +229,9 @@ function createFixture({
     classList: makeClassList(rootClasses, queueRootClassMutation),
     dataset: {},
     getAttribute() { return null; },
+    getBoundingClientRect() {
+      return { left: 0, right: 1280, top: 0, bottom: 820, width: 1280, height: 820 };
+    },
     style: {
       setProperty(key, value) { rootStyles.set(key, value); },
       removeProperty(key) { rootStyles.delete(key); },
@@ -412,8 +435,10 @@ function createFixture({
 const main = createFixture({ shellPresent: true });
 const mainResult = vm.runInNewContext(payload, main.context);
 assert.equal(mainResult.installed, true);
-assert.equal(mainResult.version, "3.9.4");
+assert.equal(mainResult.version, "3.10.0");
 assert.equal(main.rootClasses.has("codex-dream-skin"), true);
+assert.equal(main.context.document.documentElement.dataset.dreamSidebarBackground, "independent");
+assert.equal(main.context.document.documentElement.dataset.dreamTransparencyMatch, "off");
 assert.equal(main.rootStyles.get("--dream-art"), 'url("blob:fixture-1")');
 assert.equal(main.rootStyles.get("--dream-sidebar-art"), 'url("blob:fixture-2")');
 assert.equal(main.rootStyles.get("--dream-composer-art"), 'url("blob:fixture-3")');
@@ -435,7 +460,48 @@ assert.equal(main.rootClasses.has("codex-dream-skin"), false);
 assert.equal(main.rootStyles.has("--dream-sidebar-position"), false);
 assert.equal(main.nodes.has("codex-dream-skin-style"), false);
 assert.equal(main.nodes.has("codex-dream-skin-chrome"), false);
+assert.equal(main.context.document.documentElement.dataset.dreamSidebarBackground, undefined);
+assert.equal(main.context.document.documentElement.dataset.dreamTransparencyMatch, undefined);
 assert.deepEqual(main.revokedUrls, ["blob:fixture-1", "blob:fixture-2", "blob:fixture-3", "blob:fixture-4", "blob:fixture-5", "blob:fixture-6"]);
+
+const milkyDecorations = createFixture({ shellPresent: true, homePresent: true });
+const milkyResult = vm.runInNewContext(buildPayload({
+  decorations: { profile: "milky-way" },
+}), milkyDecorations.context);
+const milkyChrome = milkyDecorations.nodes.get("codex-dream-skin-chrome");
+assert.equal(milkyResult.version, "3.10.0");
+assert.equal(milkyDecorations.context.document.documentElement.dataset.dreamDecoration, "milky-way");
+assert.equal(milkyChrome.dataset.dreamDecoration, "milky-way");
+assert.equal(milkyChrome.innerHTML, "");
+assert.equal(milkyDecorations.rootStyles.get("--dream-home-caption"), '""');
+assert.equal(milkyDecorations.rootStyles.get("--dream-mode-badge"), '""');
+assert.equal(milkyDecorations.rootStyles.get("--dream-profile-badge"), '""');
+assert.equal(milkyDecorations.context.window.__CODEX_DREAM_SKIN_STATE__.decorationProfile, "milky-way");
+assert.equal(milkyDecorations.context.window.__CODEX_DREAM_SKIN_STATE__.cleanup(), true);
+assert.equal(milkyDecorations.context.document.documentElement.dataset.dreamDecoration, undefined);
+assert.equal(milkyDecorations.rootStyles.has("--dream-home-caption"), false);
+
+const continuousSidebar = createFixture({ shellPresent: true });
+const continuousResult = vm.runInNewContext(buildPayload({
+  surfaces: { sidebarBackground: "continuous", matchWorkspaceTransparency: true },
+  imageMetadata: { background: { width: 1493, height: 1053 } },
+  compositions: {
+    background: { focusX: .52, focusY: .43, zoom: 1, fit: "cover", offsetX: 0, offsetY: 0 },
+  },
+}), continuousSidebar.context);
+assert.equal(continuousResult.version, "3.10.0");
+assert.equal(continuousSidebar.context.document.documentElement.dataset.dreamSidebarBackground, "continuous");
+assert.equal(continuousSidebar.context.document.documentElement.dataset.dreamTransparencyMatch, "on");
+assert.equal(continuousSidebar.context.window.__CODEX_DREAM_SKIN_STATE__.sidebarBackgroundMode, "continuous");
+assert.equal(continuousSidebar.context.window.__CODEX_DREAM_SKIN_STATE__.matchWorkspaceTransparency, true);
+const [continuousWidth, continuousHeight] = continuousSidebar.rootStyles.get("--dream-background-size")
+  .split(" ").map(value => Number.parseFloat(value));
+assert.ok(Math.abs(continuousWidth - 1280) < .02, "continuous mode must size the artwork against the complete viewport");
+assert.ok(Math.abs(continuousWidth / continuousHeight - 1493 / 1053) < .0001,
+  "continuous viewport sizing must preserve the source aspect ratio");
+assert.equal(continuousSidebar.context.window.__CODEX_DREAM_SKIN_STATE__.cleanup(), true);
+assert.equal(continuousSidebar.context.document.documentElement.dataset.dreamSidebarBackground, undefined);
+assert.equal(continuousSidebar.context.document.documentElement.dataset.dreamTransparencyMatch, undefined);
 
 const exactCrop = createFixture({ shellPresent: true });
 vm.runInNewContext(buildPayload({

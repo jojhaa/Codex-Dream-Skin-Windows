@@ -40,6 +40,8 @@
     <Content Include="..\..\assets\dream-skin.css" Link="Assets\Theme\dream-skin.css" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="..\..\assets\renderer-inject.js" Link="Assets\Theme\renderer-inject.js" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="..\..\assets\theme.json" Link="Assets\Theme\theme.json" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\..\presets\preset-milky-way-glass\background.png" Link="Assets\Theme\preset-milky-way-glass\background.png" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="..\..\presets\preset-milky-way-glass\theme.json" Link="Assets\Theme\preset-milky-way-glass\theme.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>
 
   <ItemGroup>

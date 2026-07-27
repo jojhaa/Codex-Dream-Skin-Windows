@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 11,
+  "id": "preset-milky-way-glass",
+  "name": "银河夜幕 · 星河玻璃",
+  "image": "background.png",
+  "images": {
+    "sidebar": "background.png",
+    "composer": "background.png",
+    "home": "background.png",
+    "homeComposer": "background.png",
+    "polaroid": "background.png"
+  },
+  "appearance": "dark",
+  "art": {
+    "focusX": 0.52,
+    "focusY": 0.43,
+    "safeArea": "auto",
+    "taskMode": "ambient"
+  },
+  "compositions": {
+    "background": { "focusX": 0.52, "focusY": 0.43, "zoom": 1.0, "fit": "cover", "offsetX": 0.0, "offsetY": 0.0 },
+    "sidebar": { "focusX": 0.16, "focusY": 0.48, "zoom": 1.0, "fit": "cover", "offsetX": 0.0, "offsetY": 0.0 },
+    "composer": { "focusX": 0.56, "focusY": 0.40, "zoom": 1.0, "fit": "cover", "offsetX": 0.0, "offsetY": 0.0 },
+    "home": { "focusX": 0.52, "focusY": 0.43, "zoom": 1.0, "fit": "cover", "offsetX": 0.0, "offsetY": 0.0 },
+    "homeComposer": { "focusX": 0.56, "focusY": 0.40, "zoom": 1.0, "fit": "cover", "offsetX": 0.0, "offsetY": 0.0 },
+    "polaroid": { "focusX": 0.48, "focusY": 0.38, "zoom": 1.0, "fit": "cover", "offsetX": 0.0, "offsetY": 0.0 }
+  },
+  "decorations": {
+    "profile": "milky-way"
+  },
+  "surfaces": {
+    "sidebarBackground": "continuous",
+    "matchWorkspaceTransparency": true
+  },
+  "palette": {
+    "accent": "#67A7FF"
+  },
+  "materials": {
+    "light": {
+      "page": 0.32,
+      "sidebar": 0.42,
+      "composer": 0.34,
+      "card": 0.20
+    },
+    "dark": {
+      "page": 0.30,
+      "sidebar": 0.44,
+      "composer": 0.36,
+      "card": 0.24
+    },
+    "components": {
+      "messages": { "light": { "color": "#EAF4FF", "opacity": 0.24 }, "dark": { "color": "#07182D", "opacity": 0.42 } },
+      "summaries": { "light": { "color": "#E7F2FF", "opacity": 0.28 }, "dark": { "color": "#081B33", "opacity": 0.46 } },
+      "previews": { "light": { "color": "#DDEEFF", "opacity": 0.58 }, "dark": { "color": "#06162A", "opacity": 0.64 } },
+      "menus": { "light": { "color": "#EDF6FF", "opacity": 0.42 }, "dark": { "color": "#07182D", "opacity": 0.58 } },
+      "workspace": { "light": { "color": "#EAF4FF", "opacity": 0.24 }, "dark": { "color": "#07192F", "opacity": 0.38 } },
+      "code": { "light": { "color": "#E6F2FF", "opacity": 0.24 }, "dark": { "color": "#06162A", "opacity": 0.48 } },
+      "suggestions": { "light": { "color": "#F2F8FF", "opacity": 0.30 }, "dark": { "color": "#0A203B", "opacity": 0.44 } }
+    }
+  }
+}

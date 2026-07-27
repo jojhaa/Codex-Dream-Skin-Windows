@@ -63,7 +63,7 @@ if (nativeCommand) {
 }
 
 socket.close();
-const pass = result.version === "3.9.4"
+const pass = result.version === "3.10.0"
   && result.binding === "function"
   && Object.values(result.menus).every((menu) =>
     menu.count === menu.expected && menu.ariaLabel?.endsWith("菜单") && menu.overflow === 0);

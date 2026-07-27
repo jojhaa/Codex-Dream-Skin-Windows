@@ -72,7 +72,7 @@ const backgroundSize = parseSize(result.sizes?.background);
 const sidebarSize = parseSize(result.sizes?.sidebar);
 const covers = (size, target) => size && target
   && size.width + .1 >= target.width && size.height + .1 >= target.height;
-const pass = result.version === "3.9.4"
+const pass = result.version === "3.10.0"
   && result.background?.width > 0 && result.background?.height > 0
   && result.sidebar?.width > 0 && result.sidebar?.height > 0
   && (!result.home || (result.ribbon?.width > 0 && result.ribbon?.height > 0 && !result.ribbonComposerOverlap))

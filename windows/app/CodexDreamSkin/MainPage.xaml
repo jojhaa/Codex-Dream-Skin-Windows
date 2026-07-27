@@ -1,67 +1,85 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <Page
     x:Class="CodexDreamSkin.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="using:CodexDreamSkin"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    SizeChanged="MainPage_SizeChanged"
     mc:Ignorable="d">
 
-    <!--
-        This is the main content area of your application.
-        Add your UI elements here — for example, controls, layouts, and data-bound views.
-        Use 'dotnet new winui-page' to create additional pages and navigate to them via
-        the Frame in MainWindow (RootFrame).
-    -->
-    <Grid>
-        <Image
-            Source="Assets/Theme/dream-reference.png"
-            Stretch="UniformToFill"
-            Opacity="0.18"
-            IsHitTestVisible="False" />
-        <Border
-            Background="{ThemeResource KannaShellOverlayBrush}"
-            IsHitTestVisible="False" />
+    <Grid Background="{ThemeResource KannaShellOverlayBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="64" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-        <NavigationView
-            x:Name="ShellNavigationView"
-            x:Uid="ShellNavigationView"
-            Background="Transparent"
-            CompactModeThresholdWidth="640"
-            ExpandedModeThresholdWidth="1000"
-            IsBackButtonVisible="Collapsed"
-            IsSettingsVisible="False"
-            IsTitleBarAutoPaddingEnabled="False"
-            OpenPaneLength="244"
-            PaneDisplayMode="Auto"
-            SelectionChanged="ShellNavigationView_SelectionChanged">
-            <NavigationView.MenuItems>
-                <NavigationViewItem x:Name="DashboardItem" x:Uid="DashboardNavItem" Tag="dashboard">
-                    <NavigationViewItem.Icon>
+        <Grid
+            x:Name="GlobalHeader"
+            Padding="18,0"
+            Background="{ThemeResource StudioPaneBrush}"
+            BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}"
+            BorderThickness="0,0,0,1"
+            ColumnSpacing="16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel VerticalAlignment="Center" Spacing="1">
+                <TextBlock
+                    x:Uid="StudioBrandEyebrow"
+                    FontSize="10"
+                    FontWeight="SemiBold"
+                    CharacterSpacing="160"
+                    Foreground="{ThemeResource KannaAccentBrush}" />
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <TextBlock
+                        x:Uid="StudioBrandTitle"
+                        FontSize="22"
+                        FontWeight="SemiBold" />
+                    <TextBlock
+                        x:Name="WorkspaceModeContext"
+                        VerticalAlignment="Bottom"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        TextTrimming="CharacterEllipsis" />
+                </StackPanel>
+            </StackPanel>
+
+            <StackPanel
+                x:Name="GlobalActions"
+                Grid.Column="1"
+                Orientation="Horizontal"
+                VerticalAlignment="Center"
+                Spacing="8">
+                <Button x:Name="DashboardModeButton" Tag="dashboard" Click="ModeButton_Click">
+                    <StackPanel Orientation="Horizontal" Spacing="7">
                         <SymbolIcon Symbol="Home" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-                <NavigationViewItem x:Uid="ThemesNavItem" Tag="themes">
-                    <NavigationViewItem.Icon>
+                        <TextBlock x:Uid="DashboardNavLabel" />
+                    </StackPanel>
+                </Button>
+                <Button x:Name="ThemesModeButton" Tag="themes" Click="ModeButton_Click">
+                    <StackPanel Orientation="Horizontal" Spacing="7">
                         <SymbolIcon Symbol="Pictures" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-                <NavigationViewItem x:Uid="DiagnosticsNavItem" Tag="diagnostics">
-                    <NavigationViewItem.Icon>
+                        <TextBlock x:Uid="ThemesNavLabel" />
+                    </StackPanel>
+                </Button>
+                <Button x:Name="DiagnosticsModeButton" Tag="diagnostics" Click="ModeButton_Click">
+                    <StackPanel Orientation="Horizontal" Spacing="7">
                         <SymbolIcon Symbol="Repair" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-            </NavigationView.MenuItems>
-            <NavigationView.FooterMenuItems>
-                <NavigationViewItem x:Uid="SettingsNavItem" Tag="settings">
-                    <NavigationViewItem.Icon>
-                        <SymbolIcon Symbol="Setting" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-            </NavigationView.FooterMenuItems>
+                        <TextBlock x:Uid="DiagnosticsNavLabel" />
+                    </StackPanel>
+                </Button>
+                <Button x:Name="SettingsModeButton" Tag="settings" Click="ModeButton_Click">
+                    <SymbolIcon Symbol="Setting" />
+                </Button>
+            </StackPanel>
+        </Grid>
 
-            <Frame x:Name="ContentFrame" Background="Transparent" />
-        </NavigationView>
+        <Frame
+            x:Name="ContentFrame"
+            Grid.Row="1"
+            Background="{ThemeResource KannaShellOverlayBrush}"
+            IsTabStop="False" />
     </Grid>
 </Page>

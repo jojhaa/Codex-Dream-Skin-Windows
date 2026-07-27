@@ -8,6 +8,8 @@ public sealed record CdpEndpoint(string BrowserId, Uri BrowserWebSocketUrl);
 
 public sealed record CdpTarget(string Id, string Type, string Url, Uri WebSocketUrl);
 
+public sealed record CodexPreviewFrame(byte[] PngBytes, int Width, int Height, DateTimeOffset CapturedAt);
+
 public sealed class CdpClient : IDisposable
 {
     private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);
@@ -153,19 +155,19 @@ public sealed class CdpSession : IAsyncDisposable
             _pending[id] = completion;
         }
 
-        var bytes = JsonSerializer.SerializeToUtf8Bytes(new { id, method, @params = parameters ?? new { } });
-        await _sendGate.WaitAsync(cancellationToken);
         try
         {
-            await _socket.SendAsync(bytes, WebSocketMessageType.Text, true, cancellationToken);
-        }
-        finally
-        {
-            _sendGate.Release();
-        }
+            var bytes = JsonSerializer.SerializeToUtf8Bytes(new { id, method, @params = parameters ?? new { } });
+            await _sendGate.WaitAsync(cancellationToken);
+            try
+            {
+                await _socket.SendAsync(bytes, WebSocketMessageType.Text, true, cancellationToken);
+            }
+            finally
+            {
+                _sendGate.Release();
+            }
 
-        try
-        {
             return await completion.Task.WaitAsync(TimeSpan.FromSeconds(10), cancellationToken);
         }
         finally
@@ -195,6 +197,43 @@ public sealed class CdpSession : IAsyncDisposable
         return response.TryGetProperty("result", out var result) && result.TryGetProperty("value", out var value)
             ? value.Clone()
             : default;
+    }
+
+    public async Task<byte[]> CaptureScreenshotAsync(CancellationToken cancellationToken)
+    {
+        var response = await SendAsync("Page.captureScreenshot", new
+        {
+            format = "png",
+            fromSurface = true,
+            captureBeyondViewport = false
+        }, cancellationToken);
+
+        if (!response.TryGetProperty("data", out var dataNode) ||
+            dataNode.ValueKind != JsonValueKind.String ||
+            string.IsNullOrWhiteSpace(dataNode.GetString()))
+        {
+            throw new InvalidDataException("CDP screenshot response did not contain PNG data.");
+        }
+
+        byte[] bytes;
+        try
+        {
+            bytes = Convert.FromBase64String(dataNode.GetString()!);
+        }
+        catch (FormatException error)
+        {
+            throw new InvalidDataException("CDP screenshot response contained invalid base64 data.", error);
+        }
+
+        const int maximumScreenshotBytes = 32 * 1024 * 1024;
+        if (bytes.Length is < 8 or > maximumScreenshotBytes ||
+            bytes[0] != 0x89 || bytes[1] != 0x50 || bytes[2] != 0x4E || bytes[3] != 0x47 ||
+            bytes[4] != 0x0D || bytes[5] != 0x0A || bytes[6] != 0x1A || bytes[7] != 0x0A)
+        {
+            throw new InvalidDataException("CDP screenshot response was not a supported PNG frame.");
+        }
+
+        return bytes;
     }
 
     private async Task ReceiveLoopAsync(CancellationToken cancellationToken)

@@ -82,3 +82,4 @@ runtime/
 /windows/*.jpeg
 /windows/*.webp
 /windows/*.gif
+/windows/tests/artifacts/

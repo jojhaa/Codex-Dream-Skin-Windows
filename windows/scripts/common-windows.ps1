@@ -132,6 +132,8 @@ function Install-DreamSkinRuntimeEngine {
     'assets\theme.json',
     'presets\preset-gothic-void-crusade\background.jpg',
     'presets\preset-gothic-void-crusade\theme.json',
+    'presets\preset-milky-way-glass\background.png',
+    'presets\preset-milky-way-glass\theme.json',
     'scripts\common-windows.ps1',
     'scripts\config-utf8.ps1',
     'scripts\image-metadata.mjs',

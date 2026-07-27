@@ -5,18 +5,22 @@
 
     <ResourceDictionary.ThemeDictionaries>
         <ResourceDictionary x:Key="Light">
-            <SolidColorBrush x:Key="KannaShellOverlayBrush" Color="#DDF5FAFF" />
+            <SolidColorBrush x:Key="KannaShellOverlayBrush" Color="#F5F8FC" />
             <SolidColorBrush x:Key="KannaHeroOverlayBrush" Color="#B80A376F" />
             <SolidColorBrush x:Key="KannaAccentBrush" Color="#1557B0" />
             <SolidColorBrush x:Key="KannaSuccessBrush" Color="#0B7A5A" />
             <SolidColorBrush x:Key="KannaPendingBrush" Color="#9A5B00" />
+            <SolidColorBrush x:Key="StudioPaneBrush" Color="#EAF0F7" />
+            <SolidColorBrush x:Key="StudioSurfaceBrush" Color="#F9FBFD" />
         </ResourceDictionary>
         <ResourceDictionary x:Key="Dark">
-            <SolidColorBrush x:Key="KannaShellOverlayBrush" Color="#D91A2330" />
+            <SolidColorBrush x:Key="KannaShellOverlayBrush" Color="#121820" />
             <SolidColorBrush x:Key="KannaHeroOverlayBrush" Color="#CC071E3D" />
             <SolidColorBrush x:Key="KannaAccentBrush" Color="#79B8FF" />
             <SolidColorBrush x:Key="KannaSuccessBrush" Color="#6CDDB5" />
             <SolidColorBrush x:Key="KannaPendingBrush" Color="#F5C06A" />
+            <SolidColorBrush x:Key="StudioPaneBrush" Color="#19222E" />
+            <SolidColorBrush x:Key="StudioSurfaceBrush" Color="#171E28" />
         </ResourceDictionary>
         <ResourceDictionary x:Key="HighContrast">
             <SolidColorBrush x:Key="KannaShellOverlayBrush" Color="{ThemeResource SystemColorWindowColor}" />
@@ -24,19 +28,48 @@
             <SolidColorBrush x:Key="KannaAccentBrush" Color="{ThemeResource SystemColorHighlightColor}" />
             <SolidColorBrush x:Key="KannaSuccessBrush" Color="{ThemeResource SystemColorWindowTextColor}" />
             <SolidColorBrush x:Key="KannaPendingBrush" Color="{ThemeResource SystemColorWindowTextColor}" />
+            <SolidColorBrush x:Key="StudioPaneBrush" Color="{ThemeResource SystemColorWindowColor}" />
+            <SolidColorBrush x:Key="StudioSurfaceBrush" Color="{ThemeResource SystemColorWindowColor}" />
         </ResourceDictionary>
     </ResourceDictionary.ThemeDictionaries>
 
     <Style x:Key="PageRootStyle" TargetType="StackPanel">
-        <Setter Property="Spacing" Value="24" />
-        <Setter Property="Padding" Value="32,24,32,40" />
+        <Setter Property="Spacing" Value="16" />
+        <Setter Property="Padding" Value="20" />
     </Style>
 
     <Style x:Key="StatusCardStyle" TargetType="Border">
-        <Setter Property="Background" Value="{ThemeResource CardBackgroundFillColorDefaultBrush}" />
-        <Setter Property="BorderBrush" Value="{ThemeResource CardStrokeColorDefaultBrush}" />
-        <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="CornerRadius" Value="12" />
-        <Setter Property="Padding" Value="18" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="CornerRadius" Value="0" />
+        <Setter Property="Padding" Value="16" />
+    </Style>
+
+    <Style x:Key="StudioGroupStyle" TargetType="Border">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="CornerRadius" Value="0" />
+        <Setter Property="Padding" Value="16" />
+    </Style>
+
+    <Style x:Key="WorkspaceTitleStyle" TargetType="TextBlock" BasedOn="{StaticResource TitleTextBlockStyle}">
+        <Setter Property="FontSize" Value="28" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+
+    <Style x:Key="WorkspaceSubtitleStyle" TargetType="TextBlock" BasedOn="{StaticResource BodyTextBlockStyle}">
+        <Setter Property="Foreground" Value="{ThemeResource TextFillColorSecondaryBrush}" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+        <Setter Property="MaxWidth" Value="720" />
+    </Style>
+
+    <Style x:Key="SectionLabelStyle" TargetType="TextBlock" BasedOn="{StaticResource CaptionTextBlockStyle}">
+        <Setter Property="Foreground" Value="{ThemeResource TextFillColorSecondaryBrush}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="CharacterSpacing" Value="70" />
+    </Style>
+
+    <Style x:Key="SettingsRowStyle" TargetType="Grid">
+        <Setter Property="MinHeight" Value="72" />
     </Style>
 </ResourceDictionary>

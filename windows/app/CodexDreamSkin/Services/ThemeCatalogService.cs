@@ -20,11 +20,14 @@ public sealed class ThemeCatalogService
     private static readonly HashSet<string> AllowedAppearances = new(StringComparer.Ordinal) { "auto", "light", "dark" };
     private static readonly HashSet<string> AllowedSafeAreas = new(StringComparer.Ordinal) { "auto", "left", "right", "center", "none" };
     private static readonly HashSet<string> AllowedTaskModes = new(StringComparer.Ordinal) { "auto", "ambient", "banner", "off" };
+    private static readonly HashSet<string> AllowedDecorationProfiles = new(StringComparer.Ordinal) { "minimal", "kanna-blue", "milky-way" };
+    private static readonly HashSet<string> AllowedSidebarBackgroundModes = new(StringComparer.Ordinal) { "independent", "continuous" };
     private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web) { WriteIndented = true };
     private readonly SemaphoreSlim _gate = new(1, 1);
     private string? _previewSourceSignature;
 
     public string BundledThemeDirectory => Path.Combine(AppContext.BaseDirectory, "Assets", "Theme");
+    public string MilkyWayBundledThemeDirectory => Path.Combine(BundledThemeDirectory, "preset-milky-way-glass");
     public string UserThemesDirectory => Path.Combine(AppStoragePaths.LocalRoot, "Themes");
     public string PreviewThemeDirectory => Path.Combine(AppStoragePaths.TemporaryRoot, "ThemePreview");
     private string StatePath => Path.Combine(AppStoragePaths.LocalRoot, "theme-state.json");
@@ -38,7 +41,8 @@ public sealed class ThemeCatalogService
             var activeId = await ReadActiveIdCoreAsync(cancellationToken);
             var themes = new List<ThemeDefinition>
             {
-                await ReadThemeCoreAsync(BundledThemeDirectory, true, cancellationToken)
+                await ReadThemeCoreAsync(BundledThemeDirectory, true, cancellationToken),
+                await ReadThemeCoreAsync(MilkyWayBundledThemeDirectory, true, cancellationToken)
             };
 
             foreach (var directory in Directory.EnumerateDirectories(UserThemesDirectory))
@@ -105,7 +109,10 @@ public sealed class ThemeCatalogService
                 HomeComposerComposition = ThemeComposition.Recommended(ThemeImageSlot.HomeComposer, 0.5, 0.45),
                 PolaroidComposition = ThemeComposition.Recommended(ThemeImageSlot.Polaroid, 0.5, 0.45),
                 SafeArea = "left",
-                TaskMode = "ambient"
+                TaskMode = "ambient",
+                DecorationProfile = "minimal",
+                SidebarBackgroundMode = "continuous",
+                MatchWorkspaceTransparency = true
             };
             await WriteThemeCoreAsync(theme, cancellationToken);
             return theme;
@@ -252,7 +259,7 @@ public sealed class ThemeCatalogService
                     format = "codex-dream-theme",
                     formatVersion = 1,
                     exportedAt = DateTimeOffset.UtcNow,
-                    rendererVersion = "3.9.4"
+                    rendererVersion = "3.10.0"
                 }, JsonOptions));
 
             await AddFileToArchiveAsync(archive, "theme.json", themePath, cancellationToken);
@@ -351,6 +358,9 @@ public sealed class ThemeCatalogService
                     PolaroidComposition = source.PolaroidComposition,
                     SafeArea = source.SafeArea,
                     TaskMode = source.TaskMode,
+                    DecorationProfile = source.DecorationProfile,
+                    SidebarBackgroundMode = source.SidebarBackgroundMode,
+                    MatchWorkspaceTransparency = source.MatchWorkspaceTransparency,
                     Accent = source.Accent,
                     LightPageOpacity = source.LightPageOpacity,
                     LightSidebarOpacity = source.LightSidebarOpacity,
@@ -415,6 +425,9 @@ public sealed class ThemeCatalogService
                 PolaroidComposition = draft.PolaroidComposition,
                 SafeArea = draft.SafeArea,
                 TaskMode = draft.TaskMode,
+                DecorationProfile = draft.DecorationProfile,
+                SidebarBackgroundMode = draft.SidebarBackgroundMode,
+                MatchWorkspaceTransparency = draft.MatchWorkspaceTransparency,
                 Accent = draft.Accent,
                 LightPageOpacity = draft.LightPageOpacity,
                 LightSidebarOpacity = draft.LightSidebarOpacity,
@@ -532,7 +545,7 @@ public sealed class ThemeCatalogService
         var schemaVersion = root.TryGetProperty("schemaVersion", out var schemaNode) && schemaNode.ValueKind == JsonValueKind.Number
             ? schemaNode.GetInt32()
             : 1;
-        if (schemaVersion is not (1 or 2 or 3 or 4 or 5 or 6 or 7 or 8)) throw new InvalidDataException("不支持的主题数据版本。");
+        if (schemaVersion is not (1 or 2 or 3 or 4 or 5 or 6 or 7 or 8 or 9 or 10 or 11)) throw new InvalidDataException("不支持的主题数据版本。");
         var imageNames = ReadImageDeclarations(root);
         var art = root.GetProperty("art");
         var palette = root.TryGetProperty("palette", out var paletteNode) ? paletteNode : default;
@@ -542,6 +555,8 @@ public sealed class ThemeCatalogService
         var legacyFocusX = art.TryGetProperty("focusX", out var focusX) && focusX.ValueKind == JsonValueKind.Number ? focusX.GetDouble() : 0.5;
         var legacyFocusY = art.TryGetProperty("focusY", out var focusY) && focusY.ValueKind == JsonValueKind.Number ? focusY.GetDouble() : 0.5;
         var compositions = root.TryGetProperty("compositions", out var compositionsNode) ? compositionsNode : default;
+        var decorations = root.TryGetProperty("decorations", out var decorationsNode) ? decorationsNode : default;
+        var surfaces = root.TryGetProperty("surfaces", out var surfacesNode) ? surfacesNode : default;
         var theme = new ThemeDefinition
         {
             Id = root.GetProperty("id").GetString() ?? throw new InvalidDataException("主题 ID 缺失。"),
@@ -564,6 +579,20 @@ public sealed class ThemeCatalogService
             PolaroidComposition = ReadComposition(compositions, "polaroid", ThemeImageSlot.Polaroid, legacyFocusX, legacyFocusY),
             SafeArea = art.TryGetProperty("safeArea", out var safeArea) ? safeArea.GetString() ?? "auto" : "auto",
             TaskMode = art.TryGetProperty("taskMode", out var taskMode) ? taskMode.GetString() ?? "auto" : "auto",
+            DecorationProfile = decorations.ValueKind == JsonValueKind.Object
+                && decorations.TryGetProperty("profile", out var decorationProfile)
+                && decorationProfile.ValueKind == JsonValueKind.String
+                    ? decorationProfile.GetString() ?? "kanna-blue"
+                    : "kanna-blue",
+            SidebarBackgroundMode = surfaces.ValueKind == JsonValueKind.Object
+                && surfaces.TryGetProperty("sidebarBackground", out var sidebarBackground)
+                && sidebarBackground.ValueKind == JsonValueKind.String
+                    ? sidebarBackground.GetString() ?? "independent"
+                    : "independent",
+            MatchWorkspaceTransparency = surfaces.ValueKind == JsonValueKind.Object
+                && surfaces.TryGetProperty("matchWorkspaceTransparency", out var matchWorkspaceTransparency)
+                && matchWorkspaceTransparency.ValueKind is JsonValueKind.True or JsonValueKind.False
+                    && matchWorkspaceTransparency.GetBoolean(),
             Accent = palette.ValueKind == JsonValueKind.Object && palette.TryGetProperty("accent", out var accent) ? accent.GetString() ?? "#1557b0" : "#1557b0",
             LightPageOpacity = ReadOpacity(lightMaterials, "page", 0.56),
             LightSidebarOpacity = ReadOpacity(lightMaterials, "sidebar", 0.58),
@@ -676,6 +705,9 @@ public sealed class ThemeCatalogService
         PolaroidComposition = source.PolaroidComposition,
         SafeArea = source.SafeArea,
         TaskMode = source.TaskMode,
+        DecorationProfile = source.DecorationProfile,
+        SidebarBackgroundMode = source.SidebarBackgroundMode,
+        MatchWorkspaceTransparency = source.MatchWorkspaceTransparency,
         Accent = source.Accent,
         LightPageOpacity = source.LightPageOpacity,
         LightSidebarOpacity = source.LightSidebarOpacity,
@@ -807,10 +839,13 @@ public sealed class ThemeCatalogService
 
     private static void Validate(ThemeDefinition theme)
     {
-        if (!System.Text.RegularExpressions.Regex.IsMatch(theme.Id, "^(?:preset-kanna-hashimoto|custom-[0-9a-f]{32})$")) throw new InvalidDataException("主题 ID 无效。");
+        if (!System.Text.RegularExpressions.Regex.IsMatch(theme.Id, "^(?:preset-(?:kanna-hashimoto|milky-way-glass)|custom-[0-9a-f]{32})$")) throw new InvalidDataException("主题 ID 无效。");
         if (string.IsNullOrWhiteSpace(theme.Name) || theme.Name.Length > 120 || theme.Name.Any(char.IsControl)) throw new InvalidDataException("主题名称必须为 1 到 120 个字符。");
         if (theme.FocusX is < 0 or > 1 || theme.FocusY is < 0 or > 1) throw new InvalidDataException("图片焦点必须位于 0 到 1 之间。");
-        if (!AllowedAppearances.Contains(theme.Appearance) || !AllowedSafeAreas.Contains(theme.SafeArea) || !AllowedTaskModes.Contains(theme.TaskMode)) throw new InvalidDataException("主题选项无效。");
+        if (!AllowedAppearances.Contains(theme.Appearance) || !AllowedSafeAreas.Contains(theme.SafeArea)
+            || !AllowedTaskModes.Contains(theme.TaskMode) || !AllowedDecorationProfiles.Contains(theme.DecorationProfile)
+            || !AllowedSidebarBackgroundModes.Contains(theme.SidebarBackgroundMode))
+            throw new InvalidDataException("主题选项无效。");
         if (!System.Text.RegularExpressions.Regex.IsMatch(theme.Accent, "^#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$")) throw new InvalidDataException("强调色必须为 #RRGGBB 或 #RRGGBBAA。");
         var opacityValues = new[]
         {
@@ -941,7 +976,7 @@ public sealed class ThemeCatalogService
     {
         var value = new
         {
-            schemaVersion = 8,
+            schemaVersion = 11,
             id = theme.Id,
             name = theme.Name,
             image = theme.ImageFileName,
@@ -969,6 +1004,12 @@ public sealed class ThemeCatalogService
                 home = CompositionValue(theme.HomeComposition),
                 homeComposer = CompositionValue(theme.HomeComposerComposition),
                 polaroid = CompositionValue(theme.PolaroidComposition)
+            },
+            decorations = new { profile = theme.DecorationProfile },
+            surfaces = new
+            {
+                sidebarBackground = theme.SidebarBackgroundMode,
+                matchWorkspaceTransparency = theme.MatchWorkspaceTransparency
             },
             palette = new { accent = theme.Accent },
             materials = new

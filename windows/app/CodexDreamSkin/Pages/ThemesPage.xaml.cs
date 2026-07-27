@@ -9,6 +9,7 @@ using Microsoft.UI.Xaml.Navigation;
 using Windows.Graphics.Imaging;
 using Windows.Storage;
 using Windows.Storage.Pickers;
+using Windows.Storage.Streams;
 using Windows.UI;
 
 namespace CodexDreamSkin.Pages;
@@ -36,6 +37,8 @@ public sealed partial class ThemesPage : Page
     private CancellationTokenSource? _livePreviewDebounce;
     private int _livePreviewGeneration;
     private bool _isLiveSyncing;
+    private int _livePreviewFrameWidth;
+    private int _livePreviewFrameHeight;
     private uint? _cropPointerId;
     private Windows.Foundation.Point _cropLastPoint;
     private Windows.Foundation.Point _cropPressPoint;
@@ -46,6 +49,7 @@ public sealed partial class ThemesPage : Page
     private double _selectionTop;
     private double _selectionWidth;
     private double _selectionHeight;
+    private string _selectedStudioTool = "Overview";
 
     public ThemesPage()
     {
@@ -60,6 +64,7 @@ public sealed partial class ThemesPage : Page
         CompositionPreviewSurface.AddHandler(UIElement.PointerCanceledEvent, new PointerEventHandler(CompositionPreview_PointerCanceled), true);
         CompositionPreviewSurface.AddHandler(UIElement.PointerCaptureLostEvent, new PointerEventHandler(CompositionPreview_PointerCaptureLost), true);
         CompositionPreviewSurface.AddHandler(UIElement.PointerWheelChangedEvent, new PointerEventHandler(CompositionPreview_PointerWheelChanged), true);
+        SelectThemeTool(_selectedStudioTool);
     }
 
     private async void ThemesPage_Loaded(object sender, RoutedEventArgs e)
@@ -80,6 +85,105 @@ public sealed partial class ThemesPage : Page
         CancelLivePreviewWork();
         SetLivePreviewToggle(false);
         if (_isPreviewing) await RestoreActiveThemeAsync(false);
+    }
+
+    private void ThemeTool_Checked(object sender, RoutedEventArgs e)
+    {
+        if (sender is RadioButton { IsChecked: true } button && button.Tag is not null)
+        {
+            SelectThemeTool(button.Tag.ToString() ?? "Overview");
+        }
+    }
+
+    private void ThemeRailButton_Click(object sender, RoutedEventArgs e)
+    {
+        var showLibrary = sender is Button { Tag: "library" };
+        ThemeLibraryRail.Visibility = showLibrary ? Visibility.Visible : Visibility.Collapsed;
+        ThemeToolsRail.Visibility = showLibrary ? Visibility.Collapsed : Visibility.Visible;
+        ThemeLibraryRailButton.Style = showLibrary
+            ? (Style)Application.Current.Resources["AccentButtonStyle"]
+            : null;
+        ThemeToolsRailButton.Style = showLibrary
+            ? null
+            : (Style)Application.Current.Resources["AccentButtonStyle"];
+    }
+
+    private void SelectThemeTool(string tool)
+    {
+        if (InspectorTitleText is null)
+        {
+            _selectedStudioTool = tool;
+            return;
+        }
+
+        _selectedStudioTool = tool;
+        var isOverview = tool == "Overview";
+        var isColor = tool == "ColorMaterials";
+        var isBackground = tool == "BackgroundComposition";
+        var isAssets = tool == "InterfaceAssets";
+        var isComponents = tool == "ComponentStyles";
+        var isThemeInfo = tool == "ThemeInfo";
+        var isHistory = tool == "History";
+        var isPlanned = tool is "Typography" or "Decoration" or "LayoutSpacing" or "Localization" or "FloatingWindows";
+
+        EditorCanvasHost.Visibility = isBackground || isAssets ? Visibility.Visible : Visibility.Collapsed;
+        ThemeImagesEditorExpander.Visibility = isAssets ? Visibility.Visible : Visibility.Collapsed;
+        CompositionEditorExpander.Visibility = isBackground ? Visibility.Visible : Visibility.Collapsed;
+
+        InspectorChrome.Visibility = isOverview || isColor || isComponents || isThemeInfo || isHistory || isPlanned
+            ? Visibility.Visible
+            : Visibility.Collapsed;
+        AppearancePreviewExpander.Visibility = isOverview ? Visibility.Visible : Visibility.Collapsed;
+        AutoPaletteExpander.Visibility = isColor ? Visibility.Visible : Visibility.Collapsed;
+        ThemeMetadataPanel.Visibility = isOverview || isColor || isThemeInfo ? Visibility.Visible : Visibility.Collapsed;
+        MaterialsEditorExpander.Visibility = isColor ? Visibility.Visible : Visibility.Collapsed;
+        ComponentMaterialsEditorExpander.Visibility = isComponents ? Visibility.Visible : Visibility.Collapsed;
+        PlannedToolPanel.Visibility = isPlanned ? Visibility.Visible : Visibility.Collapsed;
+        HistoryInspectorPanel.Visibility = isHistory ? Visibility.Visible : Visibility.Collapsed;
+
+        (InspectorTitleText.Text, InspectorDescriptionText.Text) = tool switch
+        {
+            "ColorMaterials" => IsChinese
+                ? ("色彩与材质", "调整自动配色、强调色、浅色与深色基础材质。")
+                : ("Color and materials", "Tune automatic palettes, accent color, and light/dark base materials."),
+            "Typography" => IsChinese
+                ? ("字体排版", "规划中的字体、字号、字重与行高工具。")
+                : ("Typography", "Planned controls for fonts, scale, weight, and line height."),
+            "BackgroundComposition" => IsChinese
+                ? ("背景与构图", "选择区域并通过取景框调整焦点、缩放、适配和偏移。")
+                : ("Background and crop", "Select a region and adjust focus, zoom, fit, and offset with the viewport."),
+            "InterfaceAssets" => IsChinese
+                ? ("界面素材", "管理页面、侧栏、输入框、首页与 Polaroid 的六个素材槽。")
+                : ("Interface assets", "Manage the six page, sidebar, composer, home, and Polaroid image slots."),
+            "Decoration" => IsChinese
+                ? ("装饰效果", "规划中的圆角、边框、阴影、光晕与纹理工具。")
+                : ("Decoration", "Planned controls for corners, borders, shadows, glow, and texture."),
+            "ComponentStyles" => IsChinese
+                ? ("组件样式", "调整消息、摘要、菜单、代码、工作区和建议的独立材质。")
+                : ("Component styles", "Tune independent materials for messages, summaries, menus, code, workspace, and suggestions."),
+            "LayoutSpacing" => IsChinese
+                ? ("布局与间距", "规划中的模块密度、区域间距和无分隔线模式。")
+                : ("Layout and spacing", "Planned density, panel spacing, and seamless-surface controls."),
+            "Localization" => IsChinese
+                ? ("界面翻译", "规划中的固定键界面翻译和术语检查工具。")
+                : ("Interface translation", "Planned fixed-key localization and terminology validation."),
+            "FloatingWindows" => IsChinese
+                ? ("悬浮窗口", "规划中的 Floating Chat、悬浮预览、抽屉和菜单外观工具。")
+                : ("Floating windows", "Planned styling for Floating Chat, hover previews, drawers, and menus."),
+            "ThemeInfo" => IsChinese
+                ? ("主题信息", "编辑当前支持的主题名称、外观、安全区域和任务模式。")
+                : ("Theme information", "Edit the currently supported name, appearance, safe area, and task mode."),
+            "History" => IsChinese
+                ? ("版本记录", "查看和恢复已经保存的主题快照。")
+                : ("Version history", "View and restore saved theme snapshots."),
+            _ => IsChinese
+                ? ("主题概览", "检查当前主题在浅色、深色和六个主要区域中的整体效果。")
+                : ("Theme overview", "Review the theme across light, dark, and all six primary regions.")
+        };
+
+        InspectorScrollViewer.ChangeView(null, 0, null, disableAnimation: true);
+        UpdateCompositionPreview();
+        UpdateAppearancePreview();
     }
 
     private async Task ReloadThemesAsync(string? selectId = null)
@@ -134,11 +238,14 @@ public sealed partial class ThemesPage : Page
         _redo.Clear();
         ApplyDraftToEditor(_savedDraft);
         PreviewStatus.Text = theme.IsActive ? "当前主题" : theme.IsBundled ? "内置主题" : "用户主题";
+        CodexPageFixture.Status = PreviewStatus.Text;
         ReadOnlyHint.Text = theme.IsBundled
             ? "内置主题为只读。选择“创建副本”后即可调整并保存。"
             : "编辑内容先保存在草稿中；可临时预览，保存后再正式应用。";
         LivePreviewStatusText.Text = theme.IsBundled
-            ? (IsChinese ? "创建可编辑副本后可开启实时同步。" : "Create an editable copy to enable live sync.")
+            ? (IsChinese
+                ? "可直接获取真实 Codex 画面；创建副本后可继续编辑参数。"
+                : "Live Codex capture is available now; create a copy to edit parameters.")
             : (IsChinese ? "开启后，草稿变化会在短暂防抖后自动预览，不会自动保存。" : "Draft changes preview after a short debounce and are never auto-saved.");
         SetEditorEnabled(!theme.IsBundled);
         _isLoadingEditor = true;
@@ -156,7 +263,9 @@ public sealed partial class ThemesPage : Page
 
     private async Task LoadPreviewAsync(string path)
     {
-        PreviewImage.Source = await LoadBitmapAsync(path);
+        var source = await LoadBitmapAsync(path);
+        PreviewImage.Source = source;
+        CodexPageFixture.BackgroundSource = source;
         UpdateFocusMarker();
     }
 
@@ -201,6 +310,12 @@ public sealed partial class ThemesPage : Page
         HomeModePreviewImage.Source = home;
         HomeComposerModePreviewImage.Source = homeComposer;
         PolaroidModePreviewImage.Source = polaroid;
+        CodexPageFixture.SidebarSource = sidebar;
+        CodexPageFixture.UseContinuousSidebarBackground = draft.SidebarBackgroundMode == "continuous";
+        CodexPageFixture.MatchWorkspaceTransparency =
+            draft.SidebarBackgroundMode == "continuous" && draft.MatchWorkspaceTransparency;
+        CodexPageFixture.PolaroidSource = polaroid;
+        CodexPageFixture.ApplyDecorationProfile(draft.DecorationProfile);
         await LoadPreviewAsync(Path.Combine(directory, GetImageFileName(draft, _previewSlot)));
         CompositionPreviewImage.Source = GetPreviewSource(_compositionSlot);
         UpdateCompositionPreview();
@@ -211,7 +326,9 @@ public sealed partial class ThemesPage : Page
 
     private ImageSource? GetPreviewSource(ThemeImageSlot slot) => slot switch
     {
-        ThemeImageSlot.Sidebar => SidebarImagePreview.Source,
+        ThemeImageSlot.Sidebar => _currentDraft?.SidebarBackgroundMode == "continuous"
+            ? BackgroundImagePreview.Source
+            : SidebarImagePreview.Source,
         ThemeImageSlot.Composer => ComposerImagePreview.Source,
         ThemeImageSlot.Home => HomeImagePreview.Source,
         ThemeImageSlot.HomeComposer => HomeComposerImagePreview.Source,
@@ -228,7 +345,9 @@ public sealed partial class ThemesPage : Page
 
     private static string GetImageFileName(ThemeDraft draft, ThemeImageSlot slot) => slot switch
     {
-        ThemeImageSlot.Sidebar => draft.SidebarImageFileName,
+        ThemeImageSlot.Sidebar => draft.SidebarBackgroundMode == "continuous"
+            ? draft.BackgroundImageFileName
+            : draft.SidebarImageFileName,
         ThemeImageSlot.Composer => draft.ComposerImageFileName,
         ThemeImageSlot.Home => draft.HomeImageFileName,
         ThemeImageSlot.HomeComposer => draft.HomeComposerImageFileName,
@@ -466,6 +585,14 @@ public sealed partial class ThemesPage : Page
             var previewDirectory = await _catalog.PreparePreviewAsync(BuildDraftTheme());
             var snapshot = await _engine.PreviewAsync(previewDirectory);
             _isPreviewing = snapshot.State == EngineState.Active;
+            if (_isPreviewing)
+            {
+                await RefreshLivePreviewFrameAsync(null, CancellationToken.None);
+            }
+            else
+            {
+                ShowOfflinePreviewFrame();
+            }
             ShowMessage(snapshot.Summary, snapshot.Detail, snapshot.State == EngineState.Faulted ? InfoBarSeverity.Error : InfoBarSeverity.Informational);
         }
         catch (Exception error) { ShowMessage("无法预览草稿", error.Message, InfoBarSeverity.Error); }
@@ -478,6 +605,7 @@ public sealed partial class ThemesPage : Page
     {
         CancelLivePreviewWork();
         SetLivePreviewToggle(false);
+        ShowOfflinePreviewFrame();
         if (!_isPreviewing) return;
         try
         {
@@ -508,12 +636,13 @@ public sealed partial class ThemesPage : Page
         CancelLivePreviewWork();
         LivePreviewStatusText.Text = IsChinese ? "实时同步已关闭" : "Live sync is off";
         if (_isPreviewing) await RestoreActiveThemeAsync(false);
+        else ShowOfflinePreviewFrame();
         UpdateEditorState();
     }
 
     private void ScheduleLivePreview(bool immediate = false)
     {
-        if (!LivePreviewToggle.IsOn || _selectedTheme?.IsBundled != false || _currentDraft is null) return;
+        if (!LivePreviewToggle.IsOn || _selectedTheme is null || _currentDraft is null) return;
         var draft = BuildDraftTheme();
         var generation = Interlocked.Increment(ref _livePreviewGeneration);
         var cancellation = new CancellationTokenSource();
@@ -541,8 +670,16 @@ public sealed partial class ThemesPage : Page
                 : await _engine.PreviewAsync(previewDirectory, cancellationToken);
             if (generation != _livePreviewGeneration) return;
             _isPreviewing = snapshot.State == EngineState.Active;
+            var captured = snapshot.State == EngineState.Active &&
+                await RefreshLivePreviewFrameAsync(generation, cancellationToken);
             LivePreviewStatusText.Text = snapshot.State == EngineState.Active
-                ? (IsChinese ? $"已同步 · {snapshot.TargetCount} 个页面" : $"Synced · {snapshot.TargetCount} page(s)")
+                ? captured
+                    ? (IsChinese
+                        ? $"真实画面已同步 · {snapshot.TargetCount} 个页面"
+                        : $"Live frame synced · {snapshot.TargetCount} page(s)")
+                    : (IsChinese
+                        ? $"主题已同步 · 真实画面暂不可用，显示离线模拟"
+                        : "Theme synced · live frame unavailable; showing offline simulation")
                 : snapshot.Summary;
             if (snapshot.State == EngineState.Faulted)
                 ShowMessage(snapshot.Summary, snapshot.Detail, InfoBarSeverity.Error);
@@ -577,6 +714,91 @@ public sealed partial class ThemesPage : Page
         _isLiveSyncing = false;
         if (LivePreviewProgressRing is not null) LivePreviewProgressRing.IsActive = false;
     }
+
+    private async Task<bool> RefreshLivePreviewFrameAsync(int? generation, CancellationToken cancellationToken)
+    {
+        var frame = await _engine.CapturePreviewFrameAsync(cancellationToken);
+        if (generation is not null && generation != _livePreviewGeneration)
+        {
+            return false;
+        }
+        if (frame is null)
+        {
+            ShowOfflinePreviewFrame();
+            return false;
+        }
+
+        using var stream = new InMemoryRandomAccessStream();
+        using (var writer = new DataWriter(stream))
+        {
+            writer.WriteBytes(frame.PngBytes);
+            await writer.StoreAsync();
+            await writer.FlushAsync();
+            writer.DetachStream();
+        }
+        stream.Seek(0);
+        var bitmap = new BitmapImage();
+        await bitmap.SetSourceAsync(stream);
+        cancellationToken.ThrowIfCancellationRequested();
+        if (generation is not null && generation != _livePreviewGeneration)
+        {
+            return false;
+        }
+
+        LivePreviewFrameImage.Source = bitmap;
+        _livePreviewFrameWidth = frame.Width;
+        _livePreviewFrameHeight = frame.Height;
+        LivePreviewFrameCanvas.Width = frame.Width;
+        LivePreviewFrameCanvas.Height = frame.Height;
+        LivePreviewFrameHost.Visibility = Visibility.Visible;
+        LivePreviewFrameBadge.Visibility = Visibility.Visible;
+        UpdateLivePreviewFrameStatus();
+        PreviewInteractionToolbar.IsHitTestVisible = false;
+        PreviewInteractionToolbar.Opacity = 0.55;
+        return true;
+    }
+
+    private void ShowOfflinePreviewFrame()
+    {
+        if (LivePreviewFrameHost is null)
+        {
+            return;
+        }
+
+        LivePreviewFrameHost.Visibility = Visibility.Collapsed;
+        LivePreviewFrameBadge.Visibility = Visibility.Collapsed;
+        LivePreviewFrameImage.Source = null;
+        _livePreviewFrameWidth = 0;
+        _livePreviewFrameHeight = 0;
+        PreviewInteractionToolbar.IsHitTestVisible = true;
+        PreviewInteractionToolbar.Opacity = 1;
+    }
+
+    private void UpdateLivePreviewFrameStatus()
+    {
+        var availableWidth = LivePreviewFrameHost.ActualWidth > 0
+            ? LivePreviewFrameHost.ActualWidth
+            : PreviewSurface.ActualWidth;
+        var availableHeight = LivePreviewFrameHost.ActualHeight > 0
+            ? LivePreviewFrameHost.ActualHeight
+            : PreviewSurface.ActualHeight;
+        if (_livePreviewFrameWidth < 1 || _livePreviewFrameHeight < 1 ||
+            availableWidth <= 0 || availableHeight <= 0)
+        {
+            return;
+        }
+
+        var scale = Math.Min(
+            availableWidth / _livePreviewFrameWidth,
+            availableHeight / _livePreviewFrameHeight);
+        var percent = Math.Max(1, (int)Math.Round(scale * 100));
+        LivePreviewFrameStatusText.Text = IsChinese
+            ? $"真实 Codex · {_livePreviewFrameWidth}×{_livePreviewFrameHeight} · {percent}%"
+            : $"Live Codex · {_livePreviewFrameWidth}×{_livePreviewFrameHeight} · {percent}%";
+    }
+
+    private void LivePreviewFrameHost_SizeChanged(object sender, SizeChangedEventArgs e) =>
+        UpdateLivePreviewFrameStatus();
 
     private void SetLivePreviewToggle(bool isOn)
     {
@@ -660,7 +882,12 @@ public sealed partial class ThemesPage : Page
         _currentDraft = next;
         _redo.Clear();
         PreviewName.Text = string.IsNullOrWhiteSpace(next.Name) ? "未命名主题" : next.Name;
+        CodexPageFixture.ThemeName = PreviewName.Text;
+        CodexPageFixture.UseContinuousSidebarBackground = next.SidebarBackgroundMode == "continuous";
+        CodexPageFixture.MatchWorkspaceTransparency =
+            next.SidebarBackgroundMode == "continuous" && next.MatchWorkspaceTransparency;
         if (ReferenceEquals(sender, AccentTextBox)) SyncColorPicker(next.Accent);
+        UpdateImageSlotStates(next);
         UpdateFocusMarker();
         UpdateCompositionPreview();
         UpdateAppearancePreview();
@@ -675,16 +902,88 @@ public sealed partial class ThemesPage : Page
         AccentTextBox.Text = $"#{args.NewColor.R:X2}{args.NewColor.G:X2}{args.NewColor.B:X2}";
     }
 
+    private void PreviewSceneButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is Button { Tag: not null } button)
+        {
+            var scene = button.Tag.ToString() ?? "home";
+            CodexPageFixture.ShowScene(scene);
+            SetPreviewScene(scene);
+        }
+    }
+
+    private void PreviewSendButton_Click(object sender, RoutedEventArgs e)
+    {
+        var message = PreviewComposerTextBox.Text.Trim();
+        if (message.Length == 0)
+        {
+            return;
+        }
+
+        PreviewUserMessageText.Text = message;
+        PreviewConversationResult.Visibility = Visibility.Visible;
+        PreviewComposerTextBox.Text = string.Empty;
+        SetPreviewScene("task");
+    }
+
+    private void PreviewResetButton_Click(object sender, RoutedEventArgs e)
+    {
+        CodexPageFixture.ResetInteraction();
+        PreviewComposerTextBox.Text = string.Empty;
+        PreviewUserMessageText.Text = string.Empty;
+        PreviewConversationResult.Visibility = Visibility.Collapsed;
+        SetPreviewScene("home");
+    }
+
+    private void SetPreviewScene(string scene)
+    {
+        PreviewHomeScene.Visibility = scene == "home" ? Visibility.Visible : Visibility.Collapsed;
+        PreviewTaskScene.Visibility = scene == "task" ? Visibility.Visible : Visibility.Collapsed;
+        PreviewSettingsScene.Visibility = scene == "settings" ? Visibility.Visible : Visibility.Collapsed;
+    }
+
     private void PreviewSurface_PointerPressed(object sender, PointerRoutedEventArgs e)
     {
+        if (IsPreviewInteractiveElement(e.OriginalSource as DependencyObject))
+        {
+            return;
+        }
+
         if (_selectedTheme?.IsBundled != false || PreviewSurface.ActualWidth <= 0 || PreviewSurface.ActualHeight <= 0) return;
-        var position = e.GetCurrentPoint(PreviewSurface).Position;
-        CompositionFocusXSlider.Value = Math.Clamp(position.X / PreviewSurface.ActualWidth, 0, 1);
-        CompositionFocusYSlider.Value = Math.Clamp(position.Y / PreviewSurface.ActualHeight, 0, 1);
+        var position = e.GetCurrentPoint(CodexPageFixture).Position;
+        if (!CodexPageFixture.TryNormalizePoint(position, out var normalized))
+        {
+            return;
+        }
+
+        CompositionFocusXSlider.Value = normalized.X;
+        CompositionFocusYSlider.Value = normalized.Y;
         e.Handled = true;
     }
 
-    private void PreviewSurface_SizeChanged(object sender, SizeChangedEventArgs e) => UpdateFocusMarker();
+    private static bool IsPreviewInteractiveElement(DependencyObject? source)
+    {
+        for (var current = source; current is not null; current = VisualTreeHelper.GetParent(current))
+        {
+            if (current is Button or TextBox or ToggleSwitch or ComboBox)
+            {
+                return true;
+            }
+
+            if (current is Grid { Name: "PreviewSurface" })
+            {
+                break;
+            }
+        }
+
+        return false;
+    }
+
+    private void PreviewSurface_SizeChanged(object sender, SizeChangedEventArgs e)
+    {
+        UpdateFocusMarker();
+        UpdateLivePreviewFrameStatus();
+    }
 
     private ThemeDraft ReadEditorDraft()
     {
@@ -695,6 +994,8 @@ public sealed partial class ThemesPage : Page
             Appearance = GetTag(AppearanceComboBox, "auto"),
             SafeArea = GetTag(SafeAreaComboBox, "auto"),
             TaskMode = GetTag(TaskModeComboBox, "auto"),
+            SidebarBackgroundMode = GetTag(SidebarBackgroundModeComboBox, "independent"),
+            MatchWorkspaceTransparency = MatchWorkspaceTransparencyToggle.IsOn,
             Accent = AccentTextBox.Text.Trim(),
             LightPageOpacity = LightPageOpacitySlider.Value,
             LightSidebarOpacity = LightSidebarOpacitySlider.Value,
@@ -718,6 +1019,8 @@ public sealed partial class ThemesPage : Page
         SelectTag(AppearanceComboBox, draft.Appearance);
         SelectTag(SafeAreaComboBox, draft.SafeArea);
         SelectTag(TaskModeComboBox, draft.TaskMode);
+        SelectTag(SidebarBackgroundModeComboBox, draft.SidebarBackgroundMode);
+        MatchWorkspaceTransparencyToggle.IsOn = draft.MatchWorkspaceTransparency;
         AccentTextBox.Text = draft.Accent;
         ApplyCompositionControls(GetComposition(draft, _compositionSlot));
         LightPageOpacitySlider.Value = draft.LightPageOpacity;
@@ -730,6 +1033,11 @@ public sealed partial class ThemesPage : Page
         DarkCardOpacitySlider.Value = draft.DarkCardOpacity;
         ApplyComponentMaterialControls(draft.ComponentMaterials.Get(_componentSlot));
         PreviewName.Text = draft.Name;
+        CodexPageFixture.ThemeName = draft.Name;
+        CodexPageFixture.ApplyDecorationProfile(draft.DecorationProfile);
+        CodexPageFixture.UseContinuousSidebarBackground = draft.SidebarBackgroundMode == "continuous";
+        CodexPageFixture.MatchWorkspaceTransparency =
+            draft.SidebarBackgroundMode == "continuous" && draft.MatchWorkspaceTransparency;
         SyncColorPicker(draft.Accent);
         _isLoadingEditor = false;
         UpdateImageSlotStates(draft);
@@ -809,7 +1117,9 @@ public sealed partial class ThemesPage : Page
         var independentText = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "zh"
             ? "独立图片"
             : "Independent image";
-        SidebarImageState.Text = draft.SidebarImageFileName == draft.BackgroundImageFileName ? inheritedText : independentText;
+        SidebarImageState.Text = draft.SidebarBackgroundMode == "continuous"
+            ? (IsChinese ? "透出主背景（连续）" : "Continuous main background")
+            : draft.SidebarImageFileName == draft.BackgroundImageFileName ? inheritedText : independentText;
         ComposerImageState.Text = draft.ComposerImageFileName == draft.BackgroundImageFileName ? inheritedText : independentText;
         HomeImageState.Text = draft.HomeImageFileName == draft.BackgroundImageFileName ? inheritedText : independentText;
         HomeComposerImageState.Text = draft.HomeComposerImageFileName == draft.ComposerImageFileName
@@ -820,7 +1130,9 @@ public sealed partial class ThemesPage : Page
 
     private static ThemeComposition GetComposition(ThemeDraft draft, ThemeImageSlot slot) => slot switch
     {
-        ThemeImageSlot.Sidebar => draft.SidebarComposition,
+        ThemeImageSlot.Sidebar => draft.SidebarBackgroundMode == "continuous"
+            ? draft.BackgroundComposition
+            : draft.SidebarComposition,
         ThemeImageSlot.Composer => draft.ComposerComposition,
         ThemeImageSlot.Home => draft.HomeComposition,
         ThemeImageSlot.HomeComposer => draft.HomeComposerComposition,
@@ -1288,7 +1600,8 @@ public sealed partial class ThemesPage : Page
         var homeSize = SizeAppearancePreview(HomeModePreviewSurface, ThemeImageSlot.Home, columnWidth, 120);
         var homeComposerSize = SizeAppearancePreview(HomeComposerModePreviewSurface, ThemeImageSlot.HomeComposer, columnWidth, 120);
         var polaroidSize = SizeAppearancePreview(PolaroidModePreviewSurface, ThemeImageSlot.Polaroid, Math.Min(90, columnWidth), 107);
-        ApplyCompositionToImage(SidebarModePreviewImage, _currentDraft.SidebarComposition, sidebarSize.Width, sidebarSize.Height);
+        SidebarModePreviewImage.Source = GetPreviewSource(ThemeImageSlot.Sidebar);
+        ApplyCompositionToImage(SidebarModePreviewImage, GetComposition(_currentDraft, ThemeImageSlot.Sidebar), sidebarSize.Width, sidebarSize.Height);
         ApplyCompositionToImage(MessageModePreviewImage, _currentDraft.BackgroundComposition, messageSize.Width, messageSize.Height);
         ApplyCompositionToImage(ComposerModePreviewImage, _currentDraft.ComposerComposition, composerSize.Width, composerSize.Height);
         ApplyCompositionToImage(HomeModePreviewImage, _currentDraft.HomeComposition, homeSize.Width, homeSize.Height);
@@ -1366,7 +1679,7 @@ public sealed partial class ThemesPage : Page
         var paths = new Dictionary<ThemeImageSlot, string>
         {
             [ThemeImageSlot.Background] = Path.Combine(directory, draft.BackgroundImageFileName),
-            [ThemeImageSlot.Sidebar] = Path.Combine(directory, draft.SidebarImageFileName),
+            [ThemeImageSlot.Sidebar] = Path.Combine(directory, GetImageFileName(draft, ThemeImageSlot.Sidebar)),
             [ThemeImageSlot.Composer] = Path.Combine(directory, draft.ComposerImageFileName),
             [ThemeImageSlot.Home] = Path.Combine(directory, draft.HomeImageFileName),
             [ThemeImageSlot.HomeComposer] = Path.Combine(directory, draft.HomeComposerImageFileName),
@@ -1440,6 +1753,8 @@ public sealed partial class ThemesPage : Page
             PolaroidImageFileName = draft.PolaroidImageFileName,
             IsBundled = source.IsBundled,
             IsActive = source.IsActive,
+            SidebarBackgroundMode = draft.SidebarBackgroundMode,
+            MatchWorkspaceTransparency = draft.MatchWorkspaceTransparency,
             BackgroundComposition = draft.BackgroundComposition,
             SidebarComposition = draft.SidebarComposition,
             ComposerComposition = draft.ComposerComposition,
@@ -1463,6 +1778,9 @@ public sealed partial class ThemesPage : Page
         theme.Appearance = draft.Appearance;
         theme.SafeArea = draft.SafeArea;
         theme.TaskMode = draft.TaskMode;
+        theme.DecorationProfile = draft.DecorationProfile;
+        theme.SidebarBackgroundMode = draft.SidebarBackgroundMode;
+        theme.MatchWorkspaceTransparency = draft.MatchWorkspaceTransparency;
         theme.Accent = draft.Accent;
         theme.BackgroundComposition = draft.BackgroundComposition;
         theme.SidebarComposition = draft.SidebarComposition;
@@ -1489,6 +1807,10 @@ public sealed partial class ThemesPage : Page
     private void UpdateEditorState()
     {
         var editable = _selectedTheme?.IsBundled == false;
+        var sidebarContinuous = _currentDraft?.SidebarBackgroundMode == "continuous";
+        MatchWorkspaceTransparencyToggle.IsEnabled = !_isBusy && editable && sidebarContinuous;
+        var compositionEditable = editable
+            && !(_compositionSlot == ThemeImageSlot.Sidebar && sidebarContinuous);
         DraftStatusText.Text = _selectedTheme is null
             ? string.Empty
             : _isLiveSyncing ? (IsChinese ? "● 正在实时同步" : "● Live syncing")
@@ -1499,7 +1821,7 @@ public sealed partial class ThemesPage : Page
         UndoButton.IsEnabled = !_isBusy && editable && _undo.Count > 0;
         RedoButton.IsEnabled = !_isBusy && editable && _redo.Count > 0;
         SaveButton.IsEnabled = !_isBusy && editable && IsDirty;
-        LivePreviewToggle.IsEnabled = !_isBusy && editable;
+        LivePreviewToggle.IsEnabled = !_isBusy && _selectedTheme is not null;
         PreviewButton.IsEnabled = !_isBusy && _selectedTheme is not null && !LivePreviewToggle.IsOn;
         ActivateButton.IsEnabled = !_isBusy && _selectedTheme is not null && !IsDirty;
         CancelPreviewButton.IsEnabled = !_isBusy && _isPreviewing;
@@ -1507,12 +1829,19 @@ public sealed partial class ThemesPage : Page
         ExportButton.IsEnabled = !_isBusy && _selectedTheme is not null && !IsDirty;
         HistoryButton.IsEnabled = !_isBusy && editable && !IsDirty && !_isPreviewing;
         DeleteButton.IsEnabled = !_isBusy && editable && !_isPreviewing;
-        CopyBackgroundCompositionButton.IsEnabled = !_isBusy && editable && _currentDraft is not null
+        CopyBackgroundCompositionButton.IsEnabled = !_isBusy && compositionEditable && _currentDraft is not null
             && _compositionSlot != ThemeImageSlot.Background
             && GetComposition(_currentDraft, _compositionSlot) != _currentDraft.BackgroundComposition;
-        ResetCompositionButton.IsEnabled = !_isBusy && editable && _currentDraft is not null
+        ResetCompositionButton.IsEnabled = !_isBusy && compositionEditable && _currentDraft is not null
             && GetComposition(_currentDraft, _compositionSlot) != ThemeComposition.Recommended(_compositionSlot);
-        CropToFrameButton.IsEnabled = !_isBusy && editable && _currentDraft is not null;
+        CropToFrameButton.IsEnabled = !_isBusy && compositionEditable && _currentDraft is not null;
+        CompositionFocusXSlider.IsEnabled = !_isBusy && compositionEditable;
+        CompositionFocusYSlider.IsEnabled = !_isBusy && compositionEditable;
+        CompositionZoomSlider.IsEnabled = !_isBusy && compositionEditable;
+        CompositionFitComboBox.IsEnabled = !_isBusy && compositionEditable;
+        CompositionOffsetXSlider.IsEnabled = !_isBusy && compositionEditable;
+        CompositionOffsetYSlider.IsEnabled = !_isBusy && compositionEditable;
+        CompositionPreviewSurface.IsTabStop = !_isBusy && compositionEditable;
         ResetComponentMaterialButton.IsEnabled = !_isBusy && editable && _currentDraft is not null
             && _currentDraft.ComponentMaterials.Get(_componentSlot) != ThemeComponentMaterials.Default.Get(_componentSlot);
         FreshPaletteButton.IsEnabled = !_isBusy && editable;
@@ -1520,7 +1849,9 @@ public sealed partial class ThemesPage : Page
         LowFogPaletteButton.IsEnabled = !_isBusy && editable;
         if (_currentDraft is not null)
         {
-            SidebarResetButton.IsEnabled = !_isBusy && editable && _currentDraft.SidebarImageFileName != _currentDraft.BackgroundImageFileName;
+            SidebarImageButton.IsEnabled = !_isBusy && editable && !sidebarContinuous;
+            SidebarResetButton.IsEnabled = !_isBusy && editable && !sidebarContinuous
+                && _currentDraft.SidebarImageFileName != _currentDraft.BackgroundImageFileName;
             ComposerResetButton.IsEnabled = !_isBusy && editable && _currentDraft.ComposerImageFileName != _currentDraft.BackgroundImageFileName;
             HomeResetButton.IsEnabled = !_isBusy && editable && _currentDraft.HomeImageFileName != _currentDraft.BackgroundImageFileName;
             HomeComposerResetButton.IsEnabled = !_isBusy && editable && _currentDraft.HomeComposerImageFileName != _currentDraft.ComposerImageFileName;
@@ -1568,10 +1899,8 @@ public sealed partial class ThemesPage : Page
 
     private void UpdateFocusMarker()
     {
-        if (PreviewSurface.ActualWidth <= 0 || PreviewSurface.ActualHeight <= 0) return;
         var composition = _currentDraft is null ? ThemeComposition.Recommended(_previewSlot) : GetComposition(_currentDraft, _previewSlot);
-        Canvas.SetLeft(FocusMarker, Math.Clamp(composition.FocusX * PreviewSurface.ActualWidth - FocusMarker.Width / 2, 0, PreviewSurface.ActualWidth - FocusMarker.Width));
-        Canvas.SetTop(FocusMarker, Math.Clamp(composition.FocusY * PreviewSurface.ActualHeight - FocusMarker.Height / 2, 0, PreviewSurface.ActualHeight - FocusMarker.Height));
+        CodexPageFixture.SetFocus(composition.FocusX, composition.FocusY);
     }
 
     private void SetEditorEnabled(bool enabled)
@@ -1580,6 +1909,9 @@ public sealed partial class ThemesPage : Page
         AppearanceComboBox.IsEnabled = enabled;
         SafeAreaComboBox.IsEnabled = enabled;
         TaskModeComboBox.IsEnabled = enabled;
+        SidebarBackgroundModeComboBox.IsEnabled = enabled;
+        MatchWorkspaceTransparencyToggle.IsEnabled =
+            enabled && _currentDraft?.SidebarBackgroundMode == "continuous";
         AccentTextBox.IsEnabled = enabled;
         AccentColorPicker.IsEnabled = enabled;
         CompositionSlotComboBox.IsEnabled = true;
@@ -1632,14 +1964,18 @@ public sealed partial class ThemesPage : Page
 
     private void ThemesPage_SizeChanged(object sender, SizeChangedEventArgs e)
     {
-        var compactMaterials = e.NewSize.Width < 900;
+        var pageWidth = e.NewSize.Width;
+        LibraryColumn.Width = new GridLength(pageWidth >= 1440 ? 270 : pageWidth >= 1180 ? 240 : 220);
+        InspectorColumn.Width = new GridLength(pageWidth >= 1440 ? 340 : pageWidth >= 1180 ? 320 : 300);
+
+        var compactMaterials = InspectorColumn.Width.Value < 620;
         MaterialsGrid.ColumnDefinitions[1].Width = compactMaterials ? new GridLength(0) : new GridLength(1, GridUnitType.Star);
         ComponentMaterialsGrid.ColumnDefinitions[1].Width = compactMaterials ? new GridLength(0) : new GridLength(1, GridUnitType.Star);
         Grid.SetColumn(DarkMaterialsPanel, compactMaterials ? 0 : 1);
         Grid.SetRow(DarkMaterialsPanel, compactMaterials ? 1 : 0);
         Grid.SetColumn(DarkComponentMaterialPanel, compactMaterials ? 0 : 1);
         Grid.SetRow(DarkComponentMaterialPanel, compactMaterials ? 1 : 0);
-        var compactImages = e.NewSize.Width < 1180;
+        var compactImages = InspectorColumn.Width.Value < 760;
         ImagesGrid.ColumnDefinitions[2].Width = compactImages ? new GridLength(0) : new GridLength(1, GridUnitType.Star);
         ImagesGrid.ColumnDefinitions[3].Width = compactImages ? new GridLength(0) : new GridLength(1, GridUnitType.Star);
         ImagesGrid.ColumnDefinitions[4].Width = compactImages ? new GridLength(0) : new GridLength(1, GridUnitType.Star);
@@ -1687,6 +2023,9 @@ public sealed partial class ThemesPage : Page
         string Appearance,
         string SafeArea,
         string TaskMode,
+        string DecorationProfile,
+        string SidebarBackgroundMode,
+        bool MatchWorkspaceTransparency,
         string Accent,
         double LightPageOpacity,
         double LightSidebarOpacity,
@@ -1715,6 +2054,9 @@ public sealed partial class ThemesPage : Page
             theme.Appearance,
             theme.SafeArea,
             theme.TaskMode,
+            theme.DecorationProfile,
+            theme.SidebarBackgroundMode,
+            theme.MatchWorkspaceTransparency,
             theme.Accent,
             theme.LightPageOpacity,
             theme.LightSidebarOpacity,

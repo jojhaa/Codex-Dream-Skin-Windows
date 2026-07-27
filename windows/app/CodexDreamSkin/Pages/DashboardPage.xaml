@@ -11,139 +11,175 @@
 
     <ScrollViewer x:Name="RootScrollViewer" HorizontalScrollBarVisibility="Disabled">
         <StackPanel Style="{StaticResource PageRootStyle}">
-            <StackPanel Spacing="6">
-                <TextBlock x:Uid="DashboardTitle" Style="{StaticResource TitleTextBlockStyle}" />
-                <TextBlock
-                    x:Uid="DashboardSubtitle"
-                    Style="{StaticResource BodyTextBlockStyle}"
-                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                    TextWrapping="Wrap" />
-            </StackPanel>
-
             <Border
-                Height="276"
-                CornerRadius="20"
-                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                BorderThickness="1">
-                <Grid>
-                    <Image
-                        Source="ms-appx:///Assets/Theme/dream-reference.png"
-                        Stretch="UniformToFill" />
-                    <Border Background="{ThemeResource KannaHeroOverlayBrush}" />
+                x:Name="EngineStatusCard"
+                MinHeight="270"
+                Style="{StaticResource StudioGroupStyle}"
+                Padding="0">
+                <Grid x:Name="DashboardPrimaryGrid">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1.08*" />
+                        <ColumnDefinition Width="0.92*" />
+                    </Grid.ColumnDefinitions>
                     <StackPanel
+                        Margin="30"
                         MaxWidth="580"
-                        Margin="32"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Bottom"
-                        Spacing="10">
+                        VerticalAlignment="Center"
+                        Spacing="12">
                         <TextBlock
                             x:Uid="DashboardHeroEyebrow"
-                            Foreground="#FFD7ECFF"
-                            FontSize="12"
-                            FontWeight="SemiBold"
-                            CharacterSpacing="120" />
+                            Style="{StaticResource SectionLabelStyle}"
+                            Foreground="{ThemeResource KannaAccentBrush}" />
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <SymbolIcon
+                                x:Name="EngineStatusIcon"
+                                Symbol="Clock"
+                                Foreground="{ThemeResource KannaPendingBrush}" />
+                            <TextBlock
+                                x:Name="EngineStatusTitleText"
+                                x:Uid="EngineStatusTitle"
+                                FontSize="24"
+                                FontWeight="SemiBold"
+                                TextWrapping="Wrap" />
+                        </StackPanel>
                         <TextBlock
-                            x:Uid="DashboardHeroTitle"
-                            Foreground="White"
-                            FontSize="30"
-                            FontWeight="SemiBold"
+                            x:Name="EngineStatusBodyText"
+                            x:Uid="EngineStatusBody"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                             TextWrapping="Wrap" />
-                        <TextBlock
-                            x:Uid="DashboardHeroBody"
-                            Foreground="#FFF2F8FF"
-                            FontSize="15"
-                            TextWrapping="Wrap" />
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <Button
+                                x:Name="ApplyThemeButton"
+                                Click="ApplyThemeButton_Click"
+                                Style="{StaticResource AccentButtonStyle}">
+                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                    <SymbolIcon Symbol="Play" />
+                                    <TextBlock x:Uid="ApplyTheme" />
+                                </StackPanel>
+                            </Button>
+                            <Button
+                                x:Name="RefreshStatusButton"
+                                x:Uid="RefreshEngine"
+                                Click="RefreshStatusButton_Click" />
+                            <ProgressRing
+                                x:Name="EngineProgressRing"
+                                Width="20"
+                                Height="20"
+                                IsActive="False"
+                                Visibility="Collapsed" />
+                        </StackPanel>
                     </StackPanel>
+                    <Grid
+                        x:Name="DashboardArtwork"
+                        Grid.Column="1"
+                        MinHeight="270">
+                        <Image
+                            Source="ms-appx:///Assets/Theme/dream-reference.png"
+                            Stretch="UniformToFill" />
+                        <Border Background="{ThemeResource KannaHeroOverlayBrush}" Opacity="0.28" />
+                        <StackPanel
+                            Margin="24"
+                            VerticalAlignment="Bottom"
+                            Spacing="6">
+                            <TextBlock
+                                x:Uid="DashboardHeroTitle"
+                                Foreground="White"
+                                FontSize="21"
+                                FontWeight="SemiBold"
+                                TextWrapping="Wrap" />
+                            <TextBlock
+                                x:Uid="DashboardHeroBody"
+                                Foreground="#FFF2F8FF"
+                                TextWrapping="Wrap" />
+                        </StackPanel>
+                    </Grid>
                 </Grid>
             </Border>
 
             <StackPanel Spacing="12">
                 <TextBlock x:Uid="DashboardStatusTitle" Style="{StaticResource SubtitleTextBlockStyle}" />
-                <Grid x:Name="StatusGrid" RowSpacing="12" ColumnSpacing="12">
+                <Grid x:Name="StatusGrid" ColumnSpacing="12" RowSpacing="12">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-
-                    <Border x:Name="AppStatusCard" Grid.ColumnSpan="3" Style="{StaticResource StatusCardStyle}">
-                        <StackPanel Spacing="10">
-                            <SymbolIcon Symbol="Accept" Foreground="{ThemeResource KannaSuccessBrush}" HorizontalAlignment="Left" />
-                            <TextBlock x:Uid="AppStatusTitle" Style="{StaticResource BodyStrongTextBlockStyle}" />
-                            <TextBlock x:Uid="AppStatusBody" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
-                        </StackPanel>
-                    </Border>
-                    <Border x:Name="ThemeStatusCard" Grid.Row="1" Grid.ColumnSpan="3" Style="{StaticResource StatusCardStyle}">
-                        <StackPanel Spacing="10">
-                            <SymbolIcon Symbol="Pictures" Foreground="{ThemeResource KannaSuccessBrush}" HorizontalAlignment="Left" />
-                            <TextBlock x:Uid="ThemeStatusTitle" Style="{StaticResource BodyStrongTextBlockStyle}" />
-                            <TextBlock x:Uid="ThemeStatusBody" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
-                        </StackPanel>
-                    </Border>
-                    <Border x:Name="EngineStatusCard" Grid.Row="2" Grid.ColumnSpan="3" Style="{StaticResource StatusCardStyle}">
-                        <StackPanel Spacing="10">
-                            <SymbolIcon x:Name="EngineStatusIcon" Symbol="Clock" Foreground="{ThemeResource KannaPendingBrush}" HorizontalAlignment="Left" />
-                            <TextBlock x:Name="EngineStatusTitleText" x:Uid="EngineStatusTitle" Style="{StaticResource BodyStrongTextBlockStyle}" />
-                            <TextBlock x:Name="EngineStatusBodyText" x:Uid="EngineStatusBody" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
-                            <StackPanel Orientation="Horizontal" Spacing="8">
-                                <Button
-                                    x:Name="ApplyThemeButton"
-                                    Click="ApplyThemeButton_Click"
-                                    Style="{StaticResource AccentButtonStyle}">
-                                    <StackPanel Orientation="Horizontal" Spacing="8">
-                                        <SymbolIcon Symbol="Play" />
-                                        <TextBlock x:Uid="ApplyTheme" />
-                                    </StackPanel>
-                                </Button>
-                                <Button x:Name="RefreshStatusButton" x:Uid="RefreshEngine" Click="RefreshStatusButton_Click" />
-                                <ProgressRing x:Name="EngineProgressRing" Width="20" Height="20" IsActive="False" Visibility="Collapsed" />
+                    <Border x:Name="AppStatusCard" Style="{StaticResource StatusCardStyle}">
+                        <Grid ColumnSpacing="12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <SymbolIcon Symbol="Accept" Foreground="{ThemeResource KannaSuccessBrush}" />
+                            <StackPanel Grid.Column="1" Spacing="4">
+                                <TextBlock x:Uid="AppStatusTitle" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                                <TextBlock x:Uid="AppStatusBody" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
                             </StackPanel>
-                        </StackPanel>
+                        </Grid>
                     </Border>
-
+                    <Border x:Name="ThemeStatusCard" Grid.Column="1" Style="{StaticResource StatusCardStyle}">
+                        <Grid ColumnSpacing="12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <SymbolIcon Symbol="Pictures" Foreground="{ThemeResource KannaSuccessBrush}" />
+                            <StackPanel Grid.Column="1" Spacing="4">
+                                <TextBlock x:Uid="ThemeStatusTitle" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                                <TextBlock x:Uid="ThemeStatusBody" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
+                            </StackPanel>
+                        </Grid>
+                    </Border>
                 </Grid>
             </StackPanel>
 
-            <Border x:Name="FreeSoftwareNoticeCard" Style="{StaticResource StatusCardStyle}">
-                <Grid ColumnSpacing="14">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <SymbolIcon
-                        Symbol="Important"
-                        Foreground="{ThemeResource KannaAccentBrush}"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top" />
-                    <StackPanel Grid.Column="1" Spacing="6">
-                        <TextBlock
-                            x:Uid="FreeSoftwareNoticeTitle"
-                            Style="{StaticResource BodyStrongTextBlockStyle}" />
-                        <TextBlock
-                            x:Name="FreeSoftwareNoticeBodyText"
-                            x:Uid="FreeSoftwareNoticeBody"
-                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                            TextWrapping="Wrap" />
-                        <HyperlinkButton
-                            x:Name="OfficialProjectLink"
-                            x:Uid="OfficialProjectLink"
-                            Margin="-8,0,0,0"
+            <Grid x:Name="DashboardFooterGrid" ColumnSpacing="12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Border x:Name="FreeSoftwareNoticeCard" Style="{StaticResource StatusCardStyle}">
+                    <Grid ColumnSpacing="14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <SymbolIcon
+                            Symbol="Important"
+                            Foreground="{ThemeResource KannaAccentBrush}"
                             HorizontalAlignment="Left"
-                            NavigateUri="https://github.com/jojhaa/Codex-Dream-Skin-Windows" />
-                    </StackPanel>
-                </Grid>
-            </Border>
-
-            <InfoBar
-                x:Uid="DashboardInfo"
-                IsOpen="True"
-                IsClosable="False"
-                Severity="Informational" />
+                            VerticalAlignment="Top" />
+                        <StackPanel Grid.Column="1" Spacing="6">
+                            <TextBlock x:Uid="FreeSoftwareNoticeTitle" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                            <TextBlock
+                                x:Name="FreeSoftwareNoticeBodyText"
+                                x:Uid="FreeSoftwareNoticeBody"
+                                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                TextWrapping="Wrap" />
+                            <HyperlinkButton
+                                x:Name="OfficialProjectLink"
+                                x:Uid="OfficialProjectLink"
+                                Margin="-8,0,0,0"
+                                HorizontalAlignment="Left"
+                                NavigateUri="https://github.com/jojhaa/Codex-Dream-Skin-Windows" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+                <InfoBar
+                    x:Name="DashboardInfo"
+                    Grid.Column="1"
+                    x:Uid="DashboardInfo"
+                    IsOpen="True"
+                    IsClosable="False"
+                    Severity="Informational" />
+            </Grid>
         </StackPanel>
     </ScrollViewer>
 </Page>

@@ -1,34 +1,28 @@
 using CodexDreamSkin.Pages;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+using Microsoft.Windows.ApplicationModel.Resources;
 
 namespace CodexDreamSkin;
 
-/// <summary>
-/// The main content page displayed inside the application window.
-/// Add your UI logic, event handlers, and data binding here.
-/// </summary>
 public sealed partial class MainPage : Page
 {
+    private readonly ResourceLoader _resources = new();
+
     public MainPage()
     {
         InitializeComponent();
         Loaded += MainPage_Loaded;
     }
 
-    private void MainPage_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    private void MainPage_Loaded(object sender, RoutedEventArgs e)
     {
-        ShellNavigationView.SelectedItem = DashboardItem;
-        NavigateTo("dashboard");
+        NavigateTo("themes");
     }
 
-    private void ShellNavigationView_SelectionChanged(
-        NavigationView sender,
-        NavigationViewSelectionChangedEventArgs args)
+    private void ModeButton_Click(object sender, RoutedEventArgs e)
     {
-        if (args.SelectedItemContainer?.Tag is string tag)
+        if (sender is Button { Tag: string tag })
         {
             NavigateTo(tag);
         }
@@ -36,7 +30,8 @@ public sealed partial class MainPage : Page
 
     public void NavigateTo(string tag)
     {
-        var pageType = tag switch
+        var normalizedTag = tag.ToLowerInvariant();
+        var pageType = normalizedTag switch
         {
             "themes" => typeof(ThemesPage),
             "diagnostics" => typeof(DiagnosticsPage),
@@ -49,15 +44,33 @@ public sealed partial class MainPage : Page
             ContentFrame.Navigate(pageType);
         }
 
-        foreach (var item in ShellNavigationView.MenuItems
-            .Concat(ShellNavigationView.FooterMenuItems)
-            .OfType<NavigationViewItem>())
+        var resourceSuffix = normalizedTag switch
         {
-            if (string.Equals(item.Tag as string, tag, StringComparison.OrdinalIgnoreCase))
-            {
-                ShellNavigationView.SelectedItem = item;
-                break;
-            }
-        }
+            "themes" => "Themes",
+            "diagnostics" => "Diagnostics",
+            "settings" => "Settings",
+            _ => "Dashboard",
+        };
+        WorkspaceModeContext.Text = _resources.GetString($"WorkspaceContext{resourceSuffix}");
+
+        DashboardModeButton.Style = normalizedTag == "dashboard"
+            ? (Style)Application.Current.Resources["AccentButtonStyle"]
+            : null;
+        ThemesModeButton.Style = normalizedTag == "themes"
+            ? (Style)Application.Current.Resources["AccentButtonStyle"]
+            : null;
+        DiagnosticsModeButton.Style = normalizedTag == "diagnostics"
+            ? (Style)Application.Current.Resources["AccentButtonStyle"]
+            : null;
+    }
+
+    private void MainPage_SizeChanged(object sender, SizeChangedEventArgs e)
+    {
+        WorkspaceModeContext.Visibility = e.NewSize.Width >= 1120
+            ? Visibility.Visible
+            : Visibility.Collapsed;
+        DiagnosticsModeButton.Visibility = e.NewSize.Width >= 860
+            ? Visibility.Visible
+            : Visibility.Collapsed;
     }
 }

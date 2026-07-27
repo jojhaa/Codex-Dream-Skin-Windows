@@ -261,6 +261,26 @@ function Initialize-DreamSkinThemeStore {
     Assert-DreamSkinNoReparseComponents -Path $gothicTheme
     Copy-Item -LiteralPath $gothicSourceTheme -Destination $gothicTheme -Force
   }
+  # Bundled Milky Way Glass preset.
+  $milkyWaySource = Join-Path $SkillRoot 'presets\preset-milky-way-glass'
+  $milkyWayDirectory = Join-Path $paths.Saved 'preset-milky-way-glass'
+  $milkyWayTheme = Join-Path $milkyWayDirectory 'theme.json'
+  $milkyWaySourceTheme = Join-Path $milkyWaySource 'theme.json'
+  $milkyWaySourceImage = Join-Path $milkyWaySource 'background.png'
+  Assert-DreamSkinNoReparseComponents -Path $milkyWayDirectory
+  Assert-DreamSkinNoReparseComponents -Path $milkyWayTheme
+  if ((Test-Path -LiteralPath $milkyWaySourceTheme -PathType Leaf) -and
+    (Test-Path -LiteralPath $milkyWaySourceImage -PathType Leaf)) {
+    Ensure-DreamSkinManagedDirectory -Path $milkyWayDirectory -Root $paths.Root
+    $milkyWayImage = Join-Path $milkyWayDirectory 'background.png'
+    Assert-DreamSkinNoReparseComponents -Path $milkyWayImage
+    Assert-DreamSkinImageFile -Path $milkyWaySourceImage
+    Copy-Item -LiteralPath $milkyWaySourceImage -Destination $milkyWayImage -Force
+    Assert-DreamSkinNoReparseComponents -Path $milkyWayImage
+    Assert-DreamSkinImageFile -Path $milkyWayImage
+    Assert-DreamSkinNoReparseComponents -Path $milkyWayTheme
+    Copy-Item -LiteralPath $milkyWaySourceTheme -Destination $milkyWayTheme -Force
+  }
   $null = Read-DreamSkinTheme -ThemeDirectory $paths.Active
   return $paths
 }

@@ -1,5 +1,27 @@
 # Changelog
 
+## Unreleased
+
+### 中文
+
+#### 改进
+
+- 将整个 Windows 管理器重构为单一扁平工作台：移除传统 `NavigationView`、重复页面大标题和卡片式页面结构，改用顶部操作栏和四种连续工作模式。
+- 根据沉浸式 Theme Studio 参考，将全局导航进一步改为顶部品牌操作栏；默认进入主题工作台，并新增“主题库 / 编辑工具”双态侧轨。
+- 将中间隔离预览扩展为完整 Codex Desktop 页面，覆盖窗口菜单、侧栏、主页、任务、输入区和设置，并支持无副作用的场景切换、模拟发送与互动重置。
+- 主题模式改为单行命令带与满高主题/工具、预览、属性三轨结构；诊断和设置同步改为满高平面分栏。
+- 新增统一的浅色、深色和高对比度工作区资源，以及概览、诊断和设置的响应式布局。
+
+### English
+
+#### Improvements
+
+- Rebuilt the complete Windows manager as one flat workspace, removing the traditional `NavigationView`, repeated page headings, and card-oriented page structure in favor of a top action bar and four continuous operating modes.
+- Aligned the shell with the immersive Theme Studio reference by moving global navigation into a top brand/action header, opening directly into Themes, and adding a real Theme Library / Editing Tools dual-state rail.
+- Expanded the center isolation preview into a complete Codex Desktop page with window menus, sidebar, Home, Task, composer, and Settings plus side-effect-free scene switching, simulated sending, and interaction reset.
+- Converted Themes into a single command strip with full-height library/tool, preview, and property rails, while Diagnostics and Settings now use full-height flat splits.
+- Added shared light, dark, and high-contrast workspace resources plus responsive Overview, Diagnostics, and Settings layouts.
+
 ## v0.3.4 — 2026-07-24
 
 ### 中文版本日志（主要）

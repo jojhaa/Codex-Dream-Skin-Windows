@@ -34,7 +34,7 @@ public sealed partial class MainWindow : Window
         SetTitleBar(AppTitleBar);
 
         AppWindow.SetIcon("Assets/AppIcon.ico");
-        AppWindow.Resize(new SizeInt32(1240, 800));
+        AppWindow.Resize(new SizeInt32(1600, 900));
         _minimumSizeSubclassProc = MinimumSizeWindowProc;
         InstallMinimumSizeGuard();
         AppWindow.Changed += AppWindow_Changed;

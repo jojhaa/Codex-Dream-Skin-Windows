@@ -14,7 +14,7 @@ const names = ["background.png", "sidebar.png", "composer.png", "home.png", "hom
 try {
   await Promise.all(names.map(name => fs.copyFile(sourceImage, path.join(temporary, name))));
   const theme = {
-    schemaVersion: 8,
+    schemaVersion: 11,
     id: "custom-11111111111111111111111111111111",
     name: "Multi image fixture",
     image: names[0],
@@ -29,6 +29,8 @@ try {
       homeComposer: { focusX: 0.6, focusY: 0.4, zoom: 1.1, fit: "cover", offsetX: 0, offsetY: 0 },
       polaroid: { focusX: 0.45, focusY: 0.3, zoom: 1.3, fit: "cover", offsetX: 0, offsetY: 0 },
     },
+    decorations: { profile: "minimal" },
+    surfaces: { sidebarBackground: "continuous", matchWorkspaceTransparency: true },
     palette: { accent: "#1557b0" },
     materials: {
       light: { page: 0.56, sidebar: 0.58, composer: 0.48, card: 0.18 },
@@ -41,7 +43,7 @@ try {
   await fs.writeFile(path.join(temporary, "theme.json"), JSON.stringify(theme), "utf8");
   const accepted = spawnSync(process.execPath, [injector, "--check-payload", "--theme-dir", temporary], { encoding: "utf8" });
   assert.equal(accepted.status, 0, accepted.stderr || accepted.stdout);
-    assert.equal(JSON.parse(accepted.stdout).version, "3.9.4");
+    assert.equal(JSON.parse(accepted.stdout).version, "3.10.0");
 
   theme.materials.components.messages.light.color = "rgba(0,0,0,.5)";
   await fs.writeFile(path.join(temporary, "theme.json"), JSON.stringify(theme), "utf8");
@@ -57,12 +59,32 @@ try {
   assert.match(invalidComposition.stderr + invalidComposition.stdout, /compositions\.sidebar\.zoom/);
   theme.compositions.sidebar.zoom = 1.6;
 
+  theme.decorations.profile = "portrait-stickers";
+  await fs.writeFile(path.join(temporary, "theme.json"), JSON.stringify(theme), "utf8");
+  const invalidDecoration = spawnSync(process.execPath, [injector, "--check-payload", "--theme-dir", temporary], { encoding: "utf8" });
+  assert.notEqual(invalidDecoration.status, 0, "an unknown decoration profile was accepted");
+  assert.match(invalidDecoration.stderr + invalidDecoration.stdout, /decorations\.profile/);
+  theme.decorations.profile = "minimal";
+
+  theme.surfaces.sidebarBackground = "tiled";
+  await fs.writeFile(path.join(temporary, "theme.json"), JSON.stringify(theme), "utf8");
+  const invalidSidebarBackground = spawnSync(process.execPath, [injector, "--check-payload", "--theme-dir", temporary], { encoding: "utf8" });
+  assert.notEqual(invalidSidebarBackground.status, 0, "an unknown sidebar background mode was accepted");
+  assert.match(invalidSidebarBackground.stderr + invalidSidebarBackground.stdout, /surfaces\.sidebarBackground/);
+  theme.surfaces.sidebarBackground = "continuous";
+  theme.surfaces.matchWorkspaceTransparency = "yes";
+  await fs.writeFile(path.join(temporary, "theme.json"), JSON.stringify(theme), "utf8");
+  const invalidTransparencyMatch = spawnSync(process.execPath, [injector, "--check-payload", "--theme-dir", temporary], { encoding: "utf8" });
+  assert.notEqual(invalidTransparencyMatch.status, 0, "a non-boolean transparency match option was accepted");
+  assert.match(invalidTransparencyMatch.stderr + invalidTransparencyMatch.stdout, /surfaces\.matchWorkspaceTransparency/);
+  theme.surfaces.matchWorkspaceTransparency = true;
+
   theme.images.sidebar = "../escape.png";
   await fs.writeFile(path.join(temporary, "theme.json"), JSON.stringify(theme), "utf8");
   const rejected = spawnSync(process.execPath, [injector, "--check-payload", "--theme-dir", temporary], { encoding: "utf8" });
   assert.notEqual(rejected.status, 0, "a regional image path escape was accepted");
   assert.match(rejected.stderr + rejected.stdout, /top-level relative files|remain inside/);
-  console.log("PASS: schema-8 six-region composition and component-material validation.");
+  console.log("PASS: schema-11 composition, material, decoration, sidebar-background, and transparency validation.");
 } finally {
   await fs.rm(temporary, { recursive: true, force: true });
 }

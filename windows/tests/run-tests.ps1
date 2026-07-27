@@ -658,14 +658,27 @@ try {
   }
   $preseededThemes = @(Get-DreamSkinSavedThemes -StateRoot $themeStateRoot)
   $preseededIds = @($preseededThemes | ForEach-Object { $_.Id })
-  if ($preseededThemes.Count -lt 2 -or
+  if ($preseededThemes.Count -lt 3 -or
     $preseededIds -notcontains 'preset-kanna-hashimoto' -or
-    $preseededIds -notcontains 'preset-gothic-void-crusade') {
-    throw 'Windows did not preseed both Kanna Hashimoto and Gothic Void Crusade.'
+    $preseededIds -notcontains 'preset-gothic-void-crusade' -or
+    $preseededIds -notcontains 'preset-milky-way-glass') {
+    throw 'Windows did not preseed Kanna Hashimoto, Gothic Void Crusade, and Milky Way Glass.'
   }
   $gothicSeed = $preseededThemes | Where-Object { $_.Id -ceq 'preset-gothic-void-crusade' } | Select-Object -First 1
   if ($null -eq $gothicSeed -or $gothicSeed.Name -cne 'Gothic Void Crusade') {
     throw 'Gothic Void Crusade was not preseeded with the expected display name.'
+  }
+  $milkyWaySeed = $preseededThemes | Where-Object { $_.Id -ceq 'preset-milky-way-glass' } | Select-Object -First 1
+  $milkyWayLoaded = if ($null -ne $milkyWaySeed) {
+    Read-DreamSkinTheme -ThemeDirectory $milkyWaySeed.Path
+  } else { $null }
+  if ($null -eq $milkyWayLoaded -or $milkyWaySeed.Name -cne '银河夜幕 · 星河玻璃' -or
+    $milkyWayLoaded.Theme.appearance -cne 'dark' -or
+    $milkyWayLoaded.Theme.surfaces.sidebarBackground -cne 'continuous' -or
+    $milkyWayLoaded.Theme.surfaces.matchWorkspaceTransparency -ne $true -or
+    $milkyWayLoaded.Theme.materials.dark.page -ne 0.30 -or
+    $milkyWayLoaded.Theme.materials.components.menus.dark.opacity -ne 0.58) {
+    throw 'Milky Way Glass was not preseeded with the expected dark translucent material contract.'
   }
   $updatedTheme = Set-DreamSkinActiveTheme -ImagePath (Join-Path $Root 'assets\dream-reference.png') `
     -Theme $null -Name '测试主题' -StateRoot $themeStateRoot
@@ -679,11 +692,11 @@ try {
   $null = Initialize-DreamSkinThemeStore -SkillRoot $Root -StateRoot $themeStateRoot
   $idempotentTheme = Read-DreamSkinTheme -ThemeDirectory $themePaths.Active
   $afterReinitCount = @(Get-DreamSkinSavedThemes -StateRoot $themeStateRoot).Count
-  if ($idempotentTheme.Theme.id -cne 'custom' -or $afterReinitCount -ne 2) {
+  if ($idempotentTheme.Theme.id -cne 'custom' -or $afterReinitCount -ne 3) {
     throw 'Theme-store initialization overwrote the active custom theme or duplicated its bundled presets.'
   }
   $savedTheme = Save-DreamSkinCurrentTheme -Name '已保存主题' -StateRoot $themeStateRoot
-  if ($savedTheme.Theme.name -cne '已保存主题' -or @(Get-DreamSkinSavedThemes -StateRoot $themeStateRoot).Count -ne 3) {
+  if ($savedTheme.Theme.name -cne '已保存主题' -or @(Get-DreamSkinSavedThemes -StateRoot $themeStateRoot).Count -ne 4) {
     throw 'Saved theme creation or discovery failed.'
   }
   $null = Use-DreamSkinSavedTheme -ThemeDirectory $savedTheme.Directory -StateRoot $themeStateRoot
@@ -899,6 +912,18 @@ try {
   $commonSource = Read-DreamSkinUtf8File -Path (Join-Path $Root 'scripts\common-windows.ps1')
   if (-not $commonSource.Contains('State was preserved.')) {
     throw 'Mismatched live injector identity does not fail closed with preserved state.'
+  }
+
+  $dotnet = (Get-Command dotnet -ErrorAction Stop).Source
+  $cdpSessionBehaviorTest = Invoke-DreamSkinNative -FilePath $dotnet -ArgumentList @(
+    'run',
+    '--project', (Join-Path $PSScriptRoot 'CdpSessionBehavior\CdpSessionBehavior.csproj'),
+    '--configuration', 'Release',
+    '--nologo'
+  )
+  if ($cdpSessionBehaviorTest.ExitCode -ne 0 -or
+    ($cdpSessionBehaviorTest.Output -join "`n") -notmatch 'PASS: CdpSession cancellation and disconnect cleanup behavior\.') {
+    throw "CdpSession behavior test failed: $($cdpSessionBehaviorTest.Output -join '<NL>')"
   }
 
   $node = Get-DreamSkinNodeRuntime

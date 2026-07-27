@@ -6,22 +6,38 @@
   <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms</value></resheader>
   <data name="AppTitleBar.Title" xml:space="preserve"><value>Codex Dream Skin</value></data>
   <data name="ShellNavigationView.PaneTitle" xml:space="preserve"><value>Workspace</value></data>
+  <data name="ShellBrandTitle.Text" xml:space="preserve"><value>Dream Skin</value></data>
+  <data name="ShellBrandSubtitle.Text" xml:space="preserve"><value>Codex theme studio</value></data>
+  <data name="StudioBrandEyebrow.Text" xml:space="preserve"><value>OPEN CODEX SKIN</value></data>
+  <data name="StudioBrandTitle.Text" xml:space="preserve"><value>Theme Studio</value></data>
   <data name="DashboardNavItem.Content" xml:space="preserve"><value>Overview</value></data>
   <data name="ThemesNavItem.Content" xml:space="preserve"><value>Themes</value></data>
   <data name="DiagnosticsNavItem.Content" xml:space="preserve"><value>Diagnostics</value></data>
   <data name="SettingsNavItem.Content" xml:space="preserve"><value>Settings</value></data>
+  <data name="DashboardNavLabel.Text" xml:space="preserve"><value>Overview</value></data>
+  <data name="ThemesNavLabel.Text" xml:space="preserve"><value>Themes</value></data>
+  <data name="DiagnosticsNavLabel.Text" xml:space="preserve"><value>Diagnostics</value></data>
+  <data name="SettingsNavLabel.Text" xml:space="preserve"><value>Settings</value></data>
+  <data name="WorkspaceModeDashboard" xml:space="preserve"><value>Overview</value></data>
+  <data name="WorkspaceContextDashboard" xml:space="preserve"><value>Connection, theme, and manager status</value></data>
+  <data name="WorkspaceModeThemes" xml:space="preserve"><value>Theme studio</value></data>
+  <data name="WorkspaceContextThemes" xml:space="preserve"><value>Select a theme, preview directly, and tune its style</value></data>
+  <data name="WorkspaceModeDiagnostics" xml:space="preserve"><value>Diagnostics</value></data>
+  <data name="WorkspaceContextDiagnostics" xml:space="preserve"><value>Runtime health, Codex connectivity, and managed ports</value></data>
+  <data name="WorkspaceModeSettings" xml:space="preserve"><value>Settings</value></data>
+  <data name="WorkspaceContextSettings" xml:space="preserve"><value>Manager appearance, automation, and release source</value></data>
   <data name="DashboardTitle.Text" xml:space="preserve"><value>Overview</value></data>
-  <data name="DashboardSubtitle.Text" xml:space="preserve"><value>Track the native app migration and the currently bundled Codex theme.</value></data>
-  <data name="DashboardHeroEyebrow.Text" xml:space="preserve"><value>KANNA BLUE · NATIVE EDITION</value></data>
-  <data name="DashboardHeroTitle.Text" xml:space="preserve"><value>Bring the blue moment into a safer Windows app.</value></data>
-  <data name="DashboardHeroBody.Text" xml:space="preserve"><value>The visual system now connects to a native C# theme engine with strict local security boundaries.</value></data>
-  <data name="DashboardStatusTitle.Text" xml:space="preserve"><value>Migration status</value></data>
+  <data name="DashboardSubtitle.Text" xml:space="preserve"><value>Review the Codex connection, active theme, and manager status.</value></data>
+  <data name="DashboardHeroEyebrow.Text" xml:space="preserve"><value>CODEX THEME ENGINE</value></data>
+  <data name="DashboardHeroTitle.Text" xml:space="preserve"><value>Kanna Blue Moment</value></data>
+  <data name="DashboardHeroBody.Text" xml:space="preserve"><value>Current theme reference; editing lives in the Themes workspace.</value></data>
+  <data name="DashboardStatusTitle.Text" xml:space="preserve"><value>Manager status</value></data>
   <data name="AppStatusTitle.Text" xml:space="preserve"><value>Native shell</value></data>
   <data name="AppStatusBody.Text" xml:space="preserve"><value>Packaged WinUI 3 application is running.</value></data>
   <data name="ThemeStatusTitle.Text" xml:space="preserve"><value>Theme assets</value></data>
-  <data name="ThemeStatusBody.Text" xml:space="preserve"><value>Kanna Blue 3.8.0 adds independent task-hover material and repairs dark-mode text contrast.</value></data>
+  <data name="ThemeStatusBody.Text" xml:space="preserve"><value>The theme library, drafts, preview, history, and guarded apply flow are available.</value></data>
   <data name="EngineStatusTitle.Text" xml:space="preserve"><value>Injection engine</value></data>
-  <data name="EngineStatusBody.Text" xml:space="preserve"><value>Native CDP migration is the next stage.</value></data>
+  <data name="EngineStatusBody.Text" xml:space="preserve"><value>Checking the trusted loopback connection and current Codex session.</value></data>
   <data name="FreeSoftwareNoticeTitle.Text" xml:space="preserve"><value>Free software notice</value></data>
   <data name="FreeSoftwareNoticeBody.Text" xml:space="preserve"><value>This software is permanently free and open source. If you paid to obtain it, request a refund immediately. Do not trust paid sales, bundled downloads, or resellers.</value></data>
   <data name="OfficialProjectLink.Content" xml:space="preserve"><value>Official project: jojhaa/Codex-Dream-Skin-Windows</value></data>
@@ -44,20 +60,33 @@
   <data name="ThemesInfo.Title" xml:space="preserve"><value>Application pending</value></data>
   <data name="ThemesInfo.Message" xml:space="preserve"><value>Apply, import, and restore commands will be enabled after the native CDP engine is available.</value></data>
   <data name="DiagnosticsTitle.Text" xml:space="preserve"><value>Diagnostics</value></data>
-  <data name="DiagnosticsSubtitle.Text" xml:space="preserve"><value>Separate verified application capabilities from work that has not migrated yet.</value></data>
-  <data name="DiagnosticsInfo.Title" xml:space="preserve"><value>Stage 1 checks passed</value></data>
-  <data name="DiagnosticsInfo.Message" xml:space="preserve"><value>The packaged x64 app builds and launches with a responsive top-level window.</value></data>
+  <data name="DiagnosticsSubtitle.Text" xml:space="preserve"><value>Inspect app identity, theme resources, Codex connectivity, and managed loopback ports.</value></data>
+  <data name="DiagnosticsInfo.Title" xml:space="preserve"><value>Local diagnostics</value></data>
+  <data name="DiagnosticsInfo.Message" xml:space="preserve"><value>All checks run locally. Process closing is available only for reverified official Codex loopback listeners.</value></data>
+  <data name="DiagnosticsHealthTitle.Text" xml:space="preserve"><value>Runtime health</value></data>
+  <data name="DiagnosticsHealthSubtitle.Text" xml:space="preserve"><value>Three foundation checks required by the manager.</value></data>
   <data name="DiagnosticsPackageTitle.Text" xml:space="preserve"><value>Package identity</value></data>
   <data name="DiagnosticsPackageBody.Text" xml:space="preserve"><value>MSIX development identity and package-aware launch are available.</value></data>
   <data name="DiagnosticsAssetsTitle.Text" xml:space="preserve"><value>Theme resources</value></data>
   <data name="DiagnosticsAssetsBody.Text" xml:space="preserve"><value>The reference image and shared light, dark, and high-contrast brushes load from the package.</value></data>
   <data name="DiagnosticsEngineTitle.Text" xml:space="preserve"><value>Codex connection</value></data>
-  <data name="DiagnosticsEngineBody.Text" xml:space="preserve"><value>Process discovery, port ownership, and CDP sessions have not moved to C# yet.</value></data>
+  <data name="DiagnosticsEngineBody.Text" xml:space="preserve"><value>Checking process identity, port ownership, and the CDP session.</value></data>
   <data name="DiagnosticsRefreshFailed" xml:space="preserve"><value>Diagnostics refresh failed</value></data>
   <data name="ReadyStatus.Text" xml:space="preserve"><value>Ready</value></data>
   <data name="PendingStatus.Text" xml:space="preserve"><value>Pending</value></data>
   <data name="SettingsTitle.Text" xml:space="preserve"><value>Settings</value></data>
   <data name="SettingsSubtitle.Text" xml:space="preserve"><value>Adjust the native manager without changing Codex itself.</value></data>
+  <data name="SettingsSectionsTitle.Text" xml:space="preserve"><value>SETTINGS</value></data>
+  <data name="SettingsCategoryGeneral.Text" xml:space="preserve"><value>General</value></data>
+  <data name="SettingsCategoryAutomation.Text" xml:space="preserve"><value>Automation</value></data>
+  <data name="SettingsCategoryUpdates.Text" xml:space="preserve"><value>Updates</value></data>
+  <data name="SettingsCategoryAbout.Text" xml:space="preserve"><value>About</value></data>
+  <data name="SettingsGeneralTitle.Text" xml:space="preserve"><value>General</value></data>
+  <data name="SettingsGeneralSubtitle.Text" xml:space="preserve"><value>Manage application appearance and local data storage.</value></data>
+  <data name="SettingsAutomationTitle.Text" xml:space="preserve"><value>Startup and automation</value></data>
+  <data name="SettingsAutomationSubtitle.Text" xml:space="preserve"><value>Control ordinary Codex takeover and Windows sign-in startup.</value></data>
+  <data name="SettingsUpdatesTitle.Text" xml:space="preserve"><value>Version and source</value></data>
+  <data name="SettingsUpdatesSubtitle.Text" xml:space="preserve"><value>Confirm the installed version and use the only official release channel.</value></data>
   <data name="AppearanceSettingTitle.Text" xml:space="preserve"><value>Application appearance</value></data>
   <data name="AppearanceSettingBody.Text" xml:space="preserve"><value>Choose how this manager follows the Windows color mode.</value></data>
   <data name="AppearanceSelector.Header" xml:space="preserve"><value>Color mode</value></data>
@@ -152,6 +181,16 @@
   <data name="ThemeAccentColorPicker.AutomationProperties.Name" xml:space="preserve"><value>Select the theme accent color</value></data>
   <data name="ThemeMaterialsEditor.Header" xml:space="preserve"><value>Component glass materials</value></data>
   <data name="ThemeImagesEditor.Header" xml:space="preserve"><value>Regional images</value></data>
+  <data name="ThemeSidebarBackgroundMode.Header" xml:space="preserve"><value>Sidebar background source</value></data>
+  <data name="ThemeSidebarBackgroundMode.AutomationProperties.Name" xml:space="preserve"><value>Choose the sidebar background source</value></data>
+  <data name="ThemeSidebarBackgroundContinuous.Content" xml:space="preserve"><value>Reveal main background (continuous)</value></data>
+  <data name="ThemeSidebarBackgroundIndependent.Content" xml:space="preserve"><value>Use an independent image</value></data>
+  <data name="ThemeSidebarBackgroundHint.Text" xml:space="preserve"><value>Continuous mode removes the sidebar fill and reveals the same full-window background used by the workspace.</value></data>
+  <data name="ThemeMatchWorkspaceTransparency.Header" xml:space="preserve"><value>Match sidebar and workspace transparency</value></data>
+  <data name="ThemeMatchWorkspaceTransparency.OnContent" xml:space="preserve"><value>Matched</value></data>
+  <data name="ThemeMatchWorkspaceTransparency.OffContent" xml:space="preserve"><value>Sidebar only</value></data>
+  <data name="ThemeMatchWorkspaceTransparency.AutomationProperties.Name" xml:space="preserve"><value>Match sidebar and workspace transparency</value></data>
+  <data name="ThemeMatchWorkspaceTransparencyHint.Text" xml:space="preserve"><value>When enabled, the workspace, header, and sidebar use the same fully transparent base. Cards and the composer keep their own materials.</value></data>
   <data name="ThemeBackgroundImageLabel.Text" xml:space="preserve"><value>Main background</value></data>
   <data name="ThemeSidebarImageLabel.Text" xml:space="preserve"><value>Sidebar</value></data>
   <data name="ThemeComposerImageLabel.Text" xml:space="preserve"><value>Task composer</value></data>
@@ -290,4 +329,116 @@
   <data name="TrayOpenSettings" xml:space="preserve"><value>&amp;Settings</value></data>
   <data name="TrayHide" xml:space="preserve"><value>&amp;Hide window</value></data>
   <data name="TrayExit" xml:space="preserve"><value>E&amp;xit</value></data>
+  <data name="ThemeStudioToolsTitle.Text" xml:space="preserve"><value>Editing tools</value></data>
+  <data name="ThemeRailLibraryButton.Content" xml:space="preserve"><value>Theme library</value></data>
+  <data name="ThemeRailToolsButton.Content" xml:space="preserve"><value>Editing tools</value></data>
+  <data name="ThemeStudioDraftLabel.Text" xml:space="preserve"><value>Draft</value></data>
+  <data name="ThemeToolGroupBasic.Text" xml:space="preserve"><value>Basic</value></data>
+  <data name="ThemeToolGroupVisual.Text" xml:space="preserve"><value>Visual</value></data>
+  <data name="ThemeToolGroupInterface.Text" xml:space="preserve"><value>Interface</value></data>
+  <data name="ThemeToolGroupManagement.Text" xml:space="preserve"><value>Management</value></data>
+  <data name="ThemeToolOverview.Content" xml:space="preserve"><value>Theme overview</value></data>
+  <data name="ThemeToolColorMaterials.Content" xml:space="preserve"><value>Color and materials</value></data>
+  <data name="ThemeToolTypography.Content" xml:space="preserve"><value>Typography</value></data>
+  <data name="ThemeToolBackgroundComposition.Content" xml:space="preserve"><value>Background and crop</value></data>
+  <data name="ThemeToolInterfaceAssets.Content" xml:space="preserve"><value>Interface assets</value></data>
+  <data name="ThemeToolDecoration.Content" xml:space="preserve"><value>Decoration</value></data>
+  <data name="ThemeToolComponentStyles.Content" xml:space="preserve"><value>Component styles</value></data>
+  <data name="ThemeToolLayoutSpacing.Content" xml:space="preserve"><value>Layout and spacing</value></data>
+  <data name="ThemeToolLocalization.Content" xml:space="preserve"><value>Interface translation</value></data>
+  <data name="ThemeToolFloatingWindows.Content" xml:space="preserve"><value>Floating windows</value></data>
+  <data name="ThemeToolThemeInfo.Content" xml:space="preserve"><value>Theme information</value></data>
+  <data name="ThemeToolHistory.Content" xml:space="preserve"><value>Version history</value></data>
+  <data name="ThemeStudioPreviewTitle.Text" xml:space="preserve"><value>Isolated Codex UI preview</value></data>
+  <data name="ThemeStudioPreviewSubtitle.Text" xml:space="preserve"><value>Complete Codex Desktop simulation with window chrome, sidebar, home, tasks, composer, and Settings.</value></data>
+  <data name="ThemeStudioResetPreviewButton.Content" xml:space="preserve"><value>Reset interaction</value></data>
+  <data name="ThemeStudioResetPreviewButton.AutomationProperties.Name" xml:space="preserve"><value>Reset isolated-preview interaction state</value></data>
+  <data name="ThemeStudioPreviewPhaseHint.Text" xml:space="preserve"><value>The isolated preview never reads real chats, accounts, projects, or Codex settings.</value></data>
+  <data name="PreviewChromeMenus.Text" xml:space="preserve"><value>File　Edit　View　Help</value></data>
+  <data name="PreviewSceneHomeButton.Content" xml:space="preserve"><value>Home</value></data>
+  <data name="PreviewSceneTaskButton.Content" xml:space="preserve"><value>Task</value></data>
+  <data name="PreviewSceneSettingsButton.Content" xml:space="preserve"><value>Settings</value></data>
+  <data name="PreviewCodexTitle.Text" xml:space="preserve"><value>Codex</value></data>
+  <data name="PreviewNewTaskButton.Content" xml:space="preserve"><value>＋ New task</value></data>
+  <data name="PreviewPullRequestButton.Content" xml:space="preserve"><value>Pull requests</value></data>
+  <data name="PreviewSitesButton.Content" xml:space="preserve"><value>Sites</value></data>
+  <data name="PreviewProjectsLabel.Text" xml:space="preserve"><value>Projects</value></data>
+  <data name="PreviewProjectOne.Text" xml:space="preserve"><value>Theme studio</value></data>
+  <data name="PreviewProjectTwo.Text" xml:space="preserve"><value>Diagnostics and connection</value></data>
+  <data name="PreviewProjectThree.Text" xml:space="preserve"><value>Automation scripts</value></data>
+  <data name="PreviewSidebarSettingsButton.Content" xml:space="preserve"><value>Settings</value></data>
+  <data name="PreviewHomePrompt.Text" xml:space="preserve"><value>What should we work on?</value></data>
+  <data name="PreviewSuggestionExplore.Content" xml:space="preserve"><value>Explore and understand code</value></data>
+  <data name="PreviewSuggestionBuild.Content" xml:space="preserve"><value>Build a new feature</value></data>
+  <data name="PreviewSuggestionReview.Content" xml:space="preserve"><value>Review code and suggest improvements</value></data>
+  <data name="PreviewSuggestionFix.Content" xml:space="preserve"><value>Fix problems and failures</value></data>
+  <data name="PreviewComposerTextBox.PlaceholderText" xml:space="preserve"><value>Describe a task or type a message</value></data>
+  <data name="PreviewSendButton.AutomationProperties.Name" xml:space="preserve"><value>Send isolated-preview message</value></data>
+  <data name="PreviewTaskTitle.Text" xml:space="preserve"><value>Theme studio refactor</value></data>
+  <data name="PreviewAssistantMessage.Text" xml:space="preserve"><value>This is an isolated task scene. Code, commands, network, and real Codex sessions are never accessed.</value></data>
+  <data name="PreviewSimulatedReply.Text" xml:space="preserve"><value>Simulated reply: received only by the local preview session; no real action was executed.</value></data>
+  <data name="PreviewTaskHint.Text" xml:space="preserve"><value>Local simulated task · no network side effects</value></data>
+  <data name="PreviewSettingsTitle.Text" xml:space="preserve"><value>Settings</value></data>
+  <data name="PreviewSettingsGeneral.Content" xml:space="preserve"><value>General</value></data>
+  <data name="PreviewSettingsGeneralHeading.Text" xml:space="preserve"><value>General</value></data>
+  <data name="PreviewSettingsAppearance.Content" xml:space="preserve"><value>Appearance</value></data>
+  <data name="PreviewSettingsNotifications.Content" xml:space="preserve"><value>Notifications</value></data>
+  <data name="PreviewSettingsNotificationsLabel.Text" xml:space="preserve"><value>Desktop notifications</value></data>
+  <data name="PreviewSettingsExtensions.Content" xml:space="preserve"><value>Extensions</value></data>
+  <data name="PreviewSettingsLanguage.Text" xml:space="preserve"><value>Interface language</value></data>
+  <data name="PreviewSettingsTheme.Text" xml:space="preserve"><value>Dark appearance</value></data>
+  <data name="PreviewLanguageChinese.Content" xml:space="preserve"><value>简体中文</value></data>
+  <data name="PreviewLanguageEnglish.Content" xml:space="preserve"><value>English</value></data>
+  <data name="PreviewSettingsIsolationInfo.Title" xml:space="preserve"><value>Isolated settings</value></data>
+  <data name="PreviewSettingsIsolationInfo.Message" xml:space="preserve"><value>These switches and selections exist only in the preview session.</value></data>
+  <data name="PreviewFooterIsolation.Text" xml:space="preserve"><value>Complete Codex page fixture · locally isolated · no network access</value></data>
+  <data name="ThemeStudioPlannedToolInfo.Title" xml:space="preserve"><value>Available in the theme-format expansion phase</value></data>
+  <data name="ThemeStudioPlannedToolInfo.Message" xml:space="preserve"><value>The three-pane studio first migrates existing behavior. This tool requires bounded schema, validation, history, package, and renderer support.</value></data>
+  <data name="ThemeStudioPlannedToolBoundary.Text" xml:space="preserve"><value>This build does not expose settings that cannot work and never accepts arbitrary CSS, scripts, or DOM selectors.</value></data>
+  <data name="ThemeStudioHistoryDescription.Text" xml:space="preserve"><value>View saved theme snapshots and restore one when there are no unsaved changes or temporary previews.</value></data>
+  <data name="ThemeStudioOpenHistoryButton.Content" xml:space="preserve"><value>Open version history</value></data>
+  <data name="PreviewScheduledButton.Content" xml:space="preserve"><value>Scheduled</value></data>
+  <data name="PreviewPluginsButton.Content" xml:space="preserve"><value>Plugins</value></data>
+  <data name="PreviewPinnedLabel.Text" xml:space="preserve"><value>Pinned</value></data>
+  <data name="PreviewRecentLabel.Text" xml:space="preserve"><value>Recent</value></data>
+  <data name="PreviewLocalUser.Text" xml:space="preserve"><value>Sample user</value></data>
+  <data name="PreviewHomeEdition.Text" xml:space="preserve"><value>CODEX DESKTOP · THEME PREVIEW</value></data>
+  <data name="PreviewHomeSubtitle.Text" xml:space="preserve"><value>Choose a project or describe the task you want to complete.</value></data>
+  <data name="PreviewComposerMode.Text" xml:space="preserve"><value>5.6 Sol · locally isolated</value></data>
+  <data name="PreviewOpenLocationButton.Content" xml:space="preserve"><value>Open location</value></data>
+  <data name="PreviewTaskElapsed.Text" xml:space="preserve"><value>Worked for 4m 27s</value></data>
+  <data name="PreviewTaskCommandStatus.Text" xml:space="preserve"><value>Ran several commands</value></data>
+  <data name="PreviewTaskDetailMessage.Text" xml:space="preserve"><value>Reviewing page structure, resources, and interaction boundaries. Everything here is visual-only and no real commands are executed.</value></data>
+  <data name="PreviewEnvironmentTitle.Text" xml:space="preserve"><value>Environment</value></data>
+  <data name="PreviewEnvironmentChanges.Text" xml:space="preserve"><value>Changes</value></data>
+  <data name="PreviewEnvironmentLocal.Text" xml:space="preserve"><value>Local</value></data>
+  <data name="PreviewEnvironmentBranch.Text" xml:space="preserve"><value>main</value></data>
+  <data name="PreviewEnvironmentProcesses.Text" xml:space="preserve"><value>Background processes</value></data>
+  <data name="PreviewBackToAppButton.Content" xml:space="preserve"><value>← Back to app</value></data>
+  <data name="PreviewSettingsSearchBox.PlaceholderText" xml:space="preserve"><value>Search settings…</value></data>
+  <data name="PreviewSettingsPersonalLabel.Text" xml:space="preserve"><value>Personal</value></data>
+  <data name="PreviewSettingsProfile.Content" xml:space="preserve"><value>Profile</value></data>
+  <data name="PreviewSettingsLanguageNav.Content" xml:space="preserve"><value>Language</value></data>
+  <data name="PreviewSettingsConfiguration.Content" xml:space="preserve"><value>Configuration</value></data>
+  <data name="PreviewSettingsPersonalization.Content" xml:space="preserve"><value>Personalization</value></data>
+  <data name="PreviewSettingsShortcuts.Content" xml:space="preserve"><value>Keyboard shortcuts</value></data>
+  <data name="PreviewSettingsUsage.Content" xml:space="preserve"><value>Usage and billing</value></data>
+  <data name="PreviewSettingsAccount.Content" xml:space="preserve"><value>Account</value></data>
+  <data name="PreviewSettingsIntegrationLabel.Text" xml:space="preserve"><value>Integrations</value></data>
+  <data name="PreviewSettingsBrowser.Content" xml:space="preserve"><value>Browser</value></data>
+  <data name="PreviewSettingsComputer.Content" xml:space="preserve"><value>Computer use</value></data>
+  <data name="PreviewSettingsAppearanceTitle.Text" xml:space="preserve"><value>Appearance</value></data>
+  <data name="PreviewSettingsThemeSection.Text" xml:space="preserve"><value>Theme</value></data>
+  <data name="PreviewThemeSystem.Text" xml:space="preserve"><value>System</value></data>
+  <data name="PreviewThemeLight.Text" xml:space="preserve"><value>Light</value></data>
+  <data name="PreviewThemeDark.Text" xml:space="preserve"><value>Dark</value></data>
+  <data name="PreviewBrandSignature.Text" xml:space="preserve"><value>Kanna / Moment</value></data>
+  <data name="PreviewBlueMomentLabel.Text" xml:space="preserve"><value>01 BLUE MOMENT</value></data>
+  <data name="PreviewHomePromptPrefix.Text" xml:space="preserve"><value>What should we do in</value></data>
+  <data name="PreviewSelectedProjectPill.Text" xml:space="preserve"><value>Choose project · windows</value></data>
+  <data name="PreviewHomePromptSuffix.Text" xml:space="preserve"><value>today?</value></data>
+  <data name="PreviewProjectSelectorLabel.Text" xml:space="preserve"><value>01 / CHOOSE PROJECT</value></data>
+  <data name="PreviewProjectWindows.Text" xml:space="preserve"><value>windows</value></data>
+  <data name="PreviewComposerCustom.Text" xml:space="preserve"><value>Custom</value></data>
+  <data name="PreviewPolaroidCaption.Text" xml:space="preserve"><value>BLUE MOMENT · 01</value></data>
 </root>

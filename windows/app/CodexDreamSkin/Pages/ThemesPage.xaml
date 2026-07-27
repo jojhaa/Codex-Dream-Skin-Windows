@@ -3,28 +3,37 @@
     x:Class="CodexDreamSkin.Pages.ThemesPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:CodexDreamSkin.Controls"
     Loaded="ThemesPage_Loaded"
     Unloaded="ThemesPage_Unloaded"
     SizeChanged="ThemesPage_SizeChanged">
 
-    <ScrollViewer
-        x:Name="PageScrollViewer"
-        HorizontalScrollBarVisibility="Disabled"
-        HorizontalScrollMode="Disabled"
-        VerticalScrollBarVisibility="Auto"
-        VerticalScrollMode="Enabled">
-        <StackPanel Style="{StaticResource PageRootStyle}">
-            <Grid x:Name="ThemesHeader" RowSpacing="8">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <StackPanel Spacing="6">
-                    <TextBlock x:Uid="ThemesTitle" Style="{StaticResource TitleTextBlockStyle}" />
-                    <TextBlock x:Uid="ThemesSubtitle" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
-                    <TextBlock x:Name="DraftStatusText" Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}" FontWeight="SemiBold" />
-                </StackPanel>
-                <CommandBar Grid.Row="1" Background="Transparent" DefaultLabelPosition="Right" HorizontalAlignment="Stretch" IsDynamicOverflowEnabled="True">
+    <Grid RowSpacing="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+            <Grid
+                x:Name="ThemesHeader"
+                Grid.Row="0"
+                Padding="12,0"
+                Background="{ThemeResource StudioSurfaceBrush}"
+                BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}"
+                BorderThickness="0,0,0,1"
+                ColumnSpacing="12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock
+                    x:Name="DraftStatusText"
+                    VerticalAlignment="Center"
+                    Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                    FontWeight="SemiBold"
+                    TextTrimming="CharacterEllipsis" />
+                <CommandBar Grid.Column="1" Background="Transparent" DefaultLabelPosition="Right" IsDynamicOverflowEnabled="True">
                     <AppBarButton x:Name="ImportButton" x:Uid="ImportThemeButton" Icon="Add" Click="ImportButton_Click" />
                     <AppBarButton x:Name="ImportPackageButton" x:Uid="ImportThemePackageButton" Icon="OpenFile" Click="ImportPackageButton_Click" />
                     <AppBarButton x:Name="DuplicateButton" x:Uid="DuplicateThemeButton" Icon="Copy" Click="DuplicateButton_Click" />
@@ -41,109 +50,492 @@
                 </CommandBar>
             </Grid>
 
-            <InfoBar x:Name="ThemeInfoBar" IsOpen="False" IsClosable="True" />
+            <InfoBar x:Name="ThemeInfoBar" Grid.Row="1" Margin="12,8" IsOpen="False" IsClosable="True" />
 
-            <Grid ColumnSpacing="10">
+            <Grid x:Name="ThemesWorkspace" Grid.Row="2" ColumnSpacing="0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition x:Name="LibraryColumn" Width="260" />
                     <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="390" />
                 </Grid.ColumnDefinitions>
-                <ToggleSwitch x:Name="LivePreviewToggle" x:Uid="ThemeLivePreviewToggle" Toggled="LivePreviewToggle_Toggled" />
-                <ProgressRing x:Name="LivePreviewProgressRing" Grid.Column="1" Width="18" Height="18" IsActive="False" VerticalAlignment="Center" />
-                <TextBlock x:Name="LivePreviewStatusText" x:Uid="ThemeLivePreviewStatus" Grid.Column="2" VerticalAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
-            </Grid>
 
-            <Grid x:Name="ThemesWorkspace" ColumnSpacing="20" RowSpacing="20">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition x:Name="LibraryColumn" Width="*" />
-                    <ColumnDefinition Width="0" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-
-                <Grid x:Name="LibraryPanel" Grid.ColumnSpan="2" RowSpacing="10">
+                <Grid
+                    x:Name="LibraryPanel"
+                    Grid.Column="0"
+                    Padding="14"
+                    Background="{ThemeResource StudioPaneBrush}"
+                    BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}"
+                    BorderThickness="0,0,1,0"
+                    RowSpacing="14">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <TextBlock x:Uid="ThemeLibraryTitle" Style="{StaticResource SubtitleTextBlockStyle}" />
-                    <ListView
-                        x:Name="ThemesList"
-                        Grid.Row="1"
-                        Height="110"
-                        ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                        ScrollViewer.HorizontalScrollMode="Enabled"
-                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                        ScrollViewer.VerticalScrollMode="Disabled"
-                        SelectionMode="Single"
-                        SelectionChanged="ThemesList_SelectionChanged"
-                        x:Uid="ThemeLibraryList">
-                        <ListView.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <ItemsStackPanel Orientation="Horizontal" />
-                            </ItemsPanelTemplate>
-                        </ListView.ItemsPanel>
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <Grid Width="210" Padding="10,6" ColumnSpacing="12">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="40" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Border Width="40" Height="40" CornerRadius="8" Background="{ThemeResource SubtleFillColorSecondaryBrush}">
-                                        <SymbolIcon Symbol="Pictures" />
-                                    </Border>
-                                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="2">
-                                        <TextBlock Text="{Binding Name}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
-                                        <TextBlock Text="{Binding Id}" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextTrimming="CharacterEllipsis" />
-                                    </StackPanel>
-                                </Grid>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
+                    <Grid ColumnSpacing="6">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Button
+                            x:Name="ThemeLibraryRailButton"
+                            x:Uid="ThemeRailLibraryButton"
+                            Click="ThemeRailButton_Click"
+                            Tag="library"
+                            HorizontalAlignment="Stretch" />
+                        <Button
+                            x:Name="ThemeToolsRailButton"
+                            Grid.Column="1"
+                            x:Uid="ThemeRailToolsButton"
+                            Click="ThemeRailButton_Click"
+                            Tag="tools"
+                            Style="{StaticResource AccentButtonStyle}"
+                            HorizontalAlignment="Stretch" />
+                    </Grid>
+
+                    <Grid Grid.Row="1">
+                        <Grid
+                            x:Name="ThemeLibraryRail"
+                            Visibility="Collapsed"
+                            RowSpacing="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <TextBlock x:Uid="ThemeLibraryTitle" Style="{StaticResource SubtitleTextBlockStyle}" />
+                            <ListView
+                                x:Name="ThemesList"
+                                Grid.Row="1"
+                                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                SelectionMode="Single"
+                                SelectionChanged="ThemesList_SelectionChanged"
+                                x:Uid="ThemeLibraryList">
+                                <ListView.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <ItemsStackPanel Orientation="Vertical" />
+                                    </ItemsPanelTemplate>
+                                </ListView.ItemsPanel>
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Padding="8,6" ColumnSpacing="10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="36" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Border Width="36" Height="36" CornerRadius="5" Background="{ThemeResource SubtleFillColorSecondaryBrush}">
+                                                <SymbolIcon Symbol="Pictures" />
+                                            </Border>
+                                            <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="1">
+                                                <TextBlock Text="{Binding Name}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+                                                <TextBlock Text="{Binding Id}" FontSize="11" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextTrimming="CharacterEllipsis" />
+                                            </StackPanel>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </Grid>
+
+                        <Grid
+                            x:Name="ThemeToolsRail"
+                            RowSpacing="8">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid ColumnSpacing="8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock x:Uid="ThemeStudioToolsTitle" Style="{StaticResource SubtitleTextBlockStyle}" />
+                                <TextBlock Grid.Column="1" x:Uid="ThemeStudioDraftLabel" Foreground="{ThemeResource TextFillColorSecondaryBrush}" VerticalAlignment="Center" />
+                            </Grid>
+                            <ScrollViewer
+                                Grid.Row="1"
+                                HorizontalScrollBarVisibility="Disabled"
+                                VerticalScrollBarVisibility="Auto">
+                                <StackPanel Spacing="2">
+                                    <TextBlock Margin="8,8,8,4" x:Uid="ThemeToolGroupBasic" Foreground="{ThemeResource TextFillColorSecondaryBrush}" FontSize="12" FontWeight="SemiBold" />
+                                    <RadioButton x:Name="OverviewToolButton" x:Uid="ThemeToolOverview" Tag="Overview" GroupName="ThemeStudioTools" IsChecked="True" Checked="ThemeTool_Checked" HorizontalAlignment="Stretch" />
+                                    <RadioButton x:Uid="ThemeToolColorMaterials" Tag="ColorMaterials" GroupName="ThemeStudioTools" Checked="ThemeTool_Checked" HorizontalAlignment="Stretch" />
+                                    <RadioButton x:Uid="ThemeToolTypography" Tag="Typography" GroupName="ThemeStudioTools" Checked="ThemeTool_Checked" HorizontalAlignment="Stretch" />
+                                    <TextBlock Margin="8,12,8,4" x:Uid="ThemeToolGroupVisual" Foreground="{ThemeResource TextFillColorSecondaryBrush}" FontSize="12" FontWeight="SemiBold" />
+                                    <RadioButton x:Uid="ThemeToolBackgroundComposition" Tag="BackgroundComposition" GroupName="ThemeStudioTools" Checked="ThemeTool_Checked" HorizontalAlignment="Stretch" />
+                                    <RadioButton x:Uid="ThemeToolInterfaceAssets" Tag="InterfaceAssets" GroupName="ThemeStudioTools" Checked="ThemeTool_Checked" HorizontalAlignment="Stretch" />
+                                    <RadioButton x:Uid="ThemeToolDecoration" Tag="Decoration" GroupName="ThemeStudioTools" Checked="ThemeTool_Checked" HorizontalAlignment="Stretch" />
+                                    <TextBlock Margin="8,12,8,4" x:Uid="ThemeToolGroupInterface" Foreground="{ThemeResource TextFillColorSecondaryBrush}" FontSize="12" FontWeight="SemiBold" />
+                                    <RadioButton x:Uid="ThemeToolComponentStyles" Tag="ComponentStyles" GroupName="ThemeStudioTools" Checked="ThemeTool_Checked" HorizontalAlignment="Stretch" />
+                                    <RadioButton x:Uid="ThemeToolLayoutSpacing" Tag="LayoutSpacing" GroupName="ThemeStudioTools" Checked="ThemeTool_Checked" HorizontalAlignment="Stretch" />
+                                    <RadioButton x:Uid="ThemeToolLocalization" Tag="Localization" GroupName="ThemeStudioTools" Checked="ThemeTool_Checked" HorizontalAlignment="Stretch" />
+                                    <RadioButton x:Uid="ThemeToolFloatingWindows" Tag="FloatingWindows" GroupName="ThemeStudioTools" Checked="ThemeTool_Checked" HorizontalAlignment="Stretch" />
+                                    <TextBlock Margin="8,12,8,4" x:Uid="ThemeToolGroupManagement" Foreground="{ThemeResource TextFillColorSecondaryBrush}" FontSize="12" FontWeight="SemiBold" />
+                                    <RadioButton x:Uid="ThemeToolThemeInfo" Tag="ThemeInfo" GroupName="ThemeStudioTools" Checked="ThemeTool_Checked" HorizontalAlignment="Stretch" />
+                                    <RadioButton x:Uid="ThemeToolHistory" Tag="History" GroupName="ThemeStudioTools" Checked="ThemeTool_Checked" HorizontalAlignment="Stretch" />
+                                </StackPanel>
+                            </ScrollViewer>
+                        </Grid>
+                    </Grid>
                 </Grid>
 
-                <Grid x:Name="EditorPanel" Grid.Row="1" Grid.ColumnSpan="2" RowSpacing="20">
+                <Grid x:Name="EditorPanel" Grid.Column="1" Grid.ColumnSpan="2" ColumnSpacing="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition x:Name="InspectorColumn" Width="0" />
+                        <ColumnDefinition x:Name="InspectorColumn" Width="340" />
                     </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition x:Name="EditorCanvasRow" Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <Grid x:Name="EditorCanvasHost">
-                        <StackPanel x:Name="EditorCanvasPanel" Spacing="16" Padding="0,0,4,12">
-                        <Border CornerRadius="16" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1">
-                        <Grid
-                            x:Name="PreviewSurface"
-                            Height="220"
-                            Background="Transparent"
-                            PointerPressed="PreviewSurface_PointerPressed"
-                            SizeChanged="PreviewSurface_SizeChanged">
-                            <Image x:Name="PreviewImage" Stretch="UniformToFill" />
-                            <Border Background="{ThemeResource KannaHeroOverlayBrush}" Opacity="0.42" />
-                            <StackPanel Margin="24" VerticalAlignment="Bottom" Spacing="4">
-                                <TextBlock x:Name="PreviewName" Foreground="White" FontSize="24" FontWeight="SemiBold" TextWrapping="Wrap" />
-                                <TextBlock x:Name="PreviewStatus" Foreground="#FFF2F8FF" />
-                            </StackPanel>
-                            <Canvas IsHitTestVisible="False">
-                                <Ellipse
-                                    x:Name="FocusMarker"
-                                    Width="30"
-                                    Height="30"
-                                    Fill="#2200A4EF"
-                                    Stroke="White"
-                                    StrokeThickness="2" />
-                            </Canvas>
-                        </Grid>
-                        </Border>
 
-                        <Expander x:Uid="ThemeImagesEditor" IsExpanded="True">
-                            <Grid x:Name="ImagesGrid" ColumnSpacing="12" RowSpacing="12">
+                    <Grid x:Name="CenterPreviewHost" Grid.Column="0" Padding="16" RowSpacing="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid ColumnSpacing="12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Spacing="2">
+                                <TextBlock x:Uid="ThemeStudioPreviewTitle" Style="{StaticResource SubtitleTextBlockStyle}" />
+                                <TextBlock x:Uid="ThemeStudioPreviewSubtitle" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
+                                <TextBlock
+                                    x:Name="LivePreviewStatusText"
+                                    x:Uid="ThemeLivePreviewStatus"
+                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                    TextWrapping="Wrap" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Spacing="8">
+                                <ProgressRing
+                                    x:Name="LivePreviewProgressRing"
+                                    Width="18"
+                                    Height="18"
+                                    IsActive="False"
+                                    VerticalAlignment="Center" />
+                                <ToggleSwitch
+                                    x:Name="LivePreviewToggle"
+                                    x:Uid="ThemeLivePreviewToggle"
+                                    Toggled="LivePreviewToggle_Toggled" />
+                            </StackPanel>
+                            <StackPanel
+                                x:Name="PreviewInteractionToolbar"
+                                Grid.Column="2"
+                                Orientation="Horizontal"
+                                VerticalAlignment="Center"
+                                Spacing="4">
+                                <Button x:Uid="PreviewSceneHomeButton" Tag="home" Click="PreviewSceneButton_Click" Padding="10,4" />
+                                <Button x:Uid="PreviewSceneTaskButton" Tag="task" Click="PreviewSceneButton_Click" Padding="10,4" />
+                                <Button x:Uid="PreviewSceneSettingsButton" Tag="settings" Click="PreviewSceneButton_Click" Padding="10,4" />
+                                <Button
+                                    x:Uid="ThemeStudioResetPreviewButton"
+                                    Click="PreviewResetButton_Click"
+                                    Margin="8,0,0,0" />
+                            </StackPanel>
+                        </Grid>
+
+                        <Border
+                            Grid.Row="1"
+                            BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}"
+                            BorderThickness="1">
+                            <Grid
+                                x:Name="PreviewSurface"
+                                MinHeight="420"
+                                Background="Transparent"
+                                PointerPressed="PreviewSurface_PointerPressed"
+                                SizeChanged="PreviewSurface_SizeChanged">
+                                <Image x:Name="PreviewImage" Visibility="Collapsed" />
+                                <Border Background="#FF07192B" IsHitTestVisible="False" />
+
+                                <controls:CodexPreviewFixture
+                                    x:Name="CodexPageFixture"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch" />
+
+                                <Grid
+                                    x:Name="LivePreviewFrameHost"
+                                    Background="#FF07192B"
+                                    Visibility="Collapsed"
+                                    SizeChanged="LivePreviewFrameHost_SizeChanged"
+                                    IsHitTestVisible="False">
+                                    <Viewbox
+                                        x:Name="LivePreviewFrameViewbox"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Stretch"
+                                        Stretch="Uniform"
+                                        StretchDirection="Both">
+                                        <Grid
+                                            x:Name="LivePreviewFrameCanvas"
+                                            Width="1922"
+                                            Height="1034"
+                                            UseLayoutRounding="True">
+                                            <Image
+                                                x:Name="LivePreviewFrameImage"
+                                                HorizontalAlignment="Stretch"
+                                                VerticalAlignment="Stretch"
+                                                Stretch="Fill" />
+                                        </Grid>
+                                    </Viewbox>
+                                </Grid>
+
+                                <Border
+                                    x:Name="LivePreviewFrameBadge"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Top"
+                                    Margin="12"
+                                    Padding="9,5"
+                                    Background="#DD07192B"
+                                    CornerRadius="4"
+                                    Visibility="Collapsed"
+                                    IsHitTestVisible="False">
+                                    <StackPanel Orientation="Horizontal" Spacing="6">
+                                        <Ellipse Width="7" Height="7" Fill="#FF42D392" VerticalAlignment="Center" />
+                                        <TextBlock
+                                            x:Name="LivePreviewFrameStatusText"
+                                            Foreground="White"
+                                            FontSize="11"
+                                            VerticalAlignment="Center" />
+                                    </StackPanel>
+                                </Border>
+
+                                <Grid x:Name="CodexLegacyFixture" Visibility="Collapsed">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="34" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="24" />
+                                    </Grid.RowDefinitions>
+
+                                    <Grid
+                                        Padding="10,0"
+                                        Background="#EAF7FBFF"
+                                        BorderBrush="#553D536B"
+                                        BorderThickness="0,0,0,1"
+                                        ColumnSpacing="10">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="9">
+                                            <SymbolIcon Symbol="DockLeft" Foreground="#FF24425F" />
+                                            <TextBlock x:Uid="PreviewChromeMenus" Foreground="#FF365A70" FontSize="11" />
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" HorizontalAlignment="Center" Orientation="Horizontal" Spacing="4">
+                                            <Button x:Uid="PreviewSceneHomeButton" Tag="home" Click="PreviewSceneButton_Click" Padding="10,2" />
+                                            <Button x:Uid="PreviewSceneTaskButton" Tag="task" Click="PreviewSceneButton_Click" Padding="10,2" />
+                                            <Button x:Uid="PreviewSceneSettingsButton" Tag="settings" Click="PreviewSceneButton_Click" Padding="10,2" />
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" Spacing="8">
+                                            <Ellipse Width="7" Height="7" Fill="#FF25B87A" />
+                                            <TextBlock x:Name="PreviewStatus" Foreground="#FF365A70" FontSize="11" VerticalAlignment="Center" />
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <Grid Grid.Row="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="168" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Grid
+                                            Background="#E8F3F7FB"
+                                            BorderBrush="#553D536B"
+                                            BorderThickness="0,0,1,0"
+                                            Padding="12,14">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+                                            <Grid ColumnSpacing="8">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock x:Uid="PreviewCodexTitle" Foreground="#FF10243A" FontSize="17" FontWeight="SemiBold" />
+                                                <SymbolIcon Grid.Column="1" Symbol="Find" Foreground="#FF365A70" />
+                                            </Grid>
+                                            <StackPanel Grid.Row="1" Margin="0,14,0,0" Spacing="4">
+                                                <Button x:Uid="PreviewNewTaskButton" Tag="task" Click="PreviewSceneButton_Click" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" />
+                                                <Button x:Uid="PreviewPullRequestButton" Tag="task" Click="PreviewSceneButton_Click" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" />
+                                                <Button x:Uid="PreviewSitesButton" Tag="home" Click="PreviewSceneButton_Click" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" />
+                                            </StackPanel>
+                                            <StackPanel Grid.Row="2" Margin="4,18,0,0" Spacing="8">
+                                                <TextBlock x:Uid="PreviewProjectsLabel" Foreground="#FF60768B" FontSize="11" FontWeight="SemiBold" />
+                                                <TextBlock x:Uid="PreviewProjectOne" Foreground="#FF24425F" FontSize="11" TextTrimming="CharacterEllipsis" />
+                                                <TextBlock x:Uid="PreviewProjectTwo" Foreground="#FF24425F" FontSize="11" TextTrimming="CharacterEllipsis" />
+                                                <TextBlock x:Uid="PreviewProjectThree" Foreground="#FF24425F" FontSize="11" TextTrimming="CharacterEllipsis" />
+                                            </StackPanel>
+                                            <Button Grid.Row="3" x:Uid="PreviewSidebarSettingsButton" Tag="settings" Click="PreviewSceneButton_Click" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" />
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" Padding="26,18">
+                                            <Grid x:Name="PreviewHomeScene">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*" />
+                                                    <RowDefinition Height="Auto" />
+                                                </Grid.RowDefinitions>
+                                                <StackPanel
+                                                    MaxWidth="650"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Spacing="18">
+                                                    <StackPanel Spacing="5">
+                                                        <TextBlock x:Uid="PreviewHomePrompt" Foreground="#FF10243A" FontSize="28" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" />
+                                                        <TextBlock x:Name="PreviewName" Foreground="#FF365A70" TextAlignment="Center" TextWrapping="Wrap" />
+                                                    </StackPanel>
+                                                    <Grid ColumnSpacing="10" RowSpacing="10">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="*" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="Auto" />
+                                                            <RowDefinition Height="Auto" />
+                                                        </Grid.RowDefinitions>
+                                                        <Button x:Uid="PreviewSuggestionExplore" Tag="task" Click="PreviewSceneButton_Click" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" />
+                                                        <Button Grid.Column="1" x:Uid="PreviewSuggestionBuild" Tag="task" Click="PreviewSceneButton_Click" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" />
+                                                        <Button Grid.Row="1" x:Uid="PreviewSuggestionReview" Tag="task" Click="PreviewSceneButton_Click" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" />
+                                                        <Button Grid.Row="1" Grid.Column="1" x:Uid="PreviewSuggestionFix" Tag="task" Click="PreviewSceneButton_Click" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" />
+                                                    </Grid>
+                                                </StackPanel>
+                                                <Grid
+                                                    Grid.Row="1"
+                                                    MaxWidth="650"
+                                                    HorizontalAlignment="Stretch"
+                                                    Background="#EAF7FBFF"
+                                                    BorderBrush="#663D536B"
+                                                    BorderThickness="1"
+                                                    CornerRadius="10"
+                                                    Padding="12"
+                                                    ColumnSpacing="8">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBox
+                                                        x:Name="PreviewComposerTextBox"
+                                                        x:Uid="PreviewComposerTextBox"
+                                                        Background="Transparent"
+                                                        BorderThickness="0"
+                                                        AcceptsReturn="True"
+                                                        MaxHeight="90" />
+                                                    <Button Grid.Column="1" x:Uid="PreviewSendButton" Click="PreviewSendButton_Click" VerticalAlignment="Bottom">
+                                                        <SymbolIcon Symbol="Up" />
+                                                    </Button>
+                                                </Grid>
+                                            </Grid>
+
+                                            <Grid x:Name="PreviewTaskScene" Visibility="Collapsed">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*" />
+                                                    <RowDefinition Height="Auto" />
+                                                </Grid.RowDefinitions>
+                                                <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+                                                    <StackPanel MaxWidth="680" HorizontalAlignment="Center" Spacing="14">
+                                                        <TextBlock x:Uid="PreviewTaskTitle" Foreground="#FF10243A" FontSize="20" FontWeight="SemiBold" />
+                                                        <Border Background="#DDF7FBFF" Padding="14" CornerRadius="8">
+                                                            <TextBlock x:Uid="PreviewAssistantMessage" Foreground="#FF10243A" TextWrapping="Wrap" />
+                                                        </Border>
+                                                        <Border x:Name="PreviewConversationResult" Background="#DDF7FBFF" Padding="14" CornerRadius="8" Visibility="Collapsed">
+                                                            <StackPanel Spacing="8">
+                                                                <TextBlock x:Name="PreviewUserMessageText" Foreground="#FF10243A" TextWrapping="Wrap" />
+                                                                <TextBlock x:Uid="PreviewSimulatedReply" Foreground="#FF365A70" TextWrapping="Wrap" />
+                                                            </StackPanel>
+                                                        </Border>
+                                                    </StackPanel>
+                                                </ScrollViewer>
+                                                <TextBlock Grid.Row="1" x:Uid="PreviewTaskHint" Foreground="#FF365A70" HorizontalAlignment="Center" />
+                                            </Grid>
+
+                                            <Grid x:Name="PreviewSettingsScene" Visibility="Collapsed">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="150" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <StackPanel Spacing="6">
+                                                    <TextBlock x:Uid="PreviewSettingsTitle" Foreground="#FF10243A" FontSize="20" FontWeight="SemiBold" Margin="0,0,0,8" />
+                                                    <Button x:Uid="PreviewSettingsGeneral" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" />
+                                                    <Button x:Uid="PreviewSettingsAppearance" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" />
+                                                    <Button x:Uid="PreviewSettingsNotifications" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" />
+                                                    <Button x:Uid="PreviewSettingsExtensions" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" />
+                                                </StackPanel>
+                                                <StackPanel Grid.Column="1" Margin="22,0,0,0" Spacing="12">
+                                                    <TextBlock x:Uid="PreviewSettingsGeneralHeading" Foreground="#FF10243A" FontSize="18" FontWeight="SemiBold" />
+                                                    <Rectangle Height="1" Fill="#443D536B" />
+                                                    <Grid>
+                                                        <TextBlock x:Uid="PreviewSettingsLanguage" Foreground="#FF24425F" VerticalAlignment="Center" />
+                                                        <ComboBox HorizontalAlignment="Right" SelectedIndex="0" Width="140">
+                                                            <ComboBoxItem x:Uid="PreviewLanguageChinese" />
+                                                            <ComboBoxItem x:Uid="PreviewLanguageEnglish" />
+                                                        </ComboBox>
+                                                    </Grid>
+                                                    <Grid>
+                                                        <TextBlock x:Uid="PreviewSettingsTheme" Foreground="#FF24425F" VerticalAlignment="Center" />
+                                                        <ToggleSwitch HorizontalAlignment="Right" IsOn="True" />
+                                                    </Grid>
+                                                    <Grid>
+                                                        <TextBlock x:Uid="PreviewSettingsNotificationsLabel" Foreground="#FF24425F" VerticalAlignment="Center" />
+                                                        <ToggleSwitch HorizontalAlignment="Right" />
+                                                    </Grid>
+                                                    <InfoBar x:Uid="PreviewSettingsIsolationInfo" IsOpen="True" IsClosable="False" Severity="Informational" />
+                                                </StackPanel>
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid Grid.Row="2" Padding="10,0" Background="#DDF3F7FB">
+                                        <TextBlock x:Uid="PreviewFooterIsolation" Foreground="#FF60768B" FontSize="10" VerticalAlignment="Center" />
+                                    </Grid>
+                                </Grid>
+
+                            </Grid>
+                        </Border>
+                        <TextBlock Grid.Row="2" x:Uid="ThemeStudioPreviewPhaseHint" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
+                    </Grid>
+
+                    <ScrollViewer
+                        x:Name="InspectorScrollViewer"
+                        Grid.Column="1"
+                        Padding="16"
+                        Background="{ThemeResource StudioSurfaceBrush}"
+                        BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}"
+                        BorderThickness="1,0,0,0"
+                        HorizontalScrollBarVisibility="Disabled"
+                        HorizontalScrollMode="Disabled"
+                        VerticalScrollBarVisibility="Auto"
+                        VerticalScrollMode="Enabled">
+                        <StackPanel Spacing="12">
+                            <StackPanel Spacing="3">
+                                <TextBlock x:Name="InspectorTitleText" Style="{StaticResource SubtitleTextBlockStyle}" />
+                                <TextBlock x:Name="InspectorDescriptionText" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
+                            </StackPanel>
+                            <Grid x:Name="EditorCanvasHost">
+                        <StackPanel x:Name="EditorCanvasPanel" Spacing="16" Padding="0,0,4,12">
+
+                        <Expander x:Name="ThemeImagesEditorExpander" x:Uid="ThemeImagesEditor" IsExpanded="True">
+                            <StackPanel Spacing="12">
+                                <ComboBox
+                                    x:Name="SidebarBackgroundModeComboBox"
+                                    x:Uid="ThemeSidebarBackgroundMode"
+                                    SelectedValuePath="Tag"
+                                    SelectionChanged="EditorValue_Changed"
+                                    HorizontalAlignment="Stretch">
+                                    <ComboBoxItem x:Uid="ThemeSidebarBackgroundContinuous" Tag="continuous" />
+                                    <ComboBoxItem x:Uid="ThemeSidebarBackgroundIndependent" Tag="independent" />
+                                </ComboBox>
+                                <TextBlock
+                                    x:Uid="ThemeSidebarBackgroundHint"
+                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                    TextWrapping="Wrap" />
+                                <ToggleSwitch
+                                    x:Name="MatchWorkspaceTransparencyToggle"
+                                    x:Uid="ThemeMatchWorkspaceTransparency"
+                                    Toggled="EditorValue_Changed" />
+                                <TextBlock
+                                    x:Uid="ThemeMatchWorkspaceTransparencyHint"
+                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                    TextWrapping="Wrap" />
+                                <Grid x:Name="ImagesGrid" ColumnSpacing="12" RowSpacing="12">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="*" />
@@ -207,7 +599,8 @@
                                 <HyperlinkButton x:Name="HomeResetButton" x:Uid="ThemeHomeResetButton" Grid.Row="1" Grid.Column="3" Tag="Home" Click="ResetImageSlot_Click" HorizontalAlignment="Center" />
                                 <HyperlinkButton x:Name="HomeComposerResetButton" x:Uid="ThemeHomeComposerResetButton" Grid.Row="1" Grid.Column="4" Tag="HomeComposer" Click="ResetImageSlot_Click" HorizontalAlignment="Center" />
                                 <HyperlinkButton x:Name="PolaroidResetButton" x:Uid="ThemePolaroidResetButton" Grid.Row="1" Grid.Column="5" Tag="Polaroid" Click="ResetImageSlot_Click" HorizontalAlignment="Center" />
-                            </Grid>
+                                </Grid>
+                            </StackPanel>
                         </Expander>
 
                         <Expander
@@ -301,7 +694,7 @@
                         </StackPanel>
                     </Grid>
 
-                    <Border x:Name="InspectorChrome" Grid.Row="1" Grid.ColumnSpan="2" Background="{ThemeResource LayerFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="12" Padding="18,10,14,18">
+                    <Border x:Name="InspectorChrome" Background="{ThemeResource LayerFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="12" Padding="18,10,14,18">
                         <Grid x:Name="InspectorHost">
                             <StackPanel x:Name="InspectorPanel" HorizontalAlignment="Stretch" Spacing="14">
 
@@ -346,6 +739,7 @@
                             </StackPanel>
                         </Expander>
 
+                        <StackPanel x:Name="ThemeMetadataPanel" Spacing="12">
                         <TextBox x:Name="NameTextBox" x:Uid="ThemeNameField" MaxLength="120" TextChanged="EditorValue_Changed" />
 
                         <Grid ColumnSpacing="16" RowSpacing="12">
@@ -389,6 +783,7 @@
                                     ColorChanged="AccentColorPicker_ColorChanged" />
                             </Expander>
                         </Grid>
+                        </StackPanel>
 
                         <Expander x:Name="MaterialsEditorExpander" x:Uid="ThemeMaterialsEditor" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" IsExpanded="True">
                             <Grid x:Name="MaterialsGrid" ColumnSpacing="24" RowSpacing="18">
@@ -469,12 +864,28 @@
                             </StackPanel>
                         </Expander>
 
+                        <StackPanel x:Name="PlannedToolPanel" Visibility="Collapsed" Spacing="10">
+                            <InfoBar
+                                x:Name="PlannedToolInfoBar"
+                                x:Uid="ThemeStudioPlannedToolInfo"
+                                IsOpen="True"
+                                IsClosable="False"
+                                Severity="Informational" />
+                            <TextBlock x:Uid="ThemeStudioPlannedToolBoundary" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
+                        </StackPanel>
+
+                        <StackPanel x:Name="HistoryInspectorPanel" Visibility="Collapsed" Spacing="10">
+                            <TextBlock x:Uid="ThemeStudioHistoryDescription" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
+                            <Button x:Uid="ThemeStudioOpenHistoryButton" Click="HistoryButton_Click" HorizontalAlignment="Stretch" />
+                        </StackPanel>
+
                         <TextBlock x:Name="ReadOnlyHint" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
                             </StackPanel>
                         </Grid>
                     </Border>
+                        </StackPanel>
+                    </ScrollViewer>
                 </Grid>
             </Grid>
-        </StackPanel>
-    </ScrollViewer>
+    </Grid>
 </Page>

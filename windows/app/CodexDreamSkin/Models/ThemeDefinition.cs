@@ -22,6 +22,9 @@ public sealed record ThemeDefinition
     public ThemeComposition PolaroidComposition { get; set; } = ThemeComposition.Recommended(ThemeImageSlot.Polaroid);
     public string SafeArea { get; set; } = "left";
     public string TaskMode { get; set; } = "ambient";
+    public string DecorationProfile { get; set; } = "minimal";
+    public string SidebarBackgroundMode { get; set; } = "independent";
+    public bool MatchWorkspaceTransparency { get; set; }
     public string Accent { get; set; } = "#1557b0";
     public double LightPageOpacity { get; set; } = 0.56;
     public double LightSidebarOpacity { get; set; } = 0.58;

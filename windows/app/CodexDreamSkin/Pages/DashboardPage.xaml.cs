@@ -79,18 +79,24 @@ public sealed partial class DashboardPage : Page
 
     private void DashboardPage_SizeChanged(object sender, SizeChangedEventArgs e)
     {
-        var isWide = e.NewSize.Width >= 900;
+        var isWide = e.NewSize.Width >= 920;
+
+        DashboardPrimaryGrid.ColumnDefinitions[0].Width = new GridLength(1.08, GridUnitType.Star);
+        DashboardPrimaryGrid.ColumnDefinitions[1].Width = isWide
+            ? new GridLength(0.92, GridUnitType.Star)
+            : new GridLength(0);
+        DashboardArtwork.Visibility = isWide ? Visibility.Visible : Visibility.Collapsed;
 
         Grid.SetRow(AppStatusCard, 0);
         Grid.SetColumn(AppStatusCard, 0);
-        Grid.SetColumnSpan(AppStatusCard, isWide ? 1 : 3);
+        Grid.SetColumnSpan(AppStatusCard, isWide ? 1 : 2);
 
         Grid.SetRow(ThemeStatusCard, isWide ? 0 : 1);
         Grid.SetColumn(ThemeStatusCard, isWide ? 1 : 0);
-        Grid.SetColumnSpan(ThemeStatusCard, isWide ? 1 : 3);
+        Grid.SetColumnSpan(ThemeStatusCard, isWide ? 1 : 2);
 
-        Grid.SetRow(EngineStatusCard, isWide ? 0 : 2);
-        Grid.SetColumn(EngineStatusCard, isWide ? 2 : 0);
-        Grid.SetColumnSpan(EngineStatusCard, isWide ? 1 : 3);
+        Grid.SetRow(DashboardInfo, isWide ? 0 : 1);
+        Grid.SetColumn(DashboardInfo, isWide ? 1 : 0);
+        Grid.SetColumnSpan(DashboardInfo, isWide ? 1 : 2);
     }
 }

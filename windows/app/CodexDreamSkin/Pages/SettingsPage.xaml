@@ -2,173 +2,235 @@
 <Page
     x:Class="CodexDreamSkin.Pages.SettingsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    SizeChanged="SettingsPage_SizeChanged">
 
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled">
-        <StackPanel Style="{StaticResource PageRootStyle}">
-            <StackPanel Spacing="6">
-                <TextBlock x:Uid="SettingsTitle" Style="{StaticResource TitleTextBlockStyle}" />
-                <TextBlock x:Uid="SettingsSubtitle" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
-            </StackPanel>
+    <Grid>
+        <Grid
+            x:Name="SettingsWorkspace"
+            ColumnSpacing="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="SettingsRailColumn" Width="190" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-            <Border Style="{StaticResource StatusCardStyle}">
-                <Grid ColumnSpacing="24">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="220" />
-                    </Grid.ColumnDefinitions>
-                    <StackPanel Spacing="4">
-                        <TextBlock x:Uid="AppearanceSettingTitle" Style="{StaticResource BodyStrongTextBlockStyle}" />
-                        <TextBlock x:Uid="AppearanceSettingBody" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
+            <Border
+                x:Name="SettingsRail"
+                Background="{ThemeResource StudioPaneBrush}"
+                BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}"
+                BorderThickness="0,0,1,0"
+                Padding="16,20">
+                <StackPanel Spacing="18">
+                    <TextBlock x:Uid="SettingsSectionsTitle" Style="{StaticResource SectionLabelStyle}" />
+                    <StackPanel Spacing="16">
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <SymbolIcon Symbol="Setting" />
+                            <TextBlock x:Uid="SettingsCategoryGeneral" VerticalAlignment="Center" FontWeight="SemiBold" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <SymbolIcon Symbol="Permissions" />
+                            <TextBlock x:Uid="SettingsCategoryAutomation" VerticalAlignment="Center" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <SymbolIcon Symbol="Download" />
+                            <TextBlock x:Uid="SettingsCategoryUpdates" VerticalAlignment="Center" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <SymbolIcon Symbol="Help" />
+                            <TextBlock x:Uid="SettingsCategoryAbout" VerticalAlignment="Center" />
+                        </StackPanel>
                     </StackPanel>
-                    <ComboBox
-                        x:Name="AppearanceSelector"
-                        Grid.Column="1"
-                        x:Uid="AppearanceSelector"
-                        HorizontalAlignment="Stretch"
-                        SelectedIndex="0"
-                        SelectionChanged="AppearanceSelector_SelectionChanged">
-                        <ComboBoxItem x:Uid="AppearanceSystem" Tag="system" />
-                        <ComboBoxItem x:Uid="AppearanceLight" Tag="light" />
-                        <ComboBoxItem x:Uid="AppearanceDark" Tag="dark" />
-                    </ComboBox>
-                </Grid>
-            </Border>
-
-            <Border Style="{StaticResource StatusCardStyle}">
-                <StackPanel Spacing="6">
-                    <TextBlock x:Uid="StorageSettingTitle" Style="{StaticResource BodyStrongTextBlockStyle}" />
-                    <TextBlock x:Uid="StorageSettingBody" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
                 </StackPanel>
             </Border>
 
-            <Border Style="{StaticResource StatusCardStyle}">
-                <Grid ColumnSpacing="24">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
+            <ScrollViewer
+                x:Name="SettingsScrollViewer"
+                Grid.Column="1"
+                Padding="24,20"
+                HorizontalScrollBarVisibility="Disabled"
+                VerticalScrollBarVisibility="Auto">
+                <StackPanel MaxWidth="900" HorizontalAlignment="Stretch" Spacing="18">
+                    <InfoBar
+                        x:Uid="SettingsInfo"
+                        IsOpen="True"
+                        IsClosable="False"
+                        Severity="Informational" />
                     <StackPanel Spacing="6">
-                        <TextBlock x:Uid="AutoTakeoverTitle" Style="{StaticResource BodyStrongTextBlockStyle}" />
-                        <TextBlock x:Uid="AutoTakeoverBody" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
-                        <TextBlock
-                            x:Name="TakeoverStatusText"
-                            x:Uid="TakeoverStatusText"
-                            Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                            TextWrapping="Wrap" />
+                        <TextBlock x:Uid="SettingsGeneralTitle" Style="{StaticResource SubtitleTextBlockStyle}" />
+                        <TextBlock x:Uid="SettingsGeneralSubtitle" Style="{StaticResource WorkspaceSubtitleStyle}" />
                     </StackPanel>
-                    <ToggleSwitch
-                        x:Name="AutoTakeoverToggle"
-                        Grid.Column="1"
-                        x:Uid="AutoTakeoverToggle"
-                        Toggled="AutoTakeoverToggle_Toggled" />
-                </Grid>
-            </Border>
 
-            <Border Style="{StaticResource StatusCardStyle}">
-                <Grid ColumnSpacing="24">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
+                    <Border Style="{StaticResource StudioGroupStyle}">
+                        <StackPanel>
+                            <Grid Style="{StaticResource SettingsRowStyle}" ColumnSpacing="24">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="220" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Spacing="4" VerticalAlignment="Center">
+                                    <TextBlock x:Uid="AppearanceSettingTitle" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                                    <TextBlock x:Uid="AppearanceSettingBody" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
+                                </StackPanel>
+                                <ComboBox
+                                    x:Name="AppearanceSelector"
+                                    Grid.Column="1"
+                                    x:Uid="AppearanceSelector"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Center"
+                                    SelectedIndex="0"
+                                    SelectionChanged="AppearanceSelector_SelectionChanged">
+                                    <ComboBoxItem x:Uid="AppearanceSystem" Tag="system" />
+                                    <ComboBoxItem x:Uid="AppearanceLight" Tag="light" />
+                                    <ComboBoxItem x:Uid="AppearanceDark" Tag="dark" />
+                                </ComboBox>
+                            </Grid>
+
+                            <Rectangle Height="1" Fill="{ThemeResource DividerStrokeColorDefaultBrush}" />
+
+                            <Grid Style="{StaticResource SettingsRowStyle}">
+                                <StackPanel Spacing="4" VerticalAlignment="Center">
+                                    <TextBlock x:Uid="StorageSettingTitle" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                                    <TextBlock x:Uid="StorageSettingBody" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
                     <StackPanel Spacing="6">
-                        <TextBlock x:Uid="StartupTaskTitle" Style="{StaticResource BodyStrongTextBlockStyle}" />
-                        <TextBlock x:Uid="StartupTaskBody" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
-                        <TextBlock
-                            x:Name="StartupTaskStatusText"
-                            x:Uid="StartupTaskStatusText"
-                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                            TextWrapping="Wrap" />
-                    </StackPanel>
-                    <ToggleSwitch
-                        x:Name="StartupTaskToggle"
-                        Grid.Column="1"
-                        x:Uid="StartupTaskToggle"
-                        Toggled="StartupTaskToggle_Toggled" />
-                </Grid>
-            </Border>
-
-            <Border x:Name="VersionAndAuthenticityCard" Style="{StaticResource StatusCardStyle}">
-                <StackPanel Spacing="12">
-                    <StackPanel Spacing="4">
-                        <TextBlock x:Uid="VersionSectionTitle" Style="{StaticResource BodyStrongTextBlockStyle}" />
-                        <TextBlock
-                            x:Uid="VersionSectionBody"
-                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                            TextWrapping="Wrap" />
+                        <TextBlock x:Uid="SettingsAutomationTitle" Style="{StaticResource SubtitleTextBlockStyle}" />
+                        <TextBlock x:Uid="SettingsAutomationSubtitle" Style="{StaticResource WorkspaceSubtitleStyle}" />
                     </StackPanel>
 
-                    <Grid ColumnSpacing="16">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Spacing="4">
-                            <TextBlock x:Uid="CurrentVersionLabel" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
-                            <TextBlock
-                                x:Name="CurrentVersionText"
-                                Style="{StaticResource BodyStrongTextBlockStyle}" />
-                            <TextBlock
-                                x:Name="VersionStatusText"
-                                x:Uid="VersionStatusText"
-                                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                                TextWrapping="Wrap" />
-                        </StackPanel>
-                        <StackPanel
-                            Grid.Column="1"
-                            Orientation="Horizontal"
-                            VerticalAlignment="Center"
-                            Spacing="8">
-                            <ProgressRing
-                                x:Name="VersionCheckProgressRing"
-                                Width="20"
-                                Height="20"
-                                IsActive="False"
-                                Visibility="Collapsed" />
-                            <Button
-                                x:Name="CheckUpdatesButton"
-                                x:Uid="CheckUpdatesButton"
-                                Click="CheckUpdatesButton_Click" />
-                        </StackPanel>
-                    </Grid>
+                    <Border Style="{StaticResource StudioGroupStyle}">
+                        <StackPanel>
+                            <Grid Style="{StaticResource SettingsRowStyle}" ColumnSpacing="24">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Spacing="5" VerticalAlignment="Center">
+                                    <TextBlock x:Uid="AutoTakeoverTitle" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                                    <TextBlock x:Uid="AutoTakeoverBody" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
+                                    <TextBlock
+                                        x:Name="TakeoverStatusText"
+                                        x:Uid="TakeoverStatusText"
+                                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                        TextWrapping="Wrap" />
+                                </StackPanel>
+                                <ToggleSwitch
+                                    x:Name="AutoTakeoverToggle"
+                                    Grid.Column="1"
+                                    x:Uid="AutoTakeoverToggle"
+                                    VerticalAlignment="Center"
+                                    Toggled="AutoTakeoverToggle_Toggled" />
+                            </Grid>
 
-                    <HyperlinkButton
-                        x:Name="LatestReleaseLink"
-                        x:Uid="LatestReleaseLink"
-                        Margin="-8,0,0,0"
+                            <Rectangle Height="1" Fill="{ThemeResource DividerStrokeColorDefaultBrush}" />
+
+                            <Grid Style="{StaticResource SettingsRowStyle}" ColumnSpacing="24">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Spacing="5" VerticalAlignment="Center">
+                                    <TextBlock x:Uid="StartupTaskTitle" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                                    <TextBlock x:Uid="StartupTaskBody" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
+                                    <TextBlock
+                                        x:Name="StartupTaskStatusText"
+                                        x:Uid="StartupTaskStatusText"
+                                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                        TextWrapping="Wrap" />
+                                </StackPanel>
+                                <ToggleSwitch
+                                    x:Name="StartupTaskToggle"
+                                    Grid.Column="1"
+                                    x:Uid="StartupTaskToggle"
+                                    VerticalAlignment="Center"
+                                    Toggled="StartupTaskToggle_Toggled" />
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <StackPanel Spacing="6">
+                        <TextBlock x:Uid="SettingsUpdatesTitle" Style="{StaticResource SubtitleTextBlockStyle}" />
+                        <TextBlock x:Uid="SettingsUpdatesSubtitle" Style="{StaticResource WorkspaceSubtitleStyle}" />
+                    </StackPanel>
+
+                    <Border x:Name="VersionAndAuthenticityCard" Style="{StaticResource StudioGroupStyle}">
+                        <StackPanel Spacing="14">
+                            <StackPanel Spacing="4">
+                                <TextBlock x:Uid="VersionSectionTitle" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                                <TextBlock
+                                    x:Uid="VersionSectionBody"
+                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                    TextWrapping="Wrap" />
+                            </StackPanel>
+
+                            <Grid ColumnSpacing="16">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Spacing="4">
+                                    <TextBlock x:Uid="CurrentVersionLabel" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                                    <TextBlock x:Name="CurrentVersionText" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                                    <TextBlock
+                                        x:Name="VersionStatusText"
+                                        x:Uid="VersionStatusText"
+                                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                        TextWrapping="Wrap" />
+                                </StackPanel>
+                                <StackPanel
+                                    Grid.Column="1"
+                                    Orientation="Horizontal"
+                                    VerticalAlignment="Center"
+                                    Spacing="8">
+                                    <ProgressRing
+                                        x:Name="VersionCheckProgressRing"
+                                        Width="20"
+                                        Height="20"
+                                        IsActive="False"
+                                        Visibility="Collapsed" />
+                                    <Button
+                                        x:Name="CheckUpdatesButton"
+                                        x:Uid="CheckUpdatesButton"
+                                        Click="CheckUpdatesButton_Click" />
+                                </StackPanel>
+                            </Grid>
+
+                            <HyperlinkButton
+                                x:Name="LatestReleaseLink"
+                                x:Uid="LatestReleaseLink"
+                                Margin="-8,0,0,0"
+                                HorizontalAlignment="Left"
+                                NavigateUri="https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases" />
+
+                            <Rectangle Height="1" Fill="{ThemeResource DividerStrokeColorDefaultBrush}" />
+
+                            <StackPanel Spacing="6">
+                                <TextBlock x:Uid="FreeSoftwareNoticeTitle" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                                <TextBlock
+                                    x:Name="FreeSoftwareNoticeBodyText"
+                                    x:Uid="FreeSoftwareNoticeBody"
+                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                    TextWrapping="Wrap" />
+                                <HyperlinkButton
+                                    x:Name="OfficialProjectLink"
+                                    x:Uid="OfficialProjectLink"
+                                    Margin="-8,0,0,0"
+                                    HorizontalAlignment="Left"
+                                    NavigateUri="https://github.com/jojhaa/Codex-Dream-Skin-Windows" />
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <Button
+                        x:Name="ExitManagerButton"
+                        x:Uid="ExitManagerButton"
                         HorizontalAlignment="Left"
-                        NavigateUri="https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases" />
-
-                    <Rectangle Height="1" Fill="{ThemeResource DividerStrokeColorDefaultBrush}" />
-
-                    <StackPanel Spacing="6">
-                        <TextBlock x:Uid="FreeSoftwareNoticeTitle" Style="{StaticResource BodyStrongTextBlockStyle}" />
-                        <TextBlock
-                            x:Name="FreeSoftwareNoticeBodyText"
-                            x:Uid="FreeSoftwareNoticeBody"
-                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                            TextWrapping="Wrap" />
-                        <HyperlinkButton
-                            x:Name="OfficialProjectLink"
-                            x:Uid="OfficialProjectLink"
-                            Margin="-8,0,0,0"
-                            HorizontalAlignment="Left"
-                            NavigateUri="https://github.com/jojhaa/Codex-Dream-Skin-Windows" />
-                    </StackPanel>
+                        Click="ExitManagerButton_Click" />
                 </StackPanel>
-            </Border>
-
-            <Button
-                x:Name="ExitManagerButton"
-                x:Uid="ExitManagerButton"
-                HorizontalAlignment="Left"
-                Click="ExitManagerButton_Click" />
-
-            <InfoBar
-                x:Uid="SettingsInfo"
-                IsOpen="True"
-                IsClosable="False"
-                Severity="Informational" />
-        </StackPanel>
-    </ScrollViewer>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
 </Page>

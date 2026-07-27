@@ -10,7 +10,10 @@ const palette = read("app", "CodexDreamSkin", "Services", "ThemePaletteService.c
 const model = read("app", "CodexDreamSkin", "Models", "ThemeDefinition.cs");
 const page = read("app", "CodexDreamSkin", "Pages", "ThemesPage.xaml.cs");
 const xaml = read("app", "CodexDreamSkin", "Pages", "ThemesPage.xaml");
+const previewFixture = read("app", "CodexDreamSkin", "Controls", "CodexPreviewFixture.xaml");
+const previewFixtureCode = read("app", "CodexDreamSkin", "Controls", "CodexPreviewFixture.xaml.cs");
 const engine = read("app", "CodexDreamSkin", "Services", "CodexThemeEngine.cs");
+const cdpClient = read("app", "CodexDreamSkin", "Services", "CdpClient.cs");
 const locator = read("app", "CodexDreamSkin", "Services", "CodexPackageLocator.cs");
 const processResolver = read("app", "CodexDreamSkin", "Services", "ProcessPathResolver.cs");
 const listenerVerifier = read("app", "CodexDreamSkin", "Services", "TcpListenerVerifier.cs");
@@ -32,11 +35,66 @@ const settingsPage = read("app", "CodexDreamSkin", "Pages", "SettingsPage.xaml.c
 const settingsXaml = read("app", "CodexDreamSkin", "Pages", "SettingsPage.xaml");
 const appLifecycle = read("app", "CodexDreamSkin", "App.xaml.cs");
 const mainPage = read("app", "CodexDreamSkin", "MainPage.xaml.cs");
+const mainXaml = read("app", "CodexDreamSkin", "MainPage.xaml");
+const themeResources = read("app", "CodexDreamSkin", "Styles", "ThemeResources.xaml");
 const trayIcon = read("app", "CodexDreamSkin", "Services", "TrayIconService.cs");
 const program = read("app", "CodexDreamSkin", "Program.cs");
 const manifest = read("app", "CodexDreamSkin", "Package.appxmanifest");
 const project = read("app", "CodexDreamSkin", "CodexDreamSkin.csproj");
 const iconBuilder = read("scripts", "build-app-icon.py");
+const milkyWayTheme = JSON.parse(read("presets", "preset-milky-way-glass", "theme.json"));
+const milkyWayImagePath = path.join(root, "presets", "preset-milky-way-glass", "background.png");
+
+assert.equal(milkyWayTheme.id, "preset-milky-way-glass");
+assert.equal(milkyWayTheme.name, "银河夜幕 · 星河玻璃");
+assert.equal(milkyWayTheme.appearance, "dark");
+assert.equal(milkyWayTheme.schemaVersion, 11);
+assert.equal(milkyWayTheme.decorations.profile, "milky-way");
+assert.equal(milkyWayTheme.surfaces.sidebarBackground, "continuous");
+assert.equal(milkyWayTheme.surfaces.matchWorkspaceTransparency, true);
+assert.equal(milkyWayTheme.image, "background.png");
+assert.equal(milkyWayTheme.materials.dark.page, 0.30);
+assert.equal(milkyWayTheme.materials.dark.sidebar, 0.44);
+assert.equal(milkyWayTheme.materials.dark.composer, 0.36);
+assert.equal(milkyWayTheme.materials.components.menus.dark.opacity, 0.58);
+assert.equal(milkyWayTheme.materials.components.workspace.dark.opacity, 0.38);
+assert.ok(fs.existsSync(milkyWayImagePath), "missing bundled Milky Way wallpaper");
+const milkyWayImage = fs.readFileSync(milkyWayImagePath);
+assert.equal(milkyWayImage.readUInt32BE(16), 1672, "Milky Way wallpaper width changed");
+assert.equal(milkyWayImage.readUInt32BE(20), 941, "Milky Way wallpaper height changed");
+for (const token of [
+  "MilkyWayBundledThemeDirectory",
+  "preset-(?:kanna-hashimoto|milky-way-glass)",
+  "AllowedDecorationProfiles",
+  "DecorationProfile",
+  "decorations = new { profile = theme.DecorationProfile }",
+  "AllowedSidebarBackgroundModes",
+  "SidebarBackgroundMode",
+  "MatchWorkspaceTransparency",
+  "matchWorkspaceTransparency = theme.MatchWorkspaceTransparency",
+])
+  assert.ok(service.includes(token), `missing native Milky Way bundled-theme contract: ${token}`);
+for (const token of [
+  "preset-milky-way-glass\\background.png",
+  "preset-milky-way-glass\\theme.json",
+])
+  assert.ok(project.includes(token), `missing published Milky Way asset: ${token}`);
+for (const token of [
+  "PreviewDecorationRibbon",
+  "PreviewPolaroidImage",
+])
+  assert.ok(previewFixture.includes(token), `missing Kanna isolated decoration surface: ${token}`);
+assert.ok(!previewFixture.includes("PreviewGalaxyConstellation"),
+  "the Milky Way isolated preview must not retain a constellation overlay");
+for (const token of [
+  "ApplyDecorationProfile",
+  "var isDecorated = !isMilkyWay && !isMinimal",
+  "PreviewDecorationRibbon.Visibility = isDecorated",
+  "PreviewPolaroidCard.Visibility = isDecorated",
+])
+  assert.ok(previewFixtureCode.includes(token), `missing decoration suppression behavior: ${token}`);
+for (const token of ["Nocturne / 星河", "STELLAR HORIZON", "MILKY WAY · 02"])
+  assert.ok(!previewFixtureCode.includes(token), `Milky Way decoration residue remains in the isolated preview: ${token}`);
 
 for (const token of [
   "<Version>0.3.4</Version>",
@@ -82,6 +140,93 @@ for (const token of [
 ])
   assert.ok(mainPage.includes(token),
     `missing tray navigation contract: ${token}`);
+for (const token of [
+  'Background="{ThemeResource KannaShellOverlayBrush}"',
+  'x:Name="GlobalHeader"',
+  'x:Uid="StudioBrandEyebrow"',
+  'x:Uid="StudioBrandTitle"',
+  'x:Name="GlobalActions"',
+  'x:Name="DashboardModeButton"',
+  'x:Name="ThemesModeButton"',
+  'x:Name="DiagnosticsModeButton"',
+  'x:Name="SettingsModeButton"',
+  'x:Name="WorkspaceModeContext"',
+  'x:Name="ContentFrame"',
+])
+  assert.ok(mainXaml.includes(token),
+    `missing flat application shell contract: ${token}`);
+for (const token of ["<NavigationView", "ShellNavigationView", "PaneDisplayMode", "OpenPaneLength", "ShellRailColumn"])
+  assert.ok(!mainXaml.includes(token),
+    `legacy NavigationView shell must stay removed: ${token}`);
+for (const token of [
+  "private void ModeButton_Click",
+  'NavigateTo("themes")',
+  "WorkspaceModeContext.Text",
+  "DashboardModeButton.Style",
+  "ThemesModeButton.Style",
+  "DiagnosticsModeButton.Style",
+  "WorkspaceModeContext.Text",
+])
+  assert.ok(mainPage.includes(token),
+    `missing flat shell behavior contract: ${token}`);
+for (const token of [
+  'x:Key="StudioPaneBrush"',
+  'x:Key="StudioSurfaceBrush"',
+  'x:Key="StudioGroupStyle"',
+  'x:Key="WorkspaceTitleStyle"',
+  'x:Key="WorkspaceSubtitleStyle"',
+  'x:Key="SectionLabelStyle"',
+  'x:Key="SettingsRowStyle"',
+])
+  assert.ok(themeResources.includes(token),
+    `missing shared studio design resource: ${token}`);
+for (const token of [
+  'x:Name="DashboardPrimaryGrid"',
+  'x:Name="DashboardArtwork"',
+  'x:Name="DashboardFooterGrid"',
+  'x:Name="RefreshStatusButton"',
+  "DashboardPage_SizeChanged",
+  "e.NewSize.Width >= 920",
+])
+  assert.ok(`${dashboardXaml}\n${dashboardPage}`.includes(token),
+    `missing refactored overview workspace contract: ${token}`);
+for (const token of [
+  'x:Name="DiagnosticsWorkspace"',
+  'x:Name="HealthPanel"',
+  'x:Name="PortsPanel"',
+  'Style="{StaticResource StudioGroupStyle}"',
+  "DiagnosticsPage_SizeChanged",
+  "e.NewSize.Width >= 980",
+])
+  assert.ok(`${diagnosticsXaml}\n${diagnosticsPage}`.includes(token),
+    `missing refactored diagnostics workspace contract: ${token}`);
+for (const token of [
+  'x:Name="SettingsWorkspace"',
+  'x:Name="SettingsRail"',
+  'x:Name="SettingsScrollViewer"',
+  'Style="{StaticResource SettingsRowStyle}"',
+  "SettingsPage_SizeChanged",
+  "e.NewSize.Width >= 920",
+])
+  assert.ok(`${settingsXaml}\n${settingsPage}`.includes(token),
+    `missing refactored settings workspace contract: ${token}`);
+for (const token of [
+  "ShellBrandTitle",
+  "ShellBrandSubtitle",
+  "DiagnosticsHealthTitle",
+  "SettingsSectionsTitle",
+  "SettingsCategoryGeneral",
+  "SettingsAutomationTitle",
+  "SettingsUpdatesTitle",
+  "StudioBrandEyebrow",
+  "StudioBrandTitle",
+  "WorkspaceModeDashboard",
+  "WorkspaceModeThemes",
+  "WorkspaceModeDiagnostics",
+  "WorkspaceModeSettings",
+])
+  assert.ok(zhResources.includes(token) && enResources.includes(token),
+    `missing localized whole-app studio resource: ${token}`);
 for (const token of [
   "TrayTooltip",
   "TrayOpenManager",
@@ -164,6 +309,7 @@ assert.doesNotMatch(
 for (const token of [
   "MinimumWindowWidth = 770",
   "MinimumWindowHeight = 680",
+  "AppWindow.Resize(new SizeInt32(1600, 900))",
   "WmGetMinMaxInfo = 0x0024",
   "SetWindowSubclass",
   "WindowNative.GetWindowHandle(this)",
@@ -197,7 +343,7 @@ for (const token of [
   "formatVersion = 1",
   "不支持的主题数据版本",
   "主题图片内容与文件扩展名不一致",
-  "schemaVersion = 8",
+  "schemaVersion = 11",
   "compositions = new",
   "components = new",
 ]) assert.ok(service.includes(token), `missing package safety contract: ${token}`);
@@ -225,6 +371,16 @@ for (const token of ["ImportThemePackageButton", "ExportThemeButton", "ThemeHist
   assert.ok(xaml.includes(token), `missing localized command button: ${token}`);
 for (const token of ["BackgroundImageButton", "SidebarImageButton", "ComposerImageButton", "HomeImageButton", "HomeComposerImageButton", "PolaroidImageButton"])
   assert.ok(xaml.includes(token), `missing regional image slot: ${token}`);
+for (const token of [
+  "SidebarBackgroundModeComboBox",
+  "ThemeSidebarBackgroundContinuous",
+  "ThemeSidebarBackgroundIndependent",
+  "ThemeSidebarBackgroundHint",
+  "MatchWorkspaceTransparencyToggle",
+  "ThemeMatchWorkspaceTransparency",
+  "ThemeMatchWorkspaceTransparencyHint",
+])
+  assert.ok(xaml.includes(token), `missing sidebar background source control: ${token}`);
 for (const token of ["SidebarResetButton", "ComposerResetButton", "HomeResetButton", "HomeComposerResetButton", "PolaroidResetButton"])
   assert.ok(xaml.includes(token), `missing regional image inheritance action: ${token}`);
 for (const token of [
@@ -236,8 +392,19 @@ for (const token of [
   "ImageFailed=\"CompositionPreviewImage_ImageFailed\"", "PreviewDarkModeToggle", "PreviewContrastInfoBar",
   "FreshPaletteButton", "MidnightPaletteButton", "LowFogPaletteButton"
 ]) assert.ok(xaml.includes(token), `missing composition or palette manager control: ${token}`);
-for (const token of ["ThemeComposition", "BackgroundComposition", "SidebarComposition", "ComposerComposition", "HomeComposition", "HomeComposerComposition", "PolaroidComposition"])
+for (const token of ["ThemeComposition", "BackgroundComposition", "SidebarComposition", "ComposerComposition", "HomeComposition", "HomeComposerComposition", "PolaroidComposition", "SidebarBackgroundMode", "MatchWorkspaceTransparency"])
   assert.ok(model.includes(token), `missing regional composition model contract: ${token}`);
+for (const token of [
+  "public bool MatchWorkspaceTransparency",
+  "PreviewHomeWorkspaceMaterial",
+  "PreviewHomeHeaderMaterial",
+])
+  assert.ok(previewFixtureCode.includes(token), `missing isolated transparency matching behavior: ${token}`);
+for (const token of [
+  "CodexPageFixture.MatchWorkspaceTransparency",
+  "MatchWorkspaceTransparencyToggle.IsEnabled",
+])
+  assert.ok(page.includes(token), `missing transparency matching editor behavior: ${token}`);
 for (const token of ["ThemeComponentMaterial", "ThemeComponentMaterials", "ThemeComponentSlot", "Messages", "Summaries", "Previews", "Menus", "Workspace", "Code", "Suggestions"])
   assert.ok(model.includes(token), `missing component material model contract: ${token}`);
 for (const token of [
@@ -353,30 +520,65 @@ assert.equal((xaml.match(/<Canvas><Image x:Name="(?:Sidebar|Message|Composer|Hom
   "all six appearance images must use post-position Canvas clipping rather than pre-clipped render transforms");
 for (const token of ["LivePreviewToggle", "LivePreviewProgressRing", "LivePreviewStatusText"])
   assert.ok(xaml.includes(token), `missing live-preview control: ${token}`);
+assert.ok(xaml.indexOf('x:Name="LivePreviewStatusText"') > xaml.indexOf('x:Name="CenterPreviewHost"'),
+  "live-preview status must remain visible in the center preview header");
+assert.ok(page.includes("LivePreviewToggle.IsEnabled = !_isBusy && _selectedTheme is not null"),
+  "real Codex capture must be available for the selected bundled theme");
+assert.ok(!page.includes("!LivePreviewToggle.IsOn || _selectedTheme?.IsBundled != false"),
+  "bundled themes must not be rejected by the real-capture scheduler");
 for (const token of [
-  "x:Name=\"ThemesHeader\" RowSpacing=\"8\"",
-  "<RowDefinition Height=\"Auto\" />",
-  "Grid.Row=\"1\" Background=\"Transparent\" DefaultLabelPosition=\"Right\" HorizontalAlignment=\"Stretch\" IsDynamicOverflowEnabled=\"True\""
-]) assert.ok(xaml.includes(token), `missing non-collapsing responsive theme header: ${token}`);
+  "x:Name=\"ThemesHeader\"",
+  "BorderThickness=\"0,0,0,1\"",
+  "Grid.Column=\"1\" Background=\"Transparent\" DefaultLabelPosition=\"Right\" IsDynamicOverflowEnabled=\"True\""
+]) assert.ok(xaml.includes(token), `missing flat theme command strip: ${token}`);
 for (const token of [
-  "x:Name=\"LibraryPanel\" Grid.ColumnSpan=\"2\" RowSpacing=\"10\"",
+  "x:Name=\"ThemesWorkspace\" Grid.Row=\"2\" ColumnSpacing=\"0\"",
+  "x:Name=\"LibraryColumn\" Width=\"260\"",
+  "x:Name=\"LibraryPanel\"",
+  "Background=\"{ThemeResource StudioPaneBrush}\"",
+  "x:Name=\"ThemeLibraryRailButton\"",
+  "x:Name=\"ThemeToolsRailButton\"",
+  "x:Name=\"ThemeLibraryRail\"",
+  "x:Name=\"ThemeToolsRail\"",
+  "Grid.Column=\"0\"",
   "x:Name=\"ThemesList\"",
-  "<ItemsStackPanel Orientation=\"Horizontal\" />",
-  "x:Name=\"EditorPanel\" Grid.Row=\"1\" Grid.ColumnSpan=\"2\" RowSpacing=\"20\"",
-  "x:Name=\"InspectorColumn\" Width=\"0\"",
-  "x:Name=\"PageScrollViewer\"",
-  "x:Name=\"EditorCanvasRow\" Height=\"Auto\"",
+  "<ItemsStackPanel Orientation=\"Vertical\" />",
+  "x:Uid=\"ThemeStudioToolsTitle\"",
+  "x:Uid=\"ThemeToolOverview\"",
+  "x:Uid=\"ThemeToolLocalization\"",
+  "x:Uid=\"ThemeToolFloatingWindows\"",
+  "x:Name=\"EditorPanel\" Grid.Column=\"1\" Grid.ColumnSpan=\"2\" ColumnSpacing=\"0\"",
+  "x:Name=\"InspectorColumn\" Width=\"340\"",
+  "x:Name=\"CenterPreviewHost\"",
+  "x:Uid=\"ThemeStudioPreviewTitle\"",
+  "x:Name=\"PreviewSurface\"",
+  "MinHeight=\"420\"",
+  "x:Name=\"InspectorScrollViewer\"",
   "x:Name=\"EditorCanvasHost\"",
   "x:Name=\"EditorCanvasPanel\"",
+  "x:Name=\"ThemeImagesEditorExpander\"",
   "x:Name=\"CompositionEditorExpander\"",
   "HorizontalContentAlignment=\"Stretch\"",
   "x:Name=\"CompositionPreviewFrame\" Height=\"180\" HorizontalAlignment=\"Stretch\"",
-  "x:Name=\"InspectorChrome\" Grid.Row=\"1\" Grid.ColumnSpan=\"2\"",
+  "x:Name=\"InspectorChrome\"",
   "x:Name=\"InspectorHost\"",
-  "x:Name=\"InspectorPanel\""
-]) assert.ok(xaml.includes(token), `missing top-library vertical editor contract: ${token}`);
+  "x:Name=\"InspectorPanel\"",
+  "x:Name=\"PlannedToolPanel\"",
+  "x:Name=\"HistoryInspectorPanel\""
+]) assert.ok(xaml.includes(token), `missing three-pane theme-studio contract: ${token}`);
 for (const token of [
-  "var compactMaterials = e.NewSize.Width < 900",
+  "private void ThemeTool_Checked",
+  "private void ThemeRailButton_Click",
+  "ThemeLibraryRail.Visibility = showLibrary",
+  "ThemeToolsRail.Visibility = showLibrary",
+  "private void SelectThemeTool",
+  "EditorCanvasHost.Visibility = isBackground || isAssets",
+  "PlannedToolPanel.Visibility = isPlanned",
+  "HistoryInspectorPanel.Visibility = isHistory",
+  "var pageWidth = e.NewSize.Width",
+  "LibraryColumn.Width = new GridLength(pageWidth >= 1440 ? 270 : pageWidth >= 1180 ? 240 : 220)",
+  "InspectorColumn.Width = new GridLength(pageWidth >= 1440 ? 340 : pageWidth >= 1180 ? 320 : 300)",
+  "var compactMaterials = InspectorColumn.Width.Value < 620",
   "MaterialsGrid.ColumnDefinitions[1].Width = compactMaterials",
   "ComponentMaterialsGrid.ColumnDefinitions[1].Width = compactMaterials",
   "Grid.SetColumn(previewCards[index], index % 2)",
@@ -385,7 +587,7 @@ for (const token of [
   "var frameWidth = available",
   "Math.Min(frameWidth / sourceRatio, maximumHeight)",
   "InspectorHost.ActualWidth - 28"
-]) assert.ok(page.includes(token), `missing responsive vertical editor behavior: ${token}`);
+]) assert.ok(page.includes(token), `missing responsive theme-studio behavior: ${token}`);
 for (const token of [
   "AppearancePreviewGrid.ColumnDefinitions[1].Width = compactMaterials",
   "var singleColumn = AppearancePreviewGrid.ColumnDefinitions[1].Width.IsAbsolute",
@@ -401,18 +603,165 @@ for (const token of [
 ]) assert.ok(xaml.includes(token), `missing full-width inspector section: ${token}`);
 assert.ok((xaml.match(/HorizontalContentAlignment=\"Stretch\"/g) || []).length >= 6,
   "composition and inspector expanders must stretch their content presenters");
-assert.equal((xaml.match(/<ScrollViewer\b/g) || []).length, 1,
-  "the theme page must have exactly one vertical scroll owner");
-for (const token of ["EditorCanvasScrollViewer", "InspectorScrollViewer", "MaxHeight=\"620\""])
-  assert.ok(!xaml.includes(token), `nested vertical scrolling must stay removed: ${token}`);
+assert.equal((xaml.match(/<ScrollViewer\b/g) || []).length, 3,
+  "the studio must use dedicated tool, preview-task, and inspector scroll owners");
+for (const token of [
+  'x:Name="PreviewHomeScene"',
+  'x:Name="PreviewTaskScene"',
+  'x:Name="PreviewSettingsScene"',
+  'x:Name="PreviewComposerTextBox"',
+  'x:Name="PreviewConversationResult"',
+  'Click="SceneButton_Click"',
+  'Click="SendButton_Click"',
+  'x:Uid="PreviewChromeMenus"',
+  'x:Uid="PreviewHomePromptPrefix"',
+  'x:Uid="PreviewSettingsIsolationInfo"',
+  'x:Uid="PreviewFooterIsolation"',
+]) assert.ok(previewFixture.includes(token), `missing complete isolated Codex page fixture: ${token}`);
+for (const token of [
+  "public void ResetInteraction",
+  "public void ShowScene",
+  "public ImageSource? BackgroundSource",
+  "public ImageSource? SidebarSource",
+  "public bool UseContinuousSidebarBackground",
+  "PreviewSidebarMaterial.Background",
+  "PreviewHomeHeaderMaterial.Background",
+  "PreviewHomeWorkspaceMaterial.Background",
+  "PreviewTaskSidebarMaterial.Background",
+  "PreviewTaskHeaderMaterial.Background",
+  "PreviewSettingsSidebarMaterial.Background",
+  "PreviewMaterial(value",
+  "Color.FromArgb(0x00, 0x00, 0x00, 0x00)",
+  "public void SetFocus",
+  "public bool TryNormalizePoint",
+  "private void SceneButton_Click",
+  "private void SendMessage",
+  "PreviewConversationResult.Visibility = Visibility.Visible",
+]) assert.ok(previewFixtureCode.includes(token), `missing isolated Codex page interaction: ${token}`);
+for (const token of [
+  "<Viewbox",
+  'Width="1922" Height="1034"',
+  'x:Name="PreviewBackgroundImage"',
+  'x:Name="PreviewSidebarImage"',
+  'x:Name="PreviewSidebarMaterial"',
+  'x:Name="PreviewHomeHeaderMaterial"',
+  'x:Name="PreviewHomeWorkspaceMaterial"',
+  'x:Name="PreviewTaskSidebarMaterial"',
+  'x:Name="PreviewTaskHeaderMaterial"',
+  'x:Name="PreviewSettingsSidebarMaterial"',
+  'Grid.RowSpan="2"',
+  'Stretch="UniformToFill"',
+  '<ColumnDefinition Width="275" />',
+  'Canvas.Left="378" Canvas.Top="771" Width="906" Height="164"',
+  'Canvas.Left="1510" Canvas.Top="716" Width="110" Height="156"',
+  'Width="906" MinHeight="100"',
+  'x:Uid="PreviewEnvironmentTitle"',
+  'x:Uid="PreviewSettingsAppearanceTitle"',
+  'x:Uid="PreviewSettingsSearchBox"',
+])
+  assert.ok(previewFixture.includes(token), `missing real-Codex geometry contract: ${token}`);
+assert.ok(xaml.includes("<controls:CodexPreviewFixture"),
+  "the theme page must host the scaled complete Codex fixture");
+assert.ok(xaml.includes('x:Name="PreviewImage" Visibility="Collapsed"'),
+  "the background must not use a second outer scaling coordinate system");
+for (const token of [
+  "CodexPageFixture.BackgroundSource = source",
+  "CodexPageFixture.SidebarSource = sidebar",
+  "CodexPageFixture.UseContinuousSidebarBackground",
+  "CodexPageFixture.TryNormalizePoint",
+  "CodexPageFixture.SetFocus",
+])
+  assert.ok(page.includes(token), `preview background and focus must share the fixture scale: ${token}`);
+for (const token of [
+  'x:Uid="PreviewSceneHomeButton"',
+  'x:Uid="PreviewSceneTaskButton"',
+  'x:Uid="PreviewSceneSettingsButton"',
+])
+  assert.ok(xaml.includes(token), `scene switching must stay outside the Codex chrome: ${token}`);
+for (const token of [
+  'x:Uid="PreviewSuggestionExplore"',
+  'x:Uid="PreviewSuggestionBuild"',
+  'x:Uid="PreviewSuggestionReview"',
+  'x:Uid="PreviewSuggestionFix"',
+])
+  assert.ok(!previewFixture.includes(token), `the supplied Codex screenshot has no suggestion-card row: ${token}`);
+for (const token of [
+  "PreviewChromeMenus.Text", "PreviewSceneHomeButton.Content", "PreviewSceneTaskButton.Content",
+  "PreviewSceneSettingsButton.Content", "PreviewHomePromptPrefix.Text", "PreviewSelectedProjectPill.Text",
+  "PreviewHomePromptSuffix.Text", "PreviewProjectSelectorLabel.Text", "PreviewComposerTextBox.PlaceholderText",
+  "PreviewTaskTitle.Text", "PreviewSettingsTitle.Text", "PreviewSettingsGeneralHeading.Text",
+  "PreviewSettingsNotificationsLabel.Text", "PreviewSettingsIsolationInfo.Message",
+  "PreviewFooterIsolation.Text"
+]) assert.ok(zhResources.includes(token) && enResources.includes(token),
+  `missing localized complete Codex preview resource: ${token}`);
+for (const token of [
+  'x:Uid="PreviewSettingsAppearanceTitle"',
+  'x:Uid="PreviewSettingsNotificationsLabel"',
+])
+  assert.ok(previewFixture.includes(token), `missing property-safe Settings preview Uid: ${token}`);
+for (const token of [
+  "PreviewSettingsGeneral.Text",
+  "PreviewSettingsNotifications.Text",
+])
+  assert.ok(!zhResources.includes(token) && !enResources.includes(token),
+    `a Button/TextBlock shared Uid would crash MRT localization at startup: ${token}`);
+for (const token of ["PageScrollViewer", "EditorCanvasScrollViewer", "MaxHeight=\"620\""])
+  assert.ok(!xaml.includes(token), `legacy document scrolling must stay removed: ${token}`);
 for (const token of ["Grid.SetColumn(EditorPanel", "Grid.SetRow(EditorPanel", "Grid.SetColumn(InspectorChrome", "Grid.SetRow(InspectorChrome"])
-  assert.ok(!page.includes(token), `vertical editor must not dynamically reparent layout surfaces: ${token}`);
+  assert.ok(!page.includes(token), `theme studio must not dynamically reparent layout surfaces: ${token}`);
 assert.ok(!xaml.includes('x:Name="EditorPanel" Grid.Column="1" Style="{StaticResource StatusCardStyle}"'),
   "the editor workspace must not restore the former nested card shell");
+for (const token of [
+  "ThemeStudioToolsTitle.Text", "ThemeToolOverview.Content", "ThemeToolColorMaterials.Content",
+  "ThemeRailLibraryButton.Content", "ThemeRailToolsButton.Content", "ThemeStudioDraftLabel.Text",
+  "ThemeToolTypography.Content", "ThemeToolBackgroundComposition.Content", "ThemeToolInterfaceAssets.Content",
+  "ThemeToolDecoration.Content", "ThemeToolComponentStyles.Content", "ThemeToolLayoutSpacing.Content",
+  "ThemeToolLocalization.Content", "ThemeToolFloatingWindows.Content", "ThemeToolThemeInfo.Content",
+  "ThemeToolHistory.Content", "ThemeStudioPreviewTitle.Text", "ThemeStudioPlannedToolInfo.Message"
+]) assert.ok(zhResources.includes(token) && enResources.includes(token),
+  `missing localized three-pane theme-studio resource: ${token}`);
 for (const token of ["ScheduleLivePreview", "Task.Delay(240", "CancelLivePreviewWork", "RefreshPreviewAsync"])
   assert.ok(page.includes(token), `missing debounced live-preview behavior: ${token}`);
 for (const token of ["RefreshPreviewAsync", "Page.removeScriptToEvaluateOnNewDocument", "_earlyScriptIdentifiers"])
   assert.ok(engine.includes(token), `missing incremental CDP refresh behavior: ${token}`);
+for (const token of [
+  "public async Task<CodexPreviewFrame?> CapturePreviewFrameAsync",
+  "requestAnimationFrame(() => requestAnimationFrame",
+  "document.getElementById('codex-dream-skin-style')",
+  "session.CaptureScreenshotAsync",
+])
+  assert.ok(engine.includes(token), `missing real Codex frame capture behavior: ${token}`);
+for (const token of [
+  "public async Task<byte[]> CaptureScreenshotAsync",
+  '"Page.captureScreenshot"',
+  "maximumScreenshotBytes",
+  "bytes[0] != 0x89",
+])
+  assert.ok(cdpClient.includes(token), `missing bounded PNG screenshot decoding: ${token}`);
+for (const token of [
+  'x:Name="LivePreviewFrameHost"',
+  'x:Name="LivePreviewFrameViewbox"',
+  'x:Name="LivePreviewFrameCanvas"',
+  'x:Name="LivePreviewFrameImage"',
+  'x:Name="LivePreviewFrameBadge"',
+  'SizeChanged="LivePreviewFrameHost_SizeChanged"',
+  'Stretch="Uniform"',
+  'Stretch="Fill"',
+])
+  assert.ok(xaml.includes(token), `missing real Codex preview frame surface: ${token}`);
+for (const token of [
+  "RefreshLivePreviewFrameAsync",
+  "_engine.CapturePreviewFrameAsync",
+  "InMemoryRandomAccessStream",
+  "LivePreviewFrameCanvas.Width = frame.Width",
+  "LivePreviewFrameCanvas.Height = frame.Height",
+  "UpdateLivePreviewFrameStatus",
+  "PreviewSurface.ActualWidth",
+  "availableWidth / _livePreviewFrameWidth",
+  "ShowOfflinePreviewFrame",
+  "PreviewInteractionToolbar.IsHitTestVisible = false",
+])
+  assert.ok(page.includes(token), `missing live/offline preview frame switching: ${token}`);
 for (const token of ["_previewSourceSignature", "canReuseImages", "MapThemeImages"])
   assert.ok(service.includes(token), `missing preview image reuse behavior: ${token}`);
 assert.ok(page.includes("SidebarImageFileName == previousBackground ? stagedName"),
