@@ -34,18 +34,22 @@ const result = await evaluate(`(async () => {
   const expected = { 文件: 6, 编辑: 8, 视图: 18, 帮助: 8 };
   const output = {};
   for (const [label, count] of Object.entries(expected)) {
-    const topBar = [...document.querySelectorAll('.app-header-tint, header[data-app-shell-application-menu-bar]')]
-      .find((candidate) => candidate.classList.contains('group/application-menu-top-bar'));
+    const topBar = document.querySelector('[role="menubar"]');
     const button = [...(topBar?.querySelectorAll('button') || [])]
       .find((candidate) => (candidate.getAttribute('aria-label') || candidate.innerText.trim()) === label);
     button?.click();
     await new Promise((resolve) => setTimeout(resolve, 40));
     const menu = document.getElementById('codex-dream-skin-app-menu');
     const box = menu?.getBoundingClientRect();
+    const translatedLabels = [...(menu?.querySelectorAll('[role="menuitem"]') || [])]
+      .map((item) => item.querySelector('span')?.textContent || item.textContent.trim());
     output[label] = {
+      buttonFound: !!button,
+      topBarFound: !!topBar,
       count: menu?.querySelectorAll('[role="menuitem"]').length || 0,
       expected: count,
       ariaLabel: menu?.getAttribute('aria-label') || null,
+      labels: translatedLabels,
       height: box?.height || 0,
       overflow: box ? Math.max(0, box.bottom - innerHeight) : -1
     };
@@ -53,6 +57,7 @@ const result = await evaluate(`(async () => {
   document.getElementById('codex-dream-skin-app-menu')?.remove();
   return {
     version: window.__CODEX_DREAM_SKIN_STATE__?.version || null,
+    styleSchema: document.getElementById('codex-dream-skin-style')?.dataset.dreamVersion || null,
     binding: typeof window.__dreamSkinCommand,
     menus: output
   };
@@ -63,8 +68,11 @@ if (nativeCommand) {
 }
 
 socket.close();
+const expectedEditLabels = ["撤销", "重做", "剪切", "复制", "粘贴", "删除", "全选", "设置…"];
 const pass = result.version === "3.10.0"
+  && result.styleSchema === "72"
   && result.binding === "function"
+  && JSON.stringify(result.menus.编辑.labels) === JSON.stringify(expectedEditLabels)
   && Object.values(result.menus).every((menu) =>
     menu.count === menu.expected && menu.ariaLabel?.endsWith("菜单") && menu.overflow === 0);
 console.log(JSON.stringify({ pass, ...result, invokedNativeCommand: nativeCommand || null }, null, 2));

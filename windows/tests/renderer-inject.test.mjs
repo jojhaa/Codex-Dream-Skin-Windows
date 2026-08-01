@@ -45,6 +45,10 @@ assert.match(template, /const APP_MENU_ID = "codex-dream-skin-app-menu"/,
   "the renderer must own a reversible translated application-menu surface");
 assert.match(template, /typeof window\.__dreamSkinCommand === "function"/,
   "the translated menu must only replace Codex's native menu when the trusted command bridge is available");
+assert.doesNotMatch(template, /classList\.contains\("group\/application-menu-top-bar"\)/,
+  "application-menu takeover must not depend on a class removed by current Codex builds");
+assert.match(template, /button\[role=\"menuitem\"\]\[aria-haspopup=\"menu\"\]\[id\^=\"application-menu-trigger-\"\]/,
+  "application-menu takeover must recognize current Codex menubar triggers without broad page interception");
 for (const label of [
   "新建窗口", "退出登录", "撤销", "粘贴", "设置…",
   "显示 / 隐藏侧边栏", "打开终端", "打开浏览器标签页", "上一个会话", "切换全屏",

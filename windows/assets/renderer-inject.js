@@ -6,7 +6,7 @@
   const CHROME_ID = "codex-dream-skin-chrome";
   const APP_MENU_ID = "codex-dream-skin-app-menu";
   const DIFF_SHADOW_STYLE_ID = "codex-dream-skin-diff-shadow-style";
-  const STYLE_SCHEMA = "70";
+  const STYLE_SCHEMA = "72";
   const diffShadowCss = `
     :host {
       --vscode-editor-background: transparent !important;
@@ -302,10 +302,14 @@
     const currentMenu = document.getElementById(APP_MENU_ID);
     if (currentMenu?.contains(event.target)) return;
     const button = event.target instanceof Element ? event.target.closest("button") : null;
-    const topBar = button
-      ? [...document.querySelectorAll(".app-header-tint, header[data-app-shell-application-menu-bar]")].find((candidate) =>
-        candidate.classList.contains("group/application-menu-top-bar") && candidate.contains(button))
+    const currentMenuBar = button?.matches(
+      'button[role="menuitem"][aria-haspopup="menu"][id^="application-menu-trigger-"]'
+    ) ? button.closest('[role="menubar"]') : null;
+    const legacyTopBar = button
+      ? [...document.querySelectorAll(".app-header-tint, header[data-app-shell-application-menu-bar]")]
+        .find((candidate) => candidate.contains(button))
       : null;
+    const topBar = currentMenuBar || legacyTopBar;
     const label = button?.getAttribute("aria-label") || button?.innerText?.trim();
     const menuDefinition = Object.values(applicationMenus).find((candidate) => candidate.labels.includes(label));
     if (topBar && menuDefinition && typeof window.__dreamSkinCommand === "function") {

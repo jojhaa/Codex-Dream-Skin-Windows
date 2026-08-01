@@ -4,6 +4,42 @@
 
 暂无。
 
+## v0.3.7 — 2026-08-01
+
+### 中文版本日志（主要）
+
+本次补丁修复最新版 Codex Desktop 应用菜单仍显示英文命令的问题。
+
+#### 修复
+
+- 修复最新版 Codex 将应用菜单移到独立 `role="menubar"` 后，编辑菜单仍显示英文 `Undo / Redo / Cut / Copy / Paste / Delete / Select All` 的问题。
+- 翻译器改为识别稳定的 `application-menu-trigger-*` 菜单按钮，不再依赖已移除的 `group/application-menu-top-bar` 标题栏类。
+- 保留旧版 Codex 标题栏菜单兼容路径，并将样式架构升级至 72，确保运行中的旧监听器被替换。
+
+#### 验证
+
+- 真实 Codex 编辑菜单返回 `撤销、重做、剪切、复制、粘贴、删除、全选、设置…`。
+- 文件、编辑、视图和帮助菜单分别包含 6、8、18、8 个中文命令，均无视口溢出。
+- 完整 Windows 回归、x64 Release 编译以及 Portable/Lite 解压启动验证通过。
+
+#### 双版本发布
+
+- Portable 绿色版：`CodexDreamSkin-Windows-x64-v0.3.7-Portable.zip`
+  - 大小：114,413,757 字节
+  - SHA-256：`AA3675F56A5628440B402929334BDF8FB597BA24D1E22E92EA8F142612244CE5`
+- Lite 轻量版：`CodexDreamSkin-Windows-x64-v0.3.7-Lite.zip`
+  - 大小：15,952,868 字节
+  - SHA-256：`2EAB2145FB2E95FDD6972E798294E9BF557700EFDE98B051CA9F0B5B0F4B86B4`
+
+### English Summary
+
+`v0.3.7` restores complete Chinese application-menu translation on current Codex Desktop builds.
+
+- Recognizes the current standalone Radix-style menubar through narrow, stable `application-menu-trigger-*` identifiers.
+- Removes the dependency on the deleted `group/application-menu-top-bar` class while retaining legacy compatibility.
+- Verifies exact Chinese Edit labels and all four translated menu sizes against the real Codex renderer.
+- Bumps the style schema to 72 so active pages replace stale menu listeners.
+
 ## v0.3.6 — 2026-08-01
 
 ### 中文版本日志（主要）
