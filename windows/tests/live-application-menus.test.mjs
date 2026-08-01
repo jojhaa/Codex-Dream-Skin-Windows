@@ -34,7 +34,7 @@ const result = await evaluate(`(async () => {
   const expected = { 文件: 6, 编辑: 8, 视图: 18, 帮助: 8 };
   const output = {};
   for (const [label, count] of Object.entries(expected)) {
-    const topBar = [...document.querySelectorAll('.app-header-tint')]
+    const topBar = [...document.querySelectorAll('.app-header-tint, header[data-app-shell-application-menu-bar]')]
       .find((candidate) => candidate.classList.contains('group/application-menu-top-bar'));
     const button = [...(topBar?.querySelectorAll('button') || [])]
       .find((candidate) => (candidate.getAttribute('aria-label') || candidate.innerText.trim()) === label);

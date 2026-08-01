@@ -24,7 +24,7 @@ const result = await new Promise((resolve, reject) => {
     params: {
       returnByValue: true,
       expression: `(() => {
-        const main = document.querySelector('main.main-surface');
+        const main = document.querySelector('main.main-surface, main[data-app-shell-main-surface]');
         const sidebar = document.querySelector('aside.app-shell-left-panel');
         const composer = main?.querySelector('.composer-surface-chrome');
         const read = (node, pseudo = null) => {

@@ -4,6 +4,47 @@
 
 暂无。
 
+## v0.3.6 — 2026-08-01
+
+### 中文版本日志（主要）
+
+本次补丁恢复了最新版 Codex Desktop 的主题应用能力，并保留旧版页面结构兼容。
+
+#### 修复
+
+- 修复 Codex `26.727.6591.0` 更新页面结构后，主题引擎提示“未找到同时具有 Codex 主界面标记的 app:// 页面”的问题。
+- 主页面识别同时支持旧版 `main.main-surface` 与最新版稳定的 `data-app-shell-*` 标记。
+- 主题 CSS、实时预览截图、区域测量、原生早期注入和 Node 注入器同步兼容最新版主界面、标题栏、顶部渐隐和任务内容框架。
+- 样式架构升级至 70，使已经运行的 Codex 页面能够替换旧的兼容样式。
+- 保持 `avatar-overlay` 等辅助 `app://` 页面隔离，避免主题 CSS 误注入悬浮辅助窗口。
+
+#### 验证
+
+- 完整 Windows 回归测试、x64 Release 编译和 Portable/Lite 双版本发布验证通过。
+- 真实 Codex `26.727.6591.0` 正式应用验证通过：主页面加载主题与路由样式，辅助页面不含主题类或主题样式表。
+- 新增可执行的最新版主页面/辅助页面隔离测试，并更新现有实时主题、菜单、图层、消息和区域测量测试。
+
+#### 双版本发布
+
+- Portable 绿色版：`CodexDreamSkin-Windows-x64-v0.3.6-Portable.zip`
+  - 无需预装 .NET 或 Windows App SDK Runtime。
+  - 大小：114,413,732 字节
+  - SHA-256：`5ECB6C8F448C8CBFFB12DDB4FFDB016C7AE5713D1405EF41E7935BEDFDC02233`
+- Lite 轻量版：`CodexDreamSkin-Windows-x64-v0.3.6-Lite.zip`
+  - 需要 .NET 10 Desktop Runtime x64 和 Windows App SDK Runtime 2.3 x64。
+  - 大小：15,952,825 字节
+  - SHA-256：`8A901471CCA33309EE1C77E0E0F907B4F2693E310AFA25D967BCB26CDC59C9DC`
+
+### English Summary
+
+`v0.3.6` restores theme application on current Codex Desktop builds while retaining compatibility with the legacy shell markup.
+
+- Recognizes the stable `data-app-shell-*` markers introduced by Codex `26.727.6591.0`.
+- Updates native and Node target probes, early injection, live capture, region measurement, renderer routing, and production CSS.
+- Bumps the style schema to 70 so active pages replace stale compatibility CSS.
+- Keeps auxiliary `app://` targets such as `avatar-overlay` unthemed.
+- Adds live coverage proving that the real main page is themed and auxiliary pages remain isolated.
+
 ## v0.3.5 — 2026-07-27
 
 ### 中文版本日志（主要）

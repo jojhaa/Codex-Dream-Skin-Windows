@@ -94,7 +94,7 @@ public sealed class CodexThemeEngine : IAsyncDisposable
                         new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(() => {
                           resolve({
                             codex: location.protocol === 'app:' &&
-                              !!document.querySelector('main.main-surface') &&
+                              !!document.querySelector('main.main-surface, main[data-app-shell-main-surface]') &&
                               !!document.getElementById('codex-dream-skin-style'),
                             width: Math.max(1, Math.round(innerWidth)),
                             height: Math.max(1, Math.round(innerHeight))
@@ -319,7 +319,7 @@ public sealed class CodexThemeEngine : IAsyncDisposable
         try
         {
             await session.OpenAsync(target.WebSocketUrl, cancellationToken);
-            var probe = await session.EvaluateAsync("(() => { const root=!!document.getElementById('root'); const shell=!!document.querySelector('main.main-surface'); const content=!!document.querySelector('.composer-surface-chrome, [role=\"main\"]'); return { codex: location.protocol === 'app:' && root && shell && content }; })()", cancellationToken);
+            var probe = await session.EvaluateAsync("(() => { const root=!!document.getElementById('root'); const shell=!!document.querySelector('main.main-surface, main[data-app-shell-main-surface]'); const content=!!document.querySelector('.composer-surface-chrome, [role=\"main\"], header[data-app-shell-application-menu-bar]'); return { codex: location.protocol === 'app:' && root && shell && content }; })()", cancellationToken);
             if (probe.ValueKind != JsonValueKind.Object || !probe.TryGetProperty("codex", out var codexNode) || !codexNode.GetBoolean())
             {
                 await session.DisposeAsync();
@@ -386,7 +386,7 @@ public sealed class CodexThemeEngine : IAsyncDisposable
               };
               const contentSize = element => element && element.clientWidth > 0 && element.clientHeight > 0
                 ? { width: element.clientWidth, height: element.clientHeight } : null;
-              const shell = document.querySelector('main.main-surface');
+              const shell = document.querySelector('main.main-surface, main[data-app-shell-main-surface]');
               const sidebar = document.querySelector('aside.app-shell-left-panel');
               if (location.protocol !== 'app:' || !shell) return { codex: false };
               const composer = shell.querySelector('.composer-surface-chrome');

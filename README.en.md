@@ -9,11 +9,11 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases/download/v0.3.5/CodexDreamSkin-Windows-x64-v0.3.5-Portable.zip">Download Portable</a>
+  <a href="https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases/download/v0.3.6/CodexDreamSkin-Windows-x64-v0.3.6-Portable.zip">Download Portable</a>
   ·
-  <a href="https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases/download/v0.3.5/CodexDreamSkin-Windows-x64-v0.3.5-Lite.zip">Download Lite</a>
+  <a href="https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases/download/v0.3.6/CodexDreamSkin-Windows-x64-v0.3.6-Lite.zip">Download Lite</a>
   ·
-  <a href="https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases/tag/v0.3.5">v0.3.5 release notes</a>
+  <a href="https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases/tag/v0.3.6">v0.3.6 release notes</a>
   ·
   <a href="./CHANGELOG.md">Changelog</a>
   ·
@@ -31,10 +31,10 @@
 
 ### 1. Choose an edition
 
-**[Portable](https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases/download/v0.3.5/CodexDreamSkin-Windows-x64-v0.3.5-Portable.zip)**
+**[Portable](https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases/download/v0.3.6/CodexDreamSkin-Windows-x64-v0.3.6-Portable.zip)**
 Self-contained. Extract the complete archive and run it without installing a runtime.
 
-**[Lite](https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases/download/v0.3.5/CodexDreamSkin-Windows-x64-v0.3.5-Lite.zip)**
+**[Lite](https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases/download/v0.3.6/CodexDreamSkin-Windows-x64-v0.3.6-Lite.zip)**
 Smaller download. Install the [.NET 10 Desktop Runtime x64](https://dotnet.microsoft.com/download/dotnet/10.0) and [Windows App SDK Runtime 2.3 x64](https://learn.microsoft.com/windows/apps/windows-app-sdk/downloads) first.
 
 Neither edition requires the .NET SDK or a repository clone.

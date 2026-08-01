@@ -6,7 +6,7 @@
   const CHROME_ID = "codex-dream-skin-chrome";
   const APP_MENU_ID = "codex-dream-skin-app-menu";
   const DIFF_SHADOW_STYLE_ID = "codex-dream-skin-diff-shadow-style";
-  const STYLE_SCHEMA = "69";
+  const STYLE_SCHEMA = "70";
   const diffShadowCss = `
     :host {
       --vscode-editor-background: transparent !important;
@@ -303,7 +303,7 @@
     if (currentMenu?.contains(event.target)) return;
     const button = event.target instanceof Element ? event.target.closest("button") : null;
     const topBar = button
-      ? [...document.querySelectorAll(".app-header-tint")].find((candidate) =>
+      ? [...document.querySelectorAll(".app-header-tint, header[data-app-shell-application-menu-bar]")].find((candidate) =>
         candidate.classList.contains("group/application-menu-top-bar") && candidate.contains(button))
       : null;
     const label = button?.getAttribute("aria-label") || button?.innerText?.trim();
@@ -385,7 +385,7 @@
     if (window.__CODEX_DREAM_SKIN_DISABLED__) return;
     const root = document.documentElement;
     if (!root) return;
-    const shellMain = document.querySelector("main.main-surface") || document.querySelector("main");
+    const shellMain = document.querySelector("main[data-app-shell-main-surface], main.main-surface") || document.querySelector("main");
     if (!shellMain || !document.body) {
       root.classList.remove("codex-dream-skin");
       delete root.dataset.dreamSidebarBackground;
@@ -564,10 +564,10 @@
     for (const list of queuedMessageLists) list.classList.add("dream-queued-message-list");
     for (const panel of queuedMessagePanels) panel.classList.add("dream-queued-message-panel");
     const utilityOpaqueRoot = typeof shellMain.querySelector === "function" ? shellMain.querySelector(
-      '.app-shell-main-content-frame [class~="h-full"][class~="min-h-0"][class~="flex-col"][class~="bg-token-main-surface-primary"]'
+      ':is(.app-shell-main-content-frame, [data-app-shell-thread-edge-divider]) [class~="h-full"][class~="min-h-0"][class~="flex-col"][class~="bg-token-main-surface-primary"]'
     ) : null;
     const utilitySearchBand = typeof shellMain.querySelector === "function" ? shellMain.querySelector(
-      '.app-shell-main-content-frame [class~="sticky"][class~="bg-token-main-surface-primary"]:has(input)'
+      ':is(.app-shell-main-content-frame, [data-app-shell-thread-edge-divider]) [class~="sticky"][class~="bg-token-main-surface-primary"]:has(input)'
     ) : null;
     const inertTaskItems = typeof settingsSidebar?.querySelectorAll === "function"
       ? settingsSidebar.querySelectorAll('[role="listitem"][inert]:has([role="button"].cursor-grab)') : [];

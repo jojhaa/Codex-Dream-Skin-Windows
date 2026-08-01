@@ -35,8 +35,8 @@ const result = await new Promise((resolve, reject) => {
           .flatMap((slot) => ['light', 'dark'].flatMap((mode) => ['rgb', 'opacity']
             .map((property) => '--dream-component-' + slot + '-' + mode + '-' + property)));
         const sidebar = document.querySelector('aside.app-shell-left-panel');
-        const main = document.querySelector('main.main-surface');
-        const header = main?.querySelector(':scope > header.app-header-tint');
+        const main = document.querySelector('main.main-surface, main[data-app-shell-main-surface]');
+        const header = main?.querySelector(':scope > header.app-header-tint, :scope > header[data-app-shell-application-menu-bar]');
         return {
           version: window.__CODEX_DREAM_SKIN_STATE__?.version || null,
           decorationProfile: window.__CODEX_DREAM_SKIN_STATE__?.decorationProfile || null,

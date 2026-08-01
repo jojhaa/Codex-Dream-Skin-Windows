@@ -684,10 +684,10 @@ async function readThemeSourceStamp(loadedTheme) {
 async function probeSession(session) {
   return session.evaluate(`(() => {
     const markers = {
-      shell: Boolean(document.querySelector('main.main-surface')),
+      shell: Boolean(document.querySelector('main.main-surface, main[data-app-shell-main-surface]')),
       sidebar: Boolean(document.querySelector('aside.app-shell-left-panel')),
       composer: Boolean(document.querySelector('.composer-surface-chrome')),
-      main: Boolean(document.querySelector('[role="main"]')),
+      main: Boolean(document.querySelector('[role="main"], header[data-app-shell-application-menu-bar]')),
     };
     return {
       markers,
@@ -767,8 +767,8 @@ export function earlyPayloadFor(payload, revision) {
       if (window[generationKey] !== generation) { stop(); return true; }
       const root = document.documentElement;
       if (!root || !document.body) return false;
-      const shell = document.querySelector('main.main-surface');
-      const content = document.querySelector('.composer-surface-chrome, [role="main"]');
+      const shell = document.querySelector('main.main-surface, main[data-app-shell-main-surface]');
+      const content = document.querySelector('.composer-surface-chrome, [role="main"], header[data-app-shell-application-menu-bar]');
       if (!shell || !content) return false;
       stop();
       ${payload};
@@ -821,7 +821,7 @@ function operationUiExpression(action, token, state = "loading", message = "") {
       : value === "success" ? 1800 : value === "cancelled" ? 2400 : 6000;
     const issuedAt = (value) => Number(String(value).split(":")[1]) || 0;
     const positionInMainArea = (host) => {
-      const main = document.querySelector("main.main-surface") ||
+      const main = document.querySelector("main[data-app-shell-main-surface], main.main-surface") ||
         document.querySelector("main") ||
         document.querySelector('[role="main"]') || document.documentElement;
       const rect = main.getBoundingClientRect();

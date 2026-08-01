@@ -31,7 +31,7 @@ const result = await new Promise((resolve, reject) => {
                 ratio: Math.round(rect.width / rect.height * 1000) / 1000 }
             : null;
         };
-        const main = document.querySelector('main.main-surface');
+        const main = document.querySelector('main.main-surface, main[data-app-shell-main-surface]');
         const home = document.querySelector('[role="main"].dream-home');
         const homeHero = home?.querySelector(':scope > div:first-child > div:first-child > div:first-child');
         const ribbon = home ? document.querySelector('#codex-dream-skin-chrome .dream-ribbon') : null;

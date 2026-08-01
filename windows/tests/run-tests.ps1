@@ -767,13 +767,13 @@ try {
     'var(--dream-sidebar-art, var(--dream-art))',
     'var(--dream-composer-art, var(--dream-art))',
     'var(--dream-home-art, var(--dream-art))',
-    'main.main-surface > header.app-header-tint',
-    'main.main-surface.dream-utility-shell',
-    '.app-shell-main-content-top-fade',
+    'main:is(.main-surface, [data-app-shell-main-surface]) > header:is(.app-header-tint, [data-app-shell-application-menu-bar])',
+    'main:is(.main-surface, [data-app-shell-main-surface]).dream-utility-shell',
+    ':is(.app-shell-main-content-top-fade, [data-app-shell-main-content-top-fade])',
     '[class*="bg-gradient-to-t"][class*="from-token-main-surface-primary"]',
     '--dream-composer-glass-left',
-    'main.main-surface.dream-home-shell',
-    'main.main-surface.dream-task-shell',
+    'main:is(.main-surface, [data-app-shell-main-surface]).dream-home-shell',
+    'main:is(.main-surface, [data-app-shell-main-surface]).dream-task-shell',
     'main.dream-home-shell .composer-surface-chrome',
     'section[role="dialog"][class*="_floatingSurface_"]'
   )) {

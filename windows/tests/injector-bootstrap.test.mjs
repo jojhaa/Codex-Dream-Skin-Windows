@@ -20,9 +20,9 @@ function createFixture() {
       documentElement: {},
       body: {},
       querySelector(selector) {
-        if (selector === "main.main-surface") return markers.shell ? {} : null;
+        if (selector === "main.main-surface, main[data-app-shell-main-surface]") return markers.shell ? {} : null;
         if (selector === "aside.app-shell-left-panel") return markers.sidebar ? {} : null;
-        if (selector === '.composer-surface-chrome, [role="main"]') return markers.content ? {} : null;
+        if (selector === '.composer-surface-chrome, [role="main"], header[data-app-shell-application-menu-bar]') return markers.content ? {} : null;
         return null;
       },
     },
@@ -58,6 +58,10 @@ assert.deepEqual(
   ["guarded"],
   "A complete Codex shell must install while the optional sidebar is collapsed.",
 );
+assert.match(source, /main\[data-app-shell-main-surface\]/,
+  "Current Codex data markers must identify the main app surface.");
+assert.match(source, /header\[data-app-shell-application-menu-bar\]/,
+  "Current Codex application header must qualify settings and sidebar-collapsed pages.");
 
 const generations = createFixture();
 vm.runInNewContext(earlyPayloadFor('window.installs.push("old")', "old"), generations.context);

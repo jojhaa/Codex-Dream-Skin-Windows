@@ -140,8 +140,8 @@ public sealed class ThemePayloadLoader
           const install = () => {
             if (window[generationKey] !== generation) { stop(); return true; }
             if (!document.documentElement || !document.body) return false;
-            const shell = document.querySelector('main.main-surface');
-            const content = document.querySelector('.composer-surface-chrome, [role="main"]');
+            const shell = document.querySelector('main.main-surface, main[data-app-shell-main-surface]');
+            const content = document.querySelector('.composer-surface-chrome, [role="main"], header[data-app-shell-application-menu-bar]');
             if (!shell || !content) return false;
             stop();
             {{payload.Expression}};

@@ -13,6 +13,7 @@ const xaml = read("app", "CodexDreamSkin", "Pages", "ThemesPage.xaml");
 const previewFixture = read("app", "CodexDreamSkin", "Controls", "CodexPreviewFixture.xaml");
 const previewFixtureCode = read("app", "CodexDreamSkin", "Controls", "CodexPreviewFixture.xaml.cs");
 const engine = read("app", "CodexDreamSkin", "Services", "CodexThemeEngine.cs");
+const payloadLoader = read("app", "CodexDreamSkin", "Services", "ThemePayloadLoader.cs");
 const cdpClient = read("app", "CodexDreamSkin", "Services", "CdpClient.cs");
 const locator = read("app", "CodexDreamSkin", "Services", "CodexPackageLocator.cs");
 const processResolver = read("app", "CodexDreamSkin", "Services", "ProcessPathResolver.cs");
@@ -97,15 +98,15 @@ for (const token of ["Nocturne / 星河", "STELLAR HORIZON", "MILKY WAY · 02"])
   assert.ok(!previewFixtureCode.includes(token), `Milky Way decoration residue remains in the isolated preview: ${token}`);
 
 for (const token of [
-  "<Version>0.3.5</Version>",
-  "<AssemblyVersion>0.3.5.0</AssemblyVersion>",
-  "<FileVersion>0.3.5.0</FileVersion>",
+  "<Version>0.3.6</Version>",
+  "<AssemblyVersion>0.3.6.0</AssemblyVersion>",
+  "<FileVersion>0.3.6.0</FileVersion>",
 ])
-  assert.ok(project.includes(token), `missing v0.3.5 assembly contract: ${token}`);
-assert.ok(manifest.includes('Version="0.3.5.0"'),
-  "the packaged identity must use v0.3.5");
-assert.ok(releaseChecks.includes('UserAgent.ParseAdd("CodexDreamSkin/0.3.5")'),
-  "release checks must identify the v0.3.5 client");
+  assert.ok(project.includes(token), `missing v0.3.6 assembly contract: ${token}`);
+assert.ok(manifest.includes('Version="0.3.6.0"'),
+  "the packaged identity must use v0.3.6");
+assert.ok(releaseChecks.includes('UserAgent.ParseAdd("CodexDreamSkin/0.3.6")'),
+  "release checks must identify the v0.3.6 client");
 
 for (const token of [
   "Shell_NotifyIcon",
@@ -292,7 +293,7 @@ for (const token of ["RunGuardedAsync", "DiagnosticsInfoBar.Severity = InfoBarSe
     `missing crash-safe diagnostics refresh contract: ${token}`);
 assert.match(
   engine,
-  /const content=!!document\.querySelector\('\.composer-surface-chrome, \[role=\\"main\\"\]'\)/,
+  /const content=!!document\.querySelector\('\.composer-surface-chrome, \[role=\\"main\\"\], header\[data-app-shell-application-menu-bar\]'\)/,
   "The live probe must identify Codex content without requiring the optional sidebar.",
 );
 assert.match(
@@ -305,6 +306,12 @@ assert.doesNotMatch(
   /location\.protocol === 'app:' && root && shell && sidebar/,
   "The live probe must not regress to requiring a visible sidebar.",
 );
+for (const source of [engine, payloadLoader]) {
+  assert.ok(source.includes("main[data-app-shell-main-surface]"),
+    "The theme engine must recognize the stable main-surface marker used by current Codex builds.");
+  assert.ok(source.includes("header[data-app-shell-application-menu-bar]"),
+    "The theme engine must recognize current Codex pages when the composer is not present.");
+}
 
 for (const token of [
   "MinimumWindowWidth = 770",

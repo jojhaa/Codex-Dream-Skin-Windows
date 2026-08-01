@@ -59,7 +59,7 @@ assert.match(css, /electron-dark #codex-dream-skin-app-menu[\s\S]*--dream-compon
 
 assert.doesNotMatch(
   css,
-  /main\.main-surface\s*>\s*header\.app-header-tint\s*\{[^}]*\b(?:position|z-index)\s*:/,
+  /main:is\(\.main-surface, \[data-app-shell-main-surface\]\)\s*>\s*header:is\(\.app-header-tint, \[data-app-shell-application-menu-bar\]\)\s*\{[^}]*\b(?:position|z-index)\s*:/,
   "The skin must preserve Codex's native fixed header so the side-panel toggle remains reachable.",
 );
 assert.match(
@@ -103,11 +103,11 @@ assert.match(css, /data-dream-sidebar-background="continuous"\]\s+aside\.app-she
   "continuous sidebar mode must make the sidebar fill and backdrop fully transparent");
 assert.match(css, /data-dream-sidebar-background="continuous"\]\s+aside\.app-shell-left-panel::before,[\s\S]*aside\.app-shell-left-panel::after\s*\{[^}]*content:\s*none\s*!important;[^}]*display:\s*none\s*!important;/,
   "continuous sidebar mode must remove inherited sidebar pseudo overlays");
-assert.match(css, /data-dream-sidebar-background="continuous"\]\s+main\.main-surface\.dream-task-shell\s*\{[\s\S]*background-image:[\s\S]*radial-gradient/,
+assert.match(css, /data-dream-sidebar-background="continuous"\]\s+main:is\(\.main-surface, \[data-app-shell-main-surface\]\)\.dream-task-shell\s*\{[\s\S]*background-image:[\s\S]*radial-gradient/,
   "continuous dark task mode must retain the workspace veil without repainting regional artwork");
-assert.match(css, /Match the large surfaces at one opacity[\s\S]*data-dream-sidebar-background="continuous"\]\[data-dream-transparency-match="on"\]\s+main\.main-surface,[\s\S]*main\.main-surface\s*>\s*header\.app-header-tint,[\s\S]*background:\s*transparent\s*!important;[\s\S]*backdrop-filter:\s*none\s*!important;/,
+assert.match(css, /Match the large surfaces at one opacity[\s\S]*data-dream-sidebar-background="continuous"\]\[data-dream-transparency-match="on"\]\s+main:is\(\.main-surface, \[data-app-shell-main-surface\]\),[\s\S]*main:is\(\.main-surface, \[data-app-shell-main-surface\]\)\s*>\s*header:is\(\.app-header-tint, \[data-app-shell-application-menu-bar\]\),[\s\S]*background:\s*transparent\s*!important;[\s\S]*backdrop-filter:\s*none\s*!important;/,
   "the match option must give the sidebar and large workspace surfaces the same transparent base");
-assert.match(css, /electron-dark\[data-dream-sidebar-background="continuous"\]\[data-dream-transparency-match="on"\]\s+main\.main-surface,[\s\S]*electron-dark\[data-dream-sidebar-background="continuous"\]\[data-dream-transparency-match="on"\]\s+main\.main-surface\s*>\s*header\.app-header-tint,[\s\S]*background:\s*transparent\s*!important;/,
+assert.match(css, /electron-dark\[data-dream-sidebar-background="continuous"\]\[data-dream-transparency-match="on"\]\s+main:is\(\.main-surface, \[data-app-shell-main-surface\]\),[\s\S]*electron-dark\[data-dream-sidebar-background="continuous"\]\[data-dream-transparency-match="on"\]\s+main:is\(\.main-surface, \[data-app-shell-main-surface\]\)\s*>\s*header:is\(\.app-header-tint, \[data-app-shell-application-menu-bar\]\),[\s\S]*background:\s*transparent\s*!important;/,
   "the match option must override route-specific dark workspace and header veils");
 for (const slot of ["messages", "summaries", "previews", "menus", "workspace", "code", "suggestions"]) {
   assert.match(css, new RegExp(`--dream-component-${slot}-light-(?:rgb|opacity)`), `missing light ${slot} material mapping`);
@@ -130,12 +130,12 @@ assert.match(
 );
 assert.match(
   css,
-  /html\.codex-dream-skin\.electron-dark main\.main-surface\s*\{[\s\S]*?background-repeat:\s*no-repeat\s*!important;[\s\S]*?--dream-background-size/,
+  /html\.codex-dream-skin\.electron-dark main:is\(\.main-surface, \[data-app-shell-main-surface\]\)\s*\{[\s\S]*?background-repeat:\s*no-repeat\s*!important;[\s\S]*?--dream-background-size/,
   "Dark main artwork must retain the regional no-repeat composition after route shorthands.",
 );
 assert.match(
   css,
-  /html\.codex-dream-skin\.electron-dark main\.main-surface\.dream-task-shell,[\s\S]*?dream-settings-shell,[\s\S]*?dream-utility-shell\s*\{[\s\S]*?background-repeat:\s*no-repeat\s*!important/,
+  /html\.codex-dream-skin\.electron-dark main:is\(\.main-surface, \[data-app-shell-main-surface\]\)\.dream-task-shell,[\s\S]*?dream-settings-shell,[\s\S]*?dream-utility-shell\s*\{[\s\S]*?background-repeat:\s*no-repeat\s*!important/,
   "Dark route-specific background shorthands require an equal-specificity no-repeat override.",
 );
 const darkTaskComposerStart = css.indexOf("html.codex-dream-skin.electron-dark main.dream-task-shell .composer-surface-chrome {");
@@ -336,7 +336,7 @@ function createFixture({
     createElement,
     getElementById(id) { return nodes.get(id) ?? null; },
     querySelector(selector) {
-      if (selector === "main.main-surface") return hasMain ? shellMain : null;
+      if (selector === "main[data-app-shell-main-surface], main.main-surface") return hasMain ? shellMain : null;
       if (selector === "main") return hasMain ? shellMain : null;
       if (selector === "aside.app-shell-left-panel") return hasSidebar && !drawerSidebar ? settingsSidebar : null;
       if (selector === "nav.sidebar-foreground-muted") return hasSidebar ? sidebarNavigation : null;

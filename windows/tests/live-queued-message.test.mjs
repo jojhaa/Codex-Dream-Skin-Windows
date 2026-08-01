@@ -27,7 +27,7 @@ const send = (method, params = {}) => new Promise((resolve, reject) => {
 });
 
 const expression = String.raw`(async () => {
-  const shell = document.querySelector('main.main-surface') || document.querySelector('main');
+  const shell = document.querySelector('main.main-surface, main[data-app-shell-main-surface]') || document.querySelector('main');
   if (!shell || !window.__CODEX_DREAM_SKIN_STATE__?.ensure) {
     throw new Error('Live dream-skin task shell is unavailable.');
   }
