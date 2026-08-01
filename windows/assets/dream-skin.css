@@ -300,6 +300,17 @@ html.codex-dream-skin main:is(.main-surface, [data-app-shell-main-surface]).drea
   backdrop-filter: none !important;
 }
 
+/* Current Codex settings moved its page canvas out of `.main-surface` and
+   applies the Electron surface token directly to a full-size content root. */
+html.codex-dream-skin main:is(.main-surface, [data-app-shell-main-surface]).dream-settings-shell
+  [class~="electron:bg-token-main-surface-primary"] {
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
 html.codex-dream-skin main:is(.main-surface, [data-app-shell-main-surface]).dream-settings-shell [class~="rounded-2xl"] {
   border: 1px solid rgba(21, 87, 176, .13) !important;
   background: linear-gradient(112deg,
@@ -360,6 +371,34 @@ html.codex-dream-skin main:is(.main-surface, [data-app-shell-main-surface]).drea
   background-repeat: no-repeat !important;
   background-size: 100% 100%, 100% 100%, var(--dream-background-size, cover) !important;
   background-position: center, center, var(--dream-background-position, left 56%) !important;
+}
+
+/* Pull requests, side chat, review, and other current detail views share this
+   stable app-shell container. Clear only the page-sized foundation layers;
+   dialogs, controls, cards, and composer materials retain their own surfaces. */
+html.codex-dream-skin main:is(.main-surface, [data-app-shell-main-surface])
+  [class~="@container/app-shell-detail-panel"],
+html.codex-dream-skin main:is(.main-surface, [data-app-shell-main-surface])
+  section[class~="bg-token-main-surface-primary"]:has(> [class~="@container/app-shell-detail-panel"]),
+html.codex-dream-skin main:is(.main-surface, [data-app-shell-main-surface])
+  [class~="absolute"][class~="bg-token-main-surface-primary"]:has([class~="@container/app-shell-detail-panel"]) {
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+/* Ctrl+Alt+B opens the current review sidebar under a stable app-shell focus
+   area. Its nested page, scroll, and sticky-header foundations all reuse the
+   primary surface token; controls use separate material tokens and stay legible. */
+html.codex-dream-skin main:is(.main-surface, [data-app-shell-main-surface])
+  aside[data-app-shell-focus-area="right-panel"] [class~="bg-token-main-surface-primary"] {
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
 }
 
 html.codex-dream-skin main:is(.main-surface, [data-app-shell-main-surface]).dream-utility-shell :is(.app-shell-main-content-top-fade, [data-app-shell-main-content-top-fade]) {

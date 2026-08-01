@@ -9,11 +9,11 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases/download/v0.3.7/CodexDreamSkin-Windows-x64-v0.3.7-Portable.zip">下载 Portable 绿色版</a>
+  <a href="https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases/download/v0.3.8/CodexDreamSkin-Windows-x64-v0.3.8-Portable.zip">下载 Portable 绿色版</a>
   ·
-  <a href="https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases/download/v0.3.7/CodexDreamSkin-Windows-x64-v0.3.7-Lite.zip">下载 Lite 轻量版</a>
+  <a href="https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases/download/v0.3.8/CodexDreamSkin-Windows-x64-v0.3.8-Lite.zip">下载 Lite 轻量版</a>
   ·
-  <a href="https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases/tag/v0.3.7">v0.3.7 版本日志</a>
+  <a href="https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases/tag/v0.3.8">v0.3.8 版本日志</a>
   ·
   <a href="./CHANGELOG.md">更新日志</a>
   ·
@@ -31,10 +31,10 @@
 
 ### 1. 选择版本
 
-**[Portable 绿色版](https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases/download/v0.3.7/CodexDreamSkin-Windows-x64-v0.3.7-Portable.zip)**
+**[Portable 绿色版](https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases/download/v0.3.8/CodexDreamSkin-Windows-x64-v0.3.8-Portable.zip)**
 免安装运行时，下载后完整解压即可运行。
 
-**[Lite 轻量版](https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases/download/v0.3.7/CodexDreamSkin-Windows-x64-v0.3.7-Lite.zip)**
+**[Lite 轻量版](https://github.com/jojhaa/Codex-Dream-Skin-Windows/releases/download/v0.3.8/CodexDreamSkin-Windows-x64-v0.3.8-Lite.zip)**
 体积更小，需要预先安装 [.NET 10 Desktop Runtime x64](https://dotnet.microsoft.com/download/dotnet/10.0) 和 [Windows App SDK Runtime 2.3 x64](https://learn.microsoft.com/windows/apps/windows-app-sdk/downloads)。
 
 两个版本都不需要安装 .NET SDK，也不需要克隆仓库。

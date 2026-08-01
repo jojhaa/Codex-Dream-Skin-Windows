@@ -1,4 +1,4 @@
-Codex Dream Skin Windows v0.3.7 - Lite
+Codex Dream Skin Windows v0.3.8 - Lite
 
 这是体积更小的运行时依赖版本。
 

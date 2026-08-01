@@ -182,6 +182,7 @@ function createFixture({
   homePresent = false,
   utilityPresent = false,
   settingsPresent = false,
+  currentSettingsPresent = false,
   sidebarOverlay = false,
   drawerSidebar = false,
   shellAppearance = "dark",
@@ -262,8 +263,8 @@ function createFixture({
       return null;
     },
     querySelectorAll(selector) {
-      if (settingsPresent && selector === '[role="switch"]') return settingsSwitches;
-      if (settingsPresent && selector === '[role="combobox"]') return settingsSelects;
+      if ((settingsPresent || currentSettingsPresent) && selector === '[role="switch"]') return settingsSwitches;
+      if ((settingsPresent || currentSettingsPresent) && selector === '[role="combobox"]') return settingsSelects;
       return [];
     },
     getBoundingClientRect() {
@@ -275,13 +276,16 @@ function createFixture({
   const utilityClasses = new Set();
   const utilityNode = { classList: makeClassList(utilityClasses) };
   const settingsSurface = { classList: makeClassList(new Set(["main-surface"])) };
-  const settingsSwitches = settingsPresent ? [{}, {}, {}] : [];
-  const settingsSelects = settingsPresent ? [{}] : [];
+  const settingsSwitches = settingsPresent || currentSettingsPresent ? [{}, {}, {}] : [];
+  const settingsSelects = settingsPresent || currentSettingsPresent ? [{}] : [];
   const sidebarClasses = new Set();
   const settingsSidebar = {
     classList: makeClassList(sidebarClasses),
     parentElement: body,
-    querySelector() { return null; },
+    querySelector(selector) {
+      if (currentSettingsPresent && selector === 'input[role="searchbox"]') return {};
+      return null;
+    },
     querySelectorAll() { return []; },
     getBoundingClientRect() {
       return { left: 0, right: 275, top: 36, bottom: 820, width: 275, height: 784 };
@@ -620,6 +624,23 @@ assert.equal(
   true,
   "Settings reached from a destroyed hover drawer must retain the themed settings canvas.",
 );
+const currentSettings = createFixture({
+  shellPresent: true,
+  currentSettingsPresent: true,
+});
+vm.runInNewContext(payload, currentSettings.context);
+assert.equal(
+  currentSettings.shellClasses.has("dream-settings-shell"),
+  true,
+  "Current settings must be recognized from its searchbox and native settings controls without `.main-surface`.",
+);
+assert.equal(currentSettings.shellClasses.has("dream-task-shell"), false);
+assert.match(css, /dream-settings-shell[\s\S]*electron:bg-token-main-surface-primary[\s\S]*background-color:\s*transparent\s*!important/,
+  "The current settings page canvas must reveal the themed workspace.");
+assert.match(css, /@container\/app-shell-detail-panel[\s\S]*background-color:\s*transparent\s*!important/,
+  "Current app-shell detail panels must not repaint the workspace with an opaque page background.");
+assert.match(css, /data-app-shell-focus-area="right-panel"[\s\S]*bg-token-main-surface-primary[\s\S]*background-color:\s*transparent\s*!important/,
+  "The Ctrl+Alt+B review sidebar must reveal the themed workspace without flattening its controls.");
 assert.equal(
   sidebarlessSettings.shellClasses.has("dream-task-shell"),
   false,

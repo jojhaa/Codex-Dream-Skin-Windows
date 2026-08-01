@@ -1,4 +1,4 @@
-Codex Dream Skin Windows v0.3.7 - Portable
+Codex Dream Skin Windows v0.3.8 - Portable
 
 这是免安装运行时的绿色版本。
 

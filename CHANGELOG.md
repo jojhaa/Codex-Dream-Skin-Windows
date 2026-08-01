@@ -4,6 +4,40 @@
 
 暂无。
 
+## v0.3.8 — 2026-08-01
+
+### 中文版本日志（主要）
+
+本次补丁恢复最新版 Codex Desktop 设置页、拉取请求详情页和 Ctrl+Alt+B 审查侧栏的主题透明度。
+
+### 修复
+
+- 恢复最新版 Codex 设置页的主题透明度：识别带搜索框与原生设置控件的新页面结构，并清除新增的 Electron 整页黑色底板。
+- 恢复拉取请求等详情页的主题透明度：清除新版 `app-shell-detail-panel` 及其页面级父层底色。
+- 恢复 Ctrl+Alt+B 审查侧栏的主题透明度：以稳定的 `data-app-shell-focus-area="right-panel"` 为边界，清除新版侧栏中的页面、滚动区、工具栏和粘性操作区纯色底板。
+- 仅透明化页面尺寸的基础画布；设置卡片、输入框、消息和交互控件继续保留半透明玻璃材质。
+- 将样式架构升级至 73，使已运行的 Codex 页面立即替换旧样式。
+
+### 验证
+
+- 真实 Codex 设置页确认整页基础画布为透明，5 个可读设置卡片仍保留玻璃渐变。
+- 真实 Codex 拉取请求页确认外层画布、内容区和详情容器三层均为透明。
+- 真实 Codex Ctrl+Alt+B 审查侧栏确认 6 个基础层均为透明，4 个快捷操作按钮仍保留轻微交互底色。
+- 完整 Windows 回归通过，x64 Release 编译为 0 警告、0 错误。
+
+### 双版本发布
+
+- Portable 绿色版：`CodexDreamSkin-Windows-x64-v0.3.8-Portable.zip`
+  - 大小：114,414,281 字节
+  - SHA-256：`2B0FF33EE3BBEFE380F43B1113AA829224FAE2DFF8A9CFA270DB385782B2F6EB`
+- Lite 轻量版：`CodexDreamSkin-Windows-x64-v0.3.8-Lite.zip`
+  - 大小：15,953,316 字节
+  - SHA-256：`A263AF0B93CCC906A2AA4CE4C63D4157151FA21ABD869B5F99E851C4A2E32F7B`
+
+### English Summary
+
+`v0.3.8` restores themed transparency across current Codex Settings, Pull Request details, and the Ctrl+Alt+B review sidebar while retaining readable materials for cards and controls.
+
 ## v0.3.7 — 2026-08-01
 
 ### 中文版本日志（主要）

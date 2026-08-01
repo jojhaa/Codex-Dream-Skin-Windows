@@ -6,7 +6,7 @@
   const CHROME_ID = "codex-dream-skin-chrome";
   const APP_MENU_ID = "codex-dream-skin-app-menu";
   const DIFF_SHADOW_STYLE_ID = "codex-dream-skin-diff-shadow-style";
-  const STYLE_SCHEMA = "72";
+  const STYLE_SCHEMA = "74";
   const diffShadowCss = `
     :host {
       --vscode-editor-background: transparent !important;
@@ -529,6 +529,8 @@
       ? shellMain.querySelectorAll('[role="switch"]') : [];
     const settingsSelects = typeof shellMain.querySelectorAll === "function"
       ? shellMain.querySelectorAll('[role="combobox"]') : [];
+    const settingsSearchBox = typeof settingsSidebar?.querySelector === "function"
+      ? settingsSidebar.querySelector('input[role="searchbox"]') : null;
     const taskComposer = typeof shellMain.querySelector === "function"
       ? shellMain.querySelector(".composer-surface-chrome") : null;
     const homeArtworkFrame = typeof home?.querySelector === "function"
@@ -588,8 +590,14 @@
       settingsSurface &&
       (settingsSwitches.length >= 2 || (settingsSwitches.length >= 1 && settingsSelects.length >= 1))
     );
+    const currentSettings = Boolean(
+      settingsSearchBox &&
+      (settingsSwitches.length >= 2 || (settingsSwitches.length >= 1 && settingsSelects.length >= 1))
+    );
     const settings = Boolean(
-      !home && !taskComposer && settingsSurface && (settingsBackLink || sidebarlessSettings)
+      !home && !taskComposer && (
+        (settingsSurface && (settingsBackLink || sidebarlessSettings)) || currentSettings
+      )
     );
     const utility = Boolean(!home && !settings && !taskComposer && (utilityOpaqueRoot || utilitySearchBand));
     const task = Boolean(!home && !settings && !utility);
